@@ -23,5 +23,12 @@ platform-info==0.0.2
 # Email support
 secure-smtplib==0.1.1
 
+# Modern GUI framework
+customtkinter>=5.2.0
+
+# Web dashboard
+flask>=3.1.0
+flask-socketio>=5.6.0
+
 # Environment variables
 python-dotenv==1.0.1
