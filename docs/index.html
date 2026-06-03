@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CyberSentinel - A professional-grade ethical keystroke monitoring suite for cybersecurity research, penetration testing, and education.">
+    <meta name="keywords" content="cybersecurity, keylogger, ethical hacking, penetration testing, security research, monitoring">
+    <meta name="author" content="CyberSecurity Research Team">
+    <title>CyberSentinel — Ethical Keystroke Monitoring Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body>
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  ANIMATED BACKGROUND                       -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow--1"></div>
+    <div class="bg-glow bg-glow--2"></div>
+    <div class="bg-glow bg-glow--3"></div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  NAVIGATION                                -->
+    <!-- ═══════════════════════════════════════════ -->
+    <nav class="nav" id="nav">
+        <div class="nav__container">
+            <a href="#hero" class="nav__logo">
+                <span class="nav__logo-icon">🛡️</span>
+                <span class="nav__logo-text">Cyber<span class="text-accent">Sentinel</span></span>
+            </a>
+            <ul class="nav__links">
+                <li><a href="#features" class="nav__link">Features</a></li>
+                <li><a href="#demo" class="nav__link">Live Demo</a></li>
+                <li><a href="#architecture" class="nav__link">Architecture</a></li>
+                <li><a href="#download" class="nav__link">Download</a></li>
+                <li><a href="#ethical" class="nav__link">Ethics</a></li>
+            </ul>
+            <a href="#download" class="nav__cta" id="navDownloadBtn">⬇ Download →</a>
+            <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  MOBILE MENU                               -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-menu__links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#demo">Live Demo</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#download">Download</a></li>
+            <li><a href="#ethical">Ethics</a></li>
+        </ul>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  HERO SECTION                              -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="hero" id="hero">
+        <div class="hero__content">
+            <div class="hero__badge">
+                <span class="hero__badge-dot"></span>
+                Cybersecurity Research Tool
+            </div>
+            <h1 class="hero__title">
+                <span class="hero__title-line">Ethical Keystroke</span>
+                <span class="hero__title-line hero__title-line--accent">Monitoring Suite</span>
+            </h1>
+            <p class="hero__subtitle">
+                A professional-grade cybersecurity toolkit for authorized penetration testing,
+                security auditing, and educational research. Built with encryption-first architecture
+                and comprehensive ethical safeguards.
+            </p>
+            <div class="hero__actions">
+                <a href="#download" class="btn btn--primary" id="heroDownloadBtn">
+                    <span class="btn__icon">⬇</span>
+                    Download ZIP
+                </a>
+                <a href="#demo" class="btn btn--secondary">
+                    <span class="btn__icon">▶</span>
+                    See Demo
+                </a>
+            </div>
+            <div class="hero__stats">
+                <div class="hero__stat">
+                    <span class="hero__stat-value">AES-256</span>
+                    <span class="hero__stat-label">Encryption</span>
+                </div>
+                <div class="hero__stat-divider"></div>
+                <div class="hero__stat">
+                    <span class="hero__stat-value">6</span>
+                    <span class="hero__stat-label">Modules</span>
+                </div>
+                <div class="hero__stat-divider"></div>
+                <div class="hero__stat">
+                    <span class="hero__stat-value">100%</span>
+                    <span class="hero__stat-label">Open Source</span>
+                </div>
+                <div class="hero__stat-divider"></div>
+                <div class="hero__stat">
+                    <span class="hero__stat-value">Python 3</span>
+                    <span class="hero__stat-label">Powered</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero__terminal" id="heroTerminal">
+            <div class="terminal">
+                <div class="terminal__header">
+                    <div class="terminal__dots">
+                        <span class="terminal__dot terminal__dot--red"></span>
+                        <span class="terminal__dot terminal__dot--yellow"></span>
+                        <span class="terminal__dot terminal__dot--green"></span>
+                    </div>
+                    <span class="terminal__title">CyberSentinel v1.0.0</span>
+                </div>
+                <div class="terminal__body" id="terminalBody">
+                    <div class="terminal__line"><span class="terminal__prompt">$</span> python main.py --mode monitor</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  FEATURES SECTION                          -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Capabilities</span>
+                <h2 class="section-title">Professional-Grade <span class="text-accent">Security Tools</span></h2>
+                <p class="section-desc">Everything you need for comprehensive cybersecurity research, packed into one modular toolkit.</p>
+            </div>
+            <div class="features__grid">
+                <div class="feature-card feature-card--highlight" data-aos="fade-up">
+                    <div class="feature-card__icon">⌨️</div>
+                    <h3 class="feature-card__title">Keystroke Engine</h3>
+                    <p class="feature-card__desc">Buffered capture with 30+ special key mappings, configurable flush intervals, and real-time callback support for dashboard integration.</p>
+                    <div class="feature-card__tags">
+                        <span class="tag">pynput</span>
+                        <span class="tag">buffered</span>
+                        <span class="tag">real-time</span>
+                    </div>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card__icon">🔐</div>
+                    <h3 class="feature-card__title">AES-256 Encryption</h3>
+                    <p class="feature-card__desc">All logs encrypted at rest using Fernet (AES-128-CBC + HMAC-SHA256). Automatic key rotation, password-derived keys via PBKDF2.</p>
+                    <div class="feature-card__tags">
+                        <span class="tag">Fernet</span>
+                        <span class="tag">PBKDF2</span>
+                        <span class="tag">key rotation</span>
+                    </div>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card__icon">📋</div>
+                    <h3 class="feature-card__title">Clipboard Monitor</h3>
+                    <p class="feature-card__desc">Continuous clipboard monitoring with intelligent change detection. Only captures new content, eliminating duplicate entries.</p>
+                    <div class="feature-card__tags">
+                        <span class="tag">pyperclip</span>
+                        <span class="tag">dedup</span>
+                        <span class="tag">polling</span>
+                    </div>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card__icon">📸</div>
+                    <h3 class="feature-card__title">Screenshot Capture</h3>
+                    <p class="feature-card__desc">Periodic and on-demand screen capture with configurable quality (PNG/JPEG), intervals, and timestamped output files.</p>
+                    <div class="feature-card__tags">
+                        <span class="tag">Pillow</span>
+                        <span class="tag">periodic</span>
+                        <span class="tag">on-demand</span>
+                    </div>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-card__icon">📧</div>
+                    <h3 class="feature-card__title">Email Reporting</h3>
+                    <p class="feature-card__desc">SMTP-based automated reporting with HTML-formatted emails, encrypted attachments, and configurable send intervals.</p>
+                    <div class="feature-card__tags">
+                        <span class="tag">SMTP</span>
+                        <span class="tag">HTML</span>
+                        <span class="tag">TLS</span>
+                    </div>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-card__icon">🖥️</div>
+                    <h3 class="feature-card__title">Rich Dashboard</h3>
+                    <p class="feature-card__desc">Beautiful real-time terminal UI with multi-panel layout, live keystroke display, system resource meters, and module health indicators.</p>
+                    <div class="feature-card__tags">
+                        <span class="tag">Rich</span>
+                        <span class="tag">Live UI</span>
+                        <span class="tag">real-time</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  LIVE DEMO SECTION                         -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="demo" id="demo">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Interactive</span>
+                <h2 class="section-title">Live <span class="text-accent">Dashboard Demo</span></h2>
+                <p class="section-desc">Type anywhere on the page to see the keystroke capture simulation in action.</p>
+            </div>
+            <div class="demo__dashboard">
+                <!-- Header Bar -->
+                <div class="demo__header">
+                    <div class="demo__header-left">
+                        <span class="demo__status demo__status--active">● MONITORING</span>
+                        <span class="demo__session">🛡️ CyberSentinel v1.0.0</span>
+                    </div>
+                    <div class="demo__header-right">
+                        <span class="demo__timer" id="demoTimer">⏱ 00:00:00</span>
+                        <span class="demo__date" id="demoDate"></span>
+                    </div>
+                </div>
+
+                <div class="demo__body">
+                    <!-- Left Column -->
+                    <div class="demo__left">
+                        <!-- Keystroke Panel -->
+                        <div class="demo__panel demo__panel--keystrokes">
+                            <div class="demo__panel-header">
+                                <span>⌨️ Live Keystroke Capture</span>
+                                <span class="demo__panel-badge" id="keyCount">0 keys</span>
+                            </div>
+                            <div class="demo__panel-body" id="keystrokePanel">
+                                <span class="demo__placeholder">Click here and start typing to see live capture...</span>
+                            </div>
+                        </div>
+                        <!-- Clipboard Panel -->
+                        <div class="demo__panel demo__panel--clipboard">
+                            <div class="demo__panel-header">
+                                <span>📋 Clipboard Monitor</span>
+                                <span class="demo__panel-badge">Active</span>
+                            </div>
+                            <div class="demo__panel-body">
+                                <div class="demo__clip-entry">
+                                    <span class="demo__clip-time">12:34:01</span>
+                                    <span class="demo__clip-text">System monitoring initialized successfully...</span>
+                                </div>
+                                <div class="demo__clip-entry">
+                                    <span class="demo__clip-time">12:34:15</span>
+                                    <span class="demo__clip-text">Encrypted keystroke buffer flushed to disk</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="demo__right">
+                        <!-- Stats Panel -->
+                        <div class="demo__panel demo__panel--stats">
+                            <div class="demo__panel-header">
+                                <span>📊 Session Statistics</span>
+                            </div>
+                            <div class="demo__panel-body">
+                                <div class="demo__stat-row">
+                                    <span>⌨️ Total Keys</span>
+                                    <span class="demo__stat-val" id="statTotalKeys">0</span>
+                                </div>
+                                <div class="demo__stat-row">
+                                    <span>⚡ Keys/Minute</span>
+                                    <span class="demo__stat-val" id="statKPM">0.0</span>
+                                </div>
+                                <div class="demo__stat-row">
+                                    <span>📋 Clip Captures</span>
+                                    <span class="demo__stat-val">2</span>
+                                </div>
+                                <div class="demo__stat-row">
+                                    <span>📸 Screenshots</span>
+                                    <span class="demo__stat-val">0</span>
+                                </div>
+                                <div class="demo__stat-row">
+                                    <span>🔐 Encryption</span>
+                                    <span class="demo__stat-val demo__stat-val--active">🔒 Active</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Module Status -->
+                        <div class="demo__panel demo__panel--modules">
+                            <div class="demo__panel-header">
+                                <span>🔌 Module Status</span>
+                            </div>
+                            <div class="demo__panel-body">
+                                <div class="demo__module-row">
+                                    <span>⌨️ Keylogger</span>
+                                    <span class="demo__module-status demo__module-status--on">● ON</span>
+                                </div>
+                                <div class="demo__module-row">
+                                    <span>📋 Clipboard</span>
+                                    <span class="demo__module-status demo__module-status--on">● ON</span>
+                                </div>
+                                <div class="demo__module-row">
+                                    <span>📸 Screenshot</span>
+                                    <span class="demo__module-status demo__module-status--on">● ON</span>
+                                </div>
+                                <div class="demo__module-row">
+                                    <span>🔐 Encryption</span>
+                                    <span class="demo__module-status demo__module-status--on">● ON</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- System Resources -->
+                        <div class="demo__panel demo__panel--system">
+                            <div class="demo__panel-header">
+                                <span>💻 Resources</span>
+                            </div>
+                            <div class="demo__panel-body">
+                                <div class="demo__resource-row">
+                                    <span>🧠 CPU</span>
+                                    <div class="demo__resource-bar">
+                                        <div class="demo__resource-fill" id="cpuBar" style="width: 23%"></div>
+                                    </div>
+                                    <span class="demo__resource-val" id="cpuVal">23%</span>
+                                </div>
+                                <div class="demo__resource-row">
+                                    <span>💾 RAM</span>
+                                    <div class="demo__resource-bar">
+                                        <div class="demo__resource-fill demo__resource-fill--ram" id="ramBar" style="width: 58%"></div>
+                                    </div>
+                                    <span class="demo__resource-val" id="ramVal">58%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="demo__footer">
+                    <span>⌨️ Type anywhere on the page to test</span>
+                    <span>⚖️ Authorized Use Only</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  ARCHITECTURE SECTION                      -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="architecture" id="architecture">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Structure</span>
+                <h2 class="section-title">Industry-Grade <span class="text-accent">Architecture</span></h2>
+                <p class="section-desc">Modular design with clean separation of concerns, following professional Python project standards.</p>
+            </div>
+            <div class="arch__grid">
+                <div class="arch__card">
+                    <div class="arch__card-icon">⚙️</div>
+                    <h3>config/</h3>
+                    <p>Centralized settings and configuration management. All tuneable parameters in one place.</p>
+                    <code>settings.py</code>
+                </div>
+                <div class="arch__card">
+                    <div class="arch__card-icon">🔧</div>
+                    <h3>core/</h3>
+                    <p>Core monitoring engines — keystroke capture, clipboard monitoring, and screenshot capture.</p>
+                    <code>keylogger.py · clipboard.py · screenshot.py</code>
+                </div>
+                <div class="arch__card">
+                    <div class="arch__card-icon">💾</div>
+                    <h3>storage/</h3>
+                    <p>Data persistence layer with encrypted file storage, log export, and email-based reporting.</p>
+                    <code>file_handler.py · email_report.py</code>
+                </div>
+                <div class="arch__card">
+                    <div class="arch__card-icon">🎨</div>
+                    <h3>ui/</h3>
+                    <p>Beautiful Rich terminal dashboard with real-time multi-panel layout and live updates.</p>
+                    <code>dashboard.py</code>
+                </div>
+                <div class="arch__card">
+                    <div class="arch__card-icon">🛠️</div>
+                    <h3>utils/</h3>
+                    <p>Encryption manager, system profiler, and ethical consent verification framework.</p>
+                    <code>encryption.py · system_info.py · consent.py</code>
+                </div>
+                <div class="arch__card">
+                    <div class="arch__card-icon">🧪</div>
+                    <h3>tests/</h3>
+                    <p>Comprehensive unit tests covering encryption roundtrips, system profiling, and file handling.</p>
+                    <code>test_core.py</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  MODES SECTION                             -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="modes" id="modes">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Operations</span>
+                <h2 class="section-title">6 Operating <span class="text-accent">Modes</span></h2>
+                <p class="section-desc">Flexible operation modes for every stage of your security assessment workflow.</p>
+            </div>
+            <div class="modes__grid">
+                <div class="mode-card">
+                    <div class="mode-card__num">01</div>
+                    <h3>Monitor</h3>
+                    <p>Full-screen live dashboard with real-time keystroke display, stats, and resource meters.</p>
+                    <code>python main.py --mode monitor</code>
+                </div>
+                <div class="mode-card">
+                    <div class="mode-card__num">02</div>
+                    <h3>Stealth</h3>
+                    <p>Background monitoring without any visible UI. Logs silently to encrypted files.</p>
+                    <code>python main.py --mode stealth</code>
+                </div>
+                <div class="mode-card">
+                    <div class="mode-card__num">03</div>
+                    <h3>Review</h3>
+                    <p>Browse and inspect collected log files with metadata, sizes, and encryption status.</p>
+                    <code>python main.py --mode review</code>
+                </div>
+                <div class="mode-card">
+                    <div class="mode-card__num">04</div>
+                    <h3>System Info</h3>
+                    <p>Comprehensive system profiling: OS, hardware, network interfaces, and running processes.</p>
+                    <code>python main.py --mode sysinfo</code>
+                </div>
+                <div class="mode-card">
+                    <div class="mode-card__num">05</div>
+                    <h3>Decrypt</h3>
+                    <p>Decrypt encrypted logs and export to TXT, CSV, or JSON for analysis.</p>
+                    <code>python main.py --mode decrypt</code>
+                </div>
+                <div class="mode-card">
+                    <div class="mode-card__num">06</div>
+                    <h3>Test</h3>
+                    <p>Run comprehensive self-diagnostic unit tests to verify all modules are functioning.</p>
+                    <code>python main.py --mode test</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  DOWNLOAD SECTION                          -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="download" id="download">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Get It Now</span>
+                <h2 class="section-title">Download <span class="text-accent">CyberSentinel</span></h2>
+                <p class="section-desc">Choose your preferred method to get started. All downloads include the full source code, documentation, and test suite.</p>
+            </div>
+            <div class="download__grid">
+                <!-- ZIP Download -->
+                <div class="download__card download__card--primary">
+                    <div class="download__card-glow"></div>
+                    <div class="download__card-icon">📦</div>
+                    <h3>Download ZIP</h3>
+                    <p>Get the latest source code as a ZIP archive. No Git required — just extract and run.</p>
+                    <a href="#" class="btn btn--primary download__btn" id="downloadZipBtn">
+                        <span class="btn__icon">⬇</span>
+                        Download .zip
+                    </a>
+                    <span class="download__card-size">~120 KB • Source Code</span>
+                </div>
+                <!-- Git Clone -->
+                <div class="download__card">
+                    <div class="download__card-icon">🔗</div>
+                    <h3>Git Clone</h3>
+                    <p>Clone the repository with Git for easy updates and version control integration.</p>
+                    <div class="download__code-block">
+                        <code id="cloneCmd">git clone https://github.com/yourusername/cybersentinel.git</code>
+                        <button class="install__copy-btn" onclick="copyCode(this)" aria-label="Copy command">📋</button>
+                    </div>
+                    <span class="download__card-size">Requires Git installed</span>
+                </div>
+                <!-- GitHub -->
+                <div class="download__card">
+                    <div class="download__card-icon">🐙</div>
+                    <h3>View on GitHub</h3>
+                    <p>Browse the source code, open issues, submit pull requests, or star the repository.</p>
+                    <a href="#" class="btn btn--secondary download__btn" id="downloadGithubBtn">
+                        <span class="btn__icon">🐙</span>
+                        Open Repository
+                    </a>
+                    <span class="download__card-size">Star ⭐ if you find it useful!</span>
+                </div>
+            </div>
+            <div class="download__note">
+                <span>💡</span>
+                <p>After downloading, run <code>pip install -r requirements.txt</code> to install dependencies, then <code>python main.py</code> to launch.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  INSTALL SECTION                           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="install" id="install">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Setup</span>
+                <h2 class="section-title">Get Started in <span class="text-accent">30 Seconds</span></h2>
+                <p class="section-desc">Simple installation process. Clone, install, and you're ready to go.</p>
+            </div>
+            <div class="install__steps">
+                <div class="install__step">
+                    <div class="install__step-num">1</div>
+                    <div class="install__step-content">
+                        <h3>Clone Repository</h3>
+                        <div class="install__code-block">
+                            <code>git clone https://github.com/yourusername/cybersentinel.git</code>
+                            <button class="install__copy-btn" onclick="copyCode(this)" aria-label="Copy command">📋</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="install__step">
+                    <div class="install__step-num">2</div>
+                    <div class="install__step-content">
+                        <h3>Install Dependencies</h3>
+                        <div class="install__code-block">
+                            <code>cd cybersentinel && pip install -r requirements.txt</code>
+                            <button class="install__copy-btn" onclick="copyCode(this)" aria-label="Copy command">📋</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="install__step">
+                    <div class="install__step-num">3</div>
+                    <div class="install__step-content">
+                        <h3>Launch CyberSentinel</h3>
+                        <div class="install__code-block">
+                            <code>python main.py</code>
+                            <button class="install__copy-btn" onclick="copyCode(this)" aria-label="Copy command">📋</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="install__requirements">
+                <h3>📋 Requirements</h3>
+                <div class="install__req-grid">
+                    <div class="install__req">
+                        <span class="install__req-icon">🐍</span>
+                        <span>Python ≥ 3.9</span>
+                    </div>
+                    <div class="install__req">
+                        <span class="install__req-icon">📦</span>
+                        <span>pip package manager</span>
+                    </div>
+                    <div class="install__req">
+                        <span class="install__req-icon">🖥️</span>
+                        <span>Windows / Linux / macOS</span>
+                    </div>
+                    <div class="install__req">
+                        <span class="install__req-icon">⚡</span>
+                        <span>~50 MB disk space</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  ETHICAL USE SECTION                       -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="ethical" id="ethical">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Responsibility</span>
+                <h2 class="section-title">Built with <span class="text-accent">Ethics First</span></h2>
+                <p class="section-desc">CyberSentinel enforces ethical usage at every level. These aren't just guidelines — they're built into the code.</p>
+            </div>
+            <div class="ethical__grid">
+                <div class="ethical__card">
+                    <div class="ethical__card-icon">✅</div>
+                    <h3>Consent Enforcement</h3>
+                    <p>Interactive consent prompt with full legal terms must be accepted before any monitoring begins. No bypass possible.</p>
+                </div>
+                <div class="ethical__card">
+                    <div class="ethical__card-icon">📝</div>
+                    <h3>Audit Trail</h3>
+                    <p>Every consent decision is logged with timestamps and machine-hash identification. Full accountability.</p>
+                </div>
+                <div class="ethical__card">
+                    <div class="ethical__card-icon">⏰</div>
+                    <h3>Auto-Stop Timer</h3>
+                    <p>Configurable safety timer automatically stops monitoring after a set duration (default: 8 hours).</p>
+                </div>
+                <div class="ethical__card">
+                    <div class="ethical__card-icon">🔒</div>
+                    <h3>Encrypted Storage</h3>
+                    <p>All captured data is encrypted at rest using industry-standard Fernet encryption. Keys rotate automatically.</p>
+                </div>
+                <div class="ethical__card">
+                    <div class="ethical__card-icon">🏷️</div>
+                    <h3>Session Watermarks</h3>
+                    <p>Every log file contains session metadata watermarks for identification and traceability.</p>
+                </div>
+                <div class="ethical__card">
+                    <div class="ethical__card-icon">🚫</div>
+                    <h3>Email Disabled</h3>
+                    <p>Email reporting is disabled by default. Must be explicitly configured with environment variables.</p>
+                </div>
+            </div>
+            <div class="ethical__warning">
+                <div class="ethical__warning-icon">⚠️</div>
+                <div>
+                    <h3>Legal Disclaimer</h3>
+                    <p>This software is provided for <strong>authorized cybersecurity research and education only</strong>. Unauthorized use to monitor individuals without their explicit consent is illegal and may result in criminal prosecution under applicable laws including the Computer Fraud and Abuse Act (CFAA), GDPR, and equivalent legislation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  FOOTER                                    -->
+    <!-- ═══════════════════════════════════════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__brand">
+                    <span class="footer__logo">🛡️ Cyber<span class="text-accent">Sentinel</span></span>
+                    <p>Ethical Keystroke Monitoring Suite</p>
+                    <p class="footer__copy">© 2026 CyberSentinel. For educational purposes only.</p>
+                </div>
+                <div class="footer__links">
+                    <h4>Quick Links</h4>
+                    <a href="#features">Features</a>
+                    <a href="#demo">Live Demo</a>
+                    <a href="#architecture">Architecture</a>
+                    <a href="#install">Installation</a>
+                </div>
+                <div class="footer__links">
+                    <h4>Resources</h4>
+                    <a href="#ethical">Ethical Policy</a>
+                    <a href="#">Documentation</a>
+                    <a href="#">Issue Tracker</a>
+                    <a href="#">Changelog</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

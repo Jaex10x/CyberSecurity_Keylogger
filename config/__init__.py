@@ -1,0 +1,3 @@
+"""
+CyberSentinel - Config Package
+"""

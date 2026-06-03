@@ -1,0 +1,39 @@
+# ──────────────────────────────────────
+# CyberSentinel - Git Ignore
+# ──────────────────────────────────────
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Logs and data (SENSITIVE - never commit)
+logs/
+exports/
+.keys/
+
+# Screenshots
+logs/screenshots/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store

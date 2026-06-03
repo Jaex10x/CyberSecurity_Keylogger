@@ -1,0 +1,27 @@
+# CyberSentinel - Ethical Keystroke Monitoring Suite
+# Dependencies
+
+# Core monitoring
+pynput==1.7.7
+
+# Encryption
+cryptography==42.0.8
+
+# Beautiful terminal UI
+rich==13.9.4
+
+# Clipboard access
+pyperclip==1.9.0
+
+# Screenshot capture
+Pillow==10.4.0
+
+# System information
+psutil==6.0.0
+platform-info==0.0.2
+
+# Email support
+secure-smtplib==0.1.1
+
+# Environment variables
+python-dotenv==1.0.1
