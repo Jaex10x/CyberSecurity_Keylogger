@@ -1,16 +1,3 @@
-"""
-CyberSentinel - System Information Profiler
-=============================================
-Collects comprehensive system information for
-security audit reports and environment profiling.
-
-Features:
-    - OS and hardware profiling
-    - Network interface enumeration
-    - Running process listing
-    - User session information
-"""
-
 import os
 import socket
 import platform
@@ -24,17 +11,12 @@ except ImportError:
 
 
 class SystemProfiler:
-    """
-    Collects and organizes system information for
-    cybersecurity audit documentation.
-    """
 
     def __init__(self):
         self.profile_time = datetime.now()
         self._profile = None
 
     def collect_all(self) -> dict:
-        """Collect all available system information."""
         self._profile = {
             "profile_timestamp": self.profile_time.isoformat(),
             "os_info": self._get_os_info(),
@@ -46,7 +28,6 @@ class SystemProfiler:
         return self._profile
 
     def _get_os_info(self) -> dict:
-        """Collect operating system information."""
         return {
             "system": platform.system(),
             "node_name": platform.node(),
@@ -59,7 +40,6 @@ class SystemProfiler:
         }
 
     def _get_hardware_info(self) -> dict:
-        """Collect hardware specifications."""
         info = {
             "cpu_count_logical": os.cpu_count(),
         }
@@ -85,7 +65,6 @@ class SystemProfiler:
         return info
 
     def _get_network_info(self) -> dict:
-        """Collect network interface information."""
         info = {
             "hostname": socket.gethostname(),
         }
@@ -109,7 +88,6 @@ class SystemProfiler:
                 interfaces[iface_name] = iface_info
             info["interfaces"] = interfaces
 
-            # Network I/O stats
             net_io = psutil.net_io_counters()
             info["bytes_sent_mb"] = round(net_io.bytes_sent / (1024 ** 2), 2)
             info["bytes_recv_mb"] = round(net_io.bytes_recv / (1024 ** 2), 2)
@@ -117,7 +95,6 @@ class SystemProfiler:
         return info
 
     def _get_user_info(self) -> dict:
-        """Collect current user information."""
         info = {
             "username": os.getlogin() if hasattr(os, "login") else os.environ.get("USERNAME", os.environ.get("USER", "Unknown")),
             "home_directory": str(os.path.expanduser("~")),
@@ -138,7 +115,6 @@ class SystemProfiler:
         return info
 
     def _get_top_processes(self, limit: int = 15) -> list:
-        """Get top running processes by memory usage."""
         if not PSUTIL_AVAILABLE:
             return [{"error": "psutil not available"}]
 
@@ -156,12 +132,10 @@ class SystemProfiler:
             except (psutil.NoSuchProcess, psutil.AccessDenied):
                 continue
 
-        # Sort by memory usage, return top N
         processes.sort(key=lambda p: p["memory_percent"], reverse=True)
         return processes[:limit]
 
     def get_summary(self) -> str:
-        """Get a human-readable summary of the system profile."""
         if not self._profile:
             self.collect_all()
 

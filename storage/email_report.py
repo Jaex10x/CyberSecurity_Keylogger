@@ -1,17 +1,3 @@
-"""
-CyberSentinel - Email Reporter
-================================
-Sends encrypted log reports via email at
-configurable intervals.
-
-Features:
-    - SMTP email delivery
-    - Encrypted attachment support
-    - HTML formatted reports
-    - Configurable intervals
-    - Error handling with retry
-"""
-
 import smtplib
 import threading
 import time
@@ -37,10 +23,6 @@ from config.settings import (
 
 
 class EmailReporter:
-    """
-    Handles email-based report delivery for CyberSentinel.
-    Sends periodic or on-demand reports with log attachments.
-    """
 
     def __init__(self):
         self.enabled = EMAIL_ENABLED and all([
@@ -53,7 +35,6 @@ class EmailReporter:
         self.recipient = EMAIL_RECIPIENT
         self.interval = EMAIL_REPORT_INTERVAL
 
-        # State
         self._running = False
         self._thread = None
         self.total_sent = 0
@@ -61,7 +42,6 @@ class EmailReporter:
         self.last_error = None
 
     def start_periodic(self):
-        """Start periodic report sending."""
         if not self.enabled:
             return
 
@@ -74,13 +54,11 @@ class EmailReporter:
         self._thread.start()
 
     def stop(self):
-        """Stop periodic reporting."""
         self._running = False
         if self._thread and self._thread.is_alive():
             self._thread.join(timeout=5)
 
     def _periodic_loop(self):
-        """Main periodic sending loop."""
         while self._running:
             time.sleep(self.interval)
             if self._running:
@@ -92,22 +70,10 @@ class EmailReporter:
         body_text: str = None,
         attachment_path: Path = None,
     ) -> bool:
-        """
-        Send an email report.
-
-        Args:
-            subject: Email subject line.
-            body_text: Report body text.
-            attachment_path: Optional file to attach.
-
-        Returns:
-            True if sent successfully, False otherwise.
-        """
         if not self.enabled:
             return False
 
         try:
-            # Build the email
             msg = MIMEMultipart("alternative")
             msg["From"] = self.sender
             msg["To"] = self.recipient
@@ -116,15 +82,12 @@ class EmailReporter:
                 f"{datetime.now().strftime('%Y-%m-%d %H:%M')}"
             )
 
-            # HTML body
             html_body = self._build_html_report(body_text)
             msg.attach(MIMEText(html_body, "html"))
 
-            # Attachment
             if attachment_path and attachment_path.exists():
                 self._attach_file(msg, attachment_path)
 
-            # Send
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
                 server.ehlo()
                 server.starttls()
@@ -142,7 +105,6 @@ class EmailReporter:
             return False
 
     def _build_html_report(self, body_text: str = None) -> str:
-        """Build an HTML formatted report."""
         return f"""
         <!DOCTYPE html>
         <html>
@@ -221,7 +183,6 @@ class EmailReporter:
 
     @staticmethod
     def _attach_file(msg: MIMEMultipart, filepath: Path):
-        """Attach a file to the email message."""
         with open(filepath, "rb") as f:
             part = MIMEBase("application", "octet-stream")
             part.set_payload(f.read())
@@ -233,7 +194,6 @@ class EmailReporter:
         msg.attach(part)
 
     def get_stats(self) -> dict:
-        """Get email reporter statistics."""
         return {
             "enabled": self.enabled,
             "running": self._running,

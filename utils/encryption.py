@@ -1,16 +1,3 @@
-"""
-CyberSentinel - Encryption Manager
-====================================
-Handles AES-256 encryption/decryption of log files
-using the Fernet symmetric encryption scheme.
-
-Features:
-    - Automatic key generation and storage
-    - Key rotation support
-    - Encrypt/decrypt strings and files
-    - Secure key file permissions
-"""
-
 import os
 import json
 import base64
@@ -24,10 +11,6 @@ from config.settings import KEY_FILE, KEY_ROTATION_HOURS, ENCRYPTION_ENABLED
 
 
 class EncryptionManager:
-    """
-    Manages encryption operations for CyberSentinel.
-    Uses Fernet (AES-128-CBC with HMAC-SHA256) for symmetric encryption.
-    """
 
     def __init__(self):
         self.enabled = ENCRYPTION_ENABLED
@@ -37,7 +20,6 @@ class EncryptionManager:
         self._initialize()
 
     def _initialize(self):
-        """Initialize the encryption system with key loading or generation."""
         if not self.enabled:
             return
 
@@ -49,13 +31,11 @@ class EncryptionManager:
             self._generate_key()
 
     def _generate_key(self):
-        """Generate a new Fernet encryption key and save it."""
         self.key = Fernet.generate_key()
         self.fernet = Fernet(self.key)
         self._save_key()
 
     def _save_key(self):
-        """Save the current key with metadata to disk."""
         key_data = {
             "key": self.key.decode("utf-8"),
             "created_at": datetime.now().isoformat(),
@@ -67,18 +47,15 @@ class EncryptionManager:
             json.dump(key_data, f, indent=2)
 
     def _load_key(self):
-        """Load an existing key from disk."""
         try:
             with open(self.key_file, "r", encoding="utf-8") as f:
                 key_data = json.load(f)
             self.key = key_data["key"].encode("utf-8")
             self.fernet = Fernet(self.key)
         except (json.JSONDecodeError, KeyError, Exception):
-            # Key file corrupted, regenerate
             self._generate_key()
 
     def _should_rotate_key(self) -> bool:
-        """Check if the key should be rotated based on age."""
         try:
             with open(self.key_file, "r", encoding="utf-8") as f:
                 key_data = json.load(f)
@@ -88,11 +65,9 @@ class EncryptionManager:
             return True
 
     def _rotate_key(self):
-        """Rotate to a new encryption key while preserving the old one for decryption."""
         old_key = self.key
         self._generate_key()
 
-        # Update metadata
         try:
             with open(self.key_file, "r", encoding="utf-8") as f:
                 key_data = json.load(f)
@@ -105,15 +80,6 @@ class EncryptionManager:
             pass
 
     def encrypt(self, plaintext: str) -> str:
-        """
-        Encrypt a plaintext string.
-
-        Args:
-            plaintext: The string to encrypt.
-
-        Returns:
-            Base64-encoded encrypted string, or original if encryption disabled.
-        """
         if not self.enabled or not self.fernet:
             return plaintext
 
@@ -124,15 +90,6 @@ class EncryptionManager:
             return f"[ENCRYPTION_ERROR: {e}] {plaintext}"
 
     def decrypt(self, ciphertext: str) -> str:
-        """
-        Decrypt an encrypted string.
-
-        Args:
-            ciphertext: The encrypted string to decrypt.
-
-        Returns:
-            Decrypted plaintext string.
-        """
         if not self.enabled or not self.fernet:
             return ciphertext
 
@@ -143,16 +100,6 @@ class EncryptionManager:
             return f"[DECRYPTION_ERROR: {e}]"
 
     def encrypt_file(self, input_path: Path, output_path: Path = None) -> Path:
-        """
-        Encrypt an entire file.
-
-        Args:
-            input_path: Path to the file to encrypt.
-            output_path: Optional output path. Defaults to input_path + '.enc'.
-
-        Returns:
-            Path to the encrypted file.
-        """
         if output_path is None:
             output_path = input_path.with_suffix(input_path.suffix + ".enc")
 
@@ -170,16 +117,6 @@ class EncryptionManager:
         return output_path
 
     def decrypt_file(self, input_path: Path, output_path: Path = None) -> Path:
-        """
-        Decrypt an encrypted file.
-
-        Args:
-            input_path: Path to the encrypted file.
-            output_path: Optional output path.
-
-        Returns:
-            Path to the decrypted file.
-        """
         if output_path is None:
             suffix = input_path.suffix
             if suffix == ".enc":
@@ -202,16 +139,6 @@ class EncryptionManager:
 
     @staticmethod
     def derive_key_from_password(password: str, salt: bytes = None) -> tuple:
-        """
-        Derive an encryption key from a password using PBKDF2.
-
-        Args:
-            password: The password to derive key from.
-            salt: Optional salt bytes. Generated if not provided.
-
-        Returns:
-            Tuple of (key_bytes, salt_bytes).
-        """
         if salt is None:
             salt = os.urandom(16)
 
@@ -225,7 +152,6 @@ class EncryptionManager:
         return key, salt
 
     def get_status(self) -> dict:
-        """Get the current encryption status and metadata."""
         status = {
             "enabled": self.enabled,
             "key_loaded": self.key is not None,

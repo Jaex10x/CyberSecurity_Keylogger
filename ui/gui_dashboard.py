@@ -1,6 +1,3 @@
-
-
-# pyrefly: ignore [missing-import]
 import customtkinter as ctk
 import tkinter as tk
 import threading
@@ -10,7 +7,6 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 try:
-    # pyrefly: ignore [missing-import]
     from PIL import Image
     PIL_AVAILABLE = True
 except ImportError:
@@ -45,10 +41,6 @@ from config.settings import (
 )
 
 
-# ═══════════════════════════════════════════════════════════════
-#  COLOR PALETTE
-# ═══════════════════════════════════════════════════════════════
-
 BG_DARKEST     = "#07071a"
 BG_DARK        = "#0a0a1a"
 BG_PANEL       = "#1a1a2e"
@@ -70,12 +62,8 @@ BORDER         = "#0f3460"
 BORDER_LIGHT   = "#1a2a5e"
 
 SIDEBAR_W = 220
-REFRESH_MS = 1000  # dashboard refresh interval
+REFRESH_MS = 1000
 
-
-# ═══════════════════════════════════════════════════════════════
-#  SIDEBAR NAV DEFINITION
-# ═══════════════════════════════════════════════════════════════
 
 NAV_ITEMS = [
     ("dashboard",   "🏠", "Dashboard"),
@@ -88,12 +76,7 @@ NAV_ITEMS = [
 ]
 
 
-# ═══════════════════════════════════════════════════════════════
-#  HELPER WIDGETS
-# ═══════════════════════════════════════════════════════════════
-
 class StatusCard(ctk.CTkFrame):
-    """Small card that displays an icon, large value, and label."""
 
     def __init__(self, master, icon: str, value: str, label: str,
                  accent_color: str = ACCENT, **kw):
@@ -103,7 +86,6 @@ class StatusCard(ctk.CTkFrame):
         pad = ctk.CTkFrame(self, fg_color="transparent")
         pad.pack(fill="both", expand=True, padx=18, pady=14)
 
-        # colored top accent line
         bar = ctk.CTkFrame(pad, height=3, fg_color=accent_color,
                            corner_radius=2)
         bar.pack(fill="x", pady=(0, 10))
@@ -131,7 +113,6 @@ class StatusCard(ctk.CTkFrame):
 
 
 class GaugeBar(ctk.CTkFrame):
-    """Labeled progress bar (e.g. CPU / RAM)."""
 
     def __init__(self, master, label: str, icon: str,
                  color: str = ACCENT, **kw):
@@ -167,7 +148,6 @@ class GaugeBar(ctk.CTkFrame):
     def set_value(self, percent: float):
         self._bar.set(percent / 100)
         self._pct_label.configure(text=f"{percent:.0f} %")
-        # color shift: green->yellow->red
         if percent > 85:
             c = RED
         elif percent > 65:
@@ -178,16 +158,8 @@ class GaugeBar(ctk.CTkFrame):
         self._pct_label.configure(text_color=c)
 
 
-# ═══════════════════════════════════════════════════════════════
-#  MAIN APPLICATION
-# ═══════════════════════════════════════════════════════════════
-
 class CyberSentinelApp(ctk.CTk):
-    """Full-featured GUI for CyberSentinel."""
 
-    # ──────────────────────────────────────────
-    #  INIT
-    # ──────────────────────────────────────────
 
     def __init__(
         self,
@@ -202,7 +174,6 @@ class CyberSentinelApp(ctk.CTk):
     ):
         super().__init__()
 
-        # Module refs
         self.keylogger        = keylogger
         self.clip_monitor     = clipboard
         self.screenshot_cap   = screenshot
@@ -212,16 +183,14 @@ class CyberSentinelApp(ctk.CTk):
         self.sys_profiler     = system_profiler
         self.consent_mgr      = consent_manager
 
-        # State
         self._monitoring      = False
         self._key_queue       = queue.Queue()
         self._clip_queue      = queue.Queue()
         self._current_page    = None
         self._pages           = {}
         self._nav_btns        = {}
-        self._w               = {}            # named widget refs
+        self._w               = {}
 
-        # Window
         ctk.set_appearance_mode("dark")
         self.title(f"{APP_NAME}  ·  v{APP_VERSION}")
         self.geometry("1320x820")
@@ -229,7 +198,6 @@ class CyberSentinelApp(ctk.CTk):
         self.configure(fg_color=BG_DARK)
         self.protocol("WM_DELETE_WINDOW", self._on_closing)
 
-        # Build UI
         self._build_sidebar()
         self._content = ctk.CTkFrame(self, fg_color=BG_DARK, corner_radius=0)
         self._content.pack(side="right", fill="both", expand=True)
@@ -244,18 +212,13 @@ class CyberSentinelApp(ctk.CTk):
 
         self._select_page("dashboard")
 
-        # Wire real-time callbacks
         if self.keylogger:
             self.keylogger.set_key_callback(self._on_key_event)
         if self.clip_monitor:
             self.clip_monitor.set_capture_callback(self._on_clip_event)
 
-        # Start periodic refresh
         self.after(REFRESH_MS, self._tick)
 
-    # ──────────────────────────────────────────
-    #  SIDEBAR
-    # ──────────────────────────────────────────
 
     def _build_sidebar(self):
         sb = ctk.CTkFrame(self, width=SIDEBAR_W, fg_color=BG_SIDEBAR,
@@ -263,7 +226,6 @@ class CyberSentinelApp(ctk.CTk):
         sb.pack(side="left", fill="y")
         sb.pack_propagate(False)
 
-        # Logo
         logo_f = ctk.CTkFrame(sb, fg_color="transparent", height=80)
         logo_f.pack(fill="x", padx=16, pady=(22, 6))
         logo_f.pack_propagate(False)
@@ -296,7 +258,6 @@ class CyberSentinelApp(ctk.CTk):
         ctk.CTkFrame(sb, fg_color="transparent").pack(
             fill="both", expand=True)
 
-        # Bottom status
         self._w["sb_status"] = ctk.CTkLabel(
             sb, text="● Idle", font=ctk.CTkFont(size=12),
             text_color=TEXT_DIM)
@@ -318,19 +279,14 @@ class CyberSentinelApp(ctk.CTk):
         self._pages[name].pack(in_=self._content, fill="both", expand=True)
         self._current_page = name
 
-    # ──────────────────────────────────────────
-    #  PAGE 1 – DASHBOARD
-    # ──────────────────────────────────────────
 
     def _build_page_dashboard(self):
         page = ctk.CTkScrollableFrame(self, fg_color=BG_DARK,
                                        corner_radius=0)
         self._pages["dashboard"] = page
 
-        # Title
         self._page_title(page, "🏠  Dashboard", "Real-time monitoring overview")
 
-        # ── Status cards row ──
         cards_row = ctk.CTkFrame(page, fg_color="transparent")
         cards_row.pack(fill="x", padx=24, pady=(0, 12))
         cards_row.columnconfigure((0, 1, 2, 3), weight=1, uniform="c")
@@ -355,12 +311,10 @@ class CyberSentinelApp(ctk.CTk):
         self._w["card_window"].grid(row=0, column=3, padx=6, pady=6,
                                      sticky="nsew")
 
-        # ── Module status + Session info ──
         mid_row = ctk.CTkFrame(page, fg_color="transparent")
         mid_row.pack(fill="x", padx=24, pady=(0, 12))
         mid_row.columnconfigure((0, 1), weight=1, uniform="m")
 
-        # Module panel
         mod_panel = ctk.CTkFrame(mid_row, fg_color=BG_CARD,
                                   corner_radius=12, border_width=1,
                                   border_color=BORDER)
@@ -393,7 +347,6 @@ class CyberSentinelApp(ctk.CTk):
             lbl.pack(side="right")
             self._w["mod_labels"][mod_key] = lbl
 
-        # Session panel
         ses_panel = ctk.CTkFrame(mid_row, fg_color=BG_CARD,
                                   corner_radius=12, border_width=1,
                                   border_color=BORDER)
@@ -430,7 +383,6 @@ class CyberSentinelApp(ctk.CTk):
         self._w["ses_labels"]["autostop"].configure(
             text=f"{AUTO_STOP_HOURS}h")
 
-        # ── System gauges ──
         gauge_row = ctk.CTkFrame(page, fg_color="transparent")
         gauge_row.pack(fill="x", padx=24, pady=(0, 12))
         gauge_row.columnconfigure((0, 1), weight=1, uniform="g")
@@ -445,7 +397,6 @@ class CyberSentinelApp(ctk.CTk):
         self._w["gauge_ram"].grid(row=0, column=1, padx=6, pady=6,
                                    sticky="nsew")
 
-        # ── Start / Stop button ──
         btn_frame = ctk.CTkFrame(page, fg_color="transparent")
         btn_frame.pack(fill="x", padx=30, pady=(4, 20))
 
@@ -460,9 +411,6 @@ class CyberSentinelApp(ctk.CTk):
         )
         self._w["btn_toggle"].pack(fill="x")
 
-    # ──────────────────────────────────────────
-    #  PAGE 2 – KEYLOGGER
-    # ──────────────────────────────────────────
 
     def _build_page_keylogger(self):
         page = ctk.CTkFrame(self, fg_color=BG_DARK, corner_radius=0)
@@ -471,7 +419,6 @@ class CyberSentinelApp(ctk.CTk):
         self._page_title(page, "⌨️  Keylogger",
                          "Live keystroke capture feed")
 
-        # Stats bar
         stat_bar = ctk.CTkFrame(page, fg_color=BG_CARD, corner_radius=10,
                                  height=44, border_width=1,
                                  border_color=BORDER)
@@ -499,7 +446,6 @@ class CyberSentinelApp(ctk.CTk):
             text_color=RED)
         self._w["kl_status"].pack(side="right")
 
-        # Keystroke textbox
         self._w["kl_textbox"] = ctk.CTkTextbox(
             page,
             font=ctk.CTkFont(family="Consolas", size=14),
@@ -511,7 +457,6 @@ class CyberSentinelApp(ctk.CTk):
                                     padx=24, pady=(0, 10))
         self._w["kl_textbox"].configure(state="disabled")
 
-        # Controls
         ctrl = ctk.CTkFrame(page, fg_color="transparent")
         ctrl.pack(fill="x", padx=24, pady=(0, 18))
 
@@ -540,9 +485,6 @@ class CyberSentinelApp(ctk.CTk):
             command=self._clear_keylog,
         ).pack(side="left")
 
-    # ──────────────────────────────────────────
-    #  PAGE 3 – CLIPBOARD
-    # ──────────────────────────────────────────
 
     def _build_page_clipboard(self):
         page = ctk.CTkFrame(self, fg_color=BG_DARK, corner_radius=0)
@@ -551,7 +493,6 @@ class CyberSentinelApp(ctk.CTk):
         self._page_title(page, "📋  Clipboard Monitor",
                          "Captured clipboard changes in real-time")
 
-        # Stats
         stat_bar = ctk.CTkFrame(page, fg_color=BG_CARD, corner_radius=10,
                                  height=44, border_width=1,
                                  border_color=BORDER)
@@ -579,7 +520,6 @@ class CyberSentinelApp(ctk.CTk):
             text_color=RED)
         self._w["cb_status"].pack(side="right")
 
-        # Entries feed
         self._w["cb_feed"] = ctk.CTkScrollableFrame(
             page, fg_color=BG_PANEL, corner_radius=10,
             border_width=1, border_color=BORDER)
@@ -593,9 +533,6 @@ class CyberSentinelApp(ctk.CTk):
             justify="center")
         self._w["cb_placeholder"].pack(pady=40)
 
-    # ──────────────────────────────────────────
-    #  PAGE 4 – SCREENSHOTS
-    # ──────────────────────────────────────────
 
     def _build_page_screenshots(self):
         page = ctk.CTkFrame(self, fg_color=BG_DARK, corner_radius=0)
@@ -604,7 +541,6 @@ class CyberSentinelApp(ctk.CTk):
         self._page_title(page, "📸  Screenshots",
                          "Captured screen images")
 
-        # Stats + capture button
         top = ctk.CTkFrame(page, fg_color="transparent")
         top.pack(fill="x", padx=24, pady=(0, 10))
 
@@ -635,7 +571,6 @@ class CyberSentinelApp(ctk.CTk):
             command=self._capture_screenshot_now,
         ).pack(side="right")
 
-        # Gallery
         self._w["ss_gallery"] = ctk.CTkScrollableFrame(
             page, fg_color=BG_PANEL, corner_radius=10,
             border_width=1, border_color=BORDER)
@@ -650,11 +585,8 @@ class CyberSentinelApp(ctk.CTk):
             justify="center")
         self._w["ss_placeholder"].pack(pady=40)
 
-        self._ss_images = []  # hold references to CTkImage to prevent GC
+        self._ss_images = []
 
-    # ──────────────────────────────────────────
-    #  PAGE 5 – ENCRYPTION & LOGS
-    # ──────────────────────────────────────────
 
     def _build_page_encryption(self):
         page = ctk.CTkScrollableFrame(self, fg_color=BG_DARK,
@@ -664,7 +596,6 @@ class CyberSentinelApp(ctk.CTk):
         self._page_title(page, "🔐  Logs & Encryption",
                          "Manage log files and encryption keys")
 
-        # Encryption status card
         enc_card = ctk.CTkFrame(page, fg_color=BG_CARD, corner_radius=12,
                                  border_width=1, border_color=BORDER)
         enc_card.pack(fill="x", padx=24, pady=(0, 14))
@@ -697,13 +628,11 @@ class CyberSentinelApp(ctk.CTk):
 
         self._refresh_encryption_status()
 
-        # Log file list header
         ctk.CTkLabel(page, text="📂  Log Files",
                      font=ctk.CTkFont(size=14, weight="bold"),
                      text_color=ACCENT).pack(anchor="w", padx=30,
                                               pady=(6, 8))
 
-        # Table header
         hdr = ctk.CTkFrame(page, fg_color=BG_CARD, corner_radius=8,
                             height=36)
         hdr.pack(fill="x", padx=24, pady=(0, 2))
@@ -723,7 +652,6 @@ class CyberSentinelApp(ctk.CTk):
                          text_color=TEXT_SECONDARY).grid(
                 row=0, column=ci, sticky="w", padx=4)
 
-        # Scrollable file list
         self._w["enc_filelist"] = ctk.CTkScrollableFrame(
             page, fg_color=BG_PANEL, corner_radius=10,
             border_width=1, border_color=BORDER, height=200)
@@ -731,7 +659,6 @@ class CyberSentinelApp(ctk.CTk):
 
         self._refresh_log_files()
 
-        # Export buttons
         exp_row = ctk.CTkFrame(page, fg_color="transparent")
         exp_row.pack(fill="x", padx=24, pady=(0, 6))
 
@@ -751,7 +678,6 @@ class CyberSentinelApp(ctk.CTk):
                 command=lambda f=fmt.lower(): self._export_logs(f),
             ).pack(side="left", padx=4)
 
-        # Refresh button
         ctk.CTkButton(
             exp_row, text="🔄 Refresh", width=100, height=34,
             fg_color=BG_CARD, hover_color=BG_HOVER,
@@ -761,7 +687,6 @@ class CyberSentinelApp(ctk.CTk):
             command=self._refresh_log_files,
         ).pack(side="right")
 
-        # Storage stats
         self._w["enc_storage"] = ctk.CTkLabel(
             page, text="",
             font=ctk.CTkFont(size=11), text_color=TEXT_DIM)
@@ -769,9 +694,6 @@ class CyberSentinelApp(ctk.CTk):
 
         self._refresh_storage_stats()
 
-    # ──────────────────────────────────────────
-    #  PAGE 6 – SYSTEM INFO
-    # ──────────────────────────────────────────
 
     def _build_page_sysinfo(self):
         page = ctk.CTkScrollableFrame(self, fg_color=BG_DARK,
@@ -784,9 +706,6 @@ class CyberSentinelApp(ctk.CTk):
         self._w["sysinfo_container"] = page
         self._refresh_sysinfo()
 
-    # ──────────────────────────────────────────
-    #  PAGE 7 – SETTINGS
-    # ──────────────────────────────────────────
 
     def _build_page_settings(self):
         page = ctk.CTkScrollableFrame(self, fg_color=BG_DARK,
@@ -796,7 +715,6 @@ class CyberSentinelApp(ctk.CTk):
         self._page_title(page, "⚙️  Settings",
                          "Configure monitoring parameters")
 
-        # ── Keylogger section ──
         self._settings_section(page, "⌨️ Keylogger")
 
         kl_grid = ctk.CTkFrame(page, fg_color="transparent")
@@ -814,7 +732,6 @@ class CyberSentinelApp(ctk.CTk):
                               "✅ On" if CAPTURE_TIMESTAMPS else "❌ Off",
                               1, 1)
 
-        # ── Clipboard section ──
         self._settings_section(page, "📋 Clipboard")
 
         cb_grid = ctk.CTkFrame(page, fg_color="transparent")
@@ -827,7 +744,6 @@ class CyberSentinelApp(ctk.CTk):
         self._setting_display(cb_grid, "Poll Interval",
                               f"{CLIPBOARD_POLL_INTERVAL}s", 0, 1)
 
-        # ── Screenshot section ──
         self._settings_section(page, "📸 Screenshots")
 
         ss_grid = ctk.CTkFrame(page, fg_color="transparent")
@@ -844,7 +760,6 @@ class CyberSentinelApp(ctk.CTk):
         self._setting_display(ss_grid, "Quality",
                               str(SCREENSHOT_QUALITY), 1, 1)
 
-        # ── Email section ──
         self._settings_section(page, "📧 Email Reporting")
 
         em_grid = ctk.CTkFrame(page, fg_color="transparent")
@@ -855,7 +770,6 @@ class CyberSentinelApp(ctk.CTk):
                               "✅ On" if EMAIL_ENABLED else "❌ Off",
                               0, 0)
 
-        # ── Safeguards section ──
         self._settings_section(page, "⚖️ Ethical Safeguards")
 
         sg_grid = ctk.CTkFrame(page, fg_color="transparent")
@@ -867,7 +781,6 @@ class CyberSentinelApp(ctk.CTk):
         self._setting_display(sg_grid, "Consent Required",
                               "✅ Yes", 0, 1)
 
-        # ── Directories section ──
         self._settings_section(page, "📁 Directories")
 
         dir_grid = ctk.CTkFrame(page, fg_color="transparent")
@@ -887,12 +800,8 @@ class CyberSentinelApp(ctk.CTk):
                          font=ctk.CTkFont(family="Consolas", size=11),
                          text_color=TEXT_DIM).pack(side="right")
 
-    # ══════════════════════════════════════════
-    #  UI HELPERS
-    # ══════════════════════════════════════════
 
     def _page_title(self, parent, title: str, subtitle: str):
-        """Render a page title + subtitle header."""
         f = ctk.CTkFrame(parent, fg_color="transparent")
         f.pack(fill="x", padx=24, pady=(20, 14))
         ctk.CTkLabel(
@@ -908,7 +817,6 @@ class CyberSentinelApp(ctk.CTk):
 
     @staticmethod
     def _settings_section(parent, title: str):
-        """Render a settings section header."""
         ctk.CTkLabel(
             parent, text=title,
             font=ctk.CTkFont(family="Segoe UI", size=15, weight="bold"),
@@ -920,7 +828,6 @@ class CyberSentinelApp(ctk.CTk):
     @staticmethod
     def _setting_display(parent, label: str, value: str,
                          row: int, col: int):
-        """A read-only setting display card."""
         card = ctk.CTkFrame(parent, fg_color=BG_CARD, corner_radius=10,
                             border_width=1, border_color=BORDER)
         card.grid(row=row, column=col, padx=6, pady=5, sticky="nsew")
@@ -936,12 +843,8 @@ class CyberSentinelApp(ctk.CTk):
                      text_color=TEXT_PRIMARY).pack(anchor="w",
                                                     pady=(2, 0))
 
-    # ══════════════════════════════════════════
-    #  PERIODIC REFRESH
-    # ══════════════════════════════════════════
 
     def _tick(self):
-        """Master refresh tick called every REFRESH_MS."""
         try:
             self._drain_key_queue()
             self._drain_clip_queue()
@@ -955,18 +858,15 @@ class CyberSentinelApp(ctk.CTk):
             elif self._current_page == "screenshots":
                 self._update_screenshot_stats()
         except Exception:
-            pass  # Never let refresh crash the GUI
+            pass
 
         self.after(REFRESH_MS, self._tick)
 
-    # ── Dashboard updates ──
 
     def _update_dashboard(self):
-        # Keystroke card
         if self.keylogger:
             st = self.keylogger.get_stats()
             self._w["card_keys"].set_value(f"{st['total_keystrokes']:,}")
-            # Session info
             self._w["ses_labels"]["kpm"].configure(
                 text=f"{st['keys_per_minute']}")
             elapsed = st["elapsed_seconds"]
@@ -978,24 +878,20 @@ class CyberSentinelApp(ctk.CTk):
                 self._w["ses_labels"]["started"].configure(
                     text=self.keylogger.start_time.strftime("%H:%M:%S"))
 
-        # Clipboard card
         if self.clip_monitor:
             self._w["card_clip"].set_value(
                 str(self.clip_monitor.total_captures))
 
-        # Screenshot card
         if self.screenshot_cap:
             self._w["card_shots"].set_value(
                 str(self.screenshot_cap.total_captures))
 
-        # Window tracker card
         if self.window_tracker:
             title = self.window_tracker.current_window
             if title:
                 short = (title[:30] + "…") if len(title) > 30 else title
                 self._w["card_window"].set_value(short)
 
-        # Module status dots
         mods = {
             "keylogger":  self.keylogger and self.keylogger.is_running,
             "clipboard":  self.clip_monitor and self.clip_monitor.is_running,
@@ -1010,13 +906,11 @@ class CyberSentinelApp(ctk.CTk):
             else:
                 lbl.configure(text="● OFF", text_color=RED)
 
-        # System gauges
         if PSUTIL_AVAILABLE:
             self._w["gauge_cpu"].set_value(psutil.cpu_percent(interval=0))
             self._w["gauge_ram"].set_value(
                 psutil.virtual_memory().percent)
 
-        # Sidebar status
         if self._monitoring:
             self._w["sb_status"].configure(
                 text="● Monitoring", text_color=GREEN)
@@ -1024,7 +918,6 @@ class CyberSentinelApp(ctk.CTk):
             self._w["sb_status"].configure(
                 text="● Idle", text_color=TEXT_DIM)
 
-    # ── Keylogger updates ──
 
     def _update_keylogger_stats(self):
         if not self.keylogger:
@@ -1043,7 +936,6 @@ class CyberSentinelApp(ctk.CTk):
             self._w["kl_status"].configure(
                 text="● Stopped", text_color=RED)
 
-    # ── Clipboard updates ──
 
     def _update_clipboard_stats(self):
         if not self.clip_monitor:
@@ -1058,7 +950,6 @@ class CyberSentinelApp(ctk.CTk):
             self._w["cb_status"].configure(
                 text="● Stopped", text_color=RED)
 
-    # ── Screenshot updates ──
 
     def _update_screenshot_stats(self):
         if not self.screenshot_cap:
@@ -1067,22 +958,16 @@ class CyberSentinelApp(ctk.CTk):
         self._w["ss_total"].configure(
             text=f"Total: {st['total_captures']}")
 
-    # ══════════════════════════════════════════
-    #  THREAD-SAFE CALLBACK QUEUES
-    # ══════════════════════════════════════════
 
     def _on_key_event(self, record):
-        """Called from the keylogger thread."""
         self._key_queue.put(record)
 
     def _on_clip_event(self, entry):
-        """Called from the clipboard thread."""
         self._clip_queue.put(entry)
 
     def _drain_key_queue(self):
-        """Process queued key events on the main thread."""
         count = 0
-        while count < 200:          # limit per tick
+        while count < 200:
             try:
                 rec = self._key_queue.get_nowait()
             except queue.Empty:
@@ -1096,7 +981,6 @@ class CyberSentinelApp(ctk.CTk):
             count += 1
 
     def _drain_clip_queue(self):
-        """Process queued clipboard events on the main thread."""
         while True:
             try:
                 entry = self._clip_queue.get_nowait()
@@ -1105,8 +989,6 @@ class CyberSentinelApp(ctk.CTk):
             self._add_clip_entry_widget(entry)
 
     def _add_clip_entry_widget(self, entry: dict):
-        """Add a clipboard entry card to the feed."""
-        # Remove placeholder if present
         ph = self._w.get("cb_placeholder")
         if ph and ph.winfo_exists():
             ph.destroy()
@@ -1143,9 +1025,6 @@ class CyberSentinelApp(ctk.CTk):
                      wraplength=600, justify="left").pack(
             anchor="w", pady=(4, 0))
 
-    # ══════════════════════════════════════════
-    #  MONITORING CONTROLS
-    # ══════════════════════════════════════════
 
     def _toggle_monitoring(self):
         if self._monitoring:
@@ -1154,8 +1033,6 @@ class CyberSentinelApp(ctk.CTk):
             self._start_all()
 
     def _start_all(self):
-        """Start all monitoring modules."""
-        # Show consent dialog first
         if self.consent_mgr and self.consent_mgr.required:
             from ui.consent_dialog import ConsentDialog
             dialog = ConsentDialog(self)
@@ -1182,7 +1059,6 @@ class CyberSentinelApp(ctk.CTk):
         )
 
     def _stop_all(self):
-        """Stop all monitoring modules."""
         if self.keylogger and self.keylogger.is_running:
             self.keylogger.stop()
         if self.clip_monitor and self.clip_monitor.is_running:
@@ -1219,12 +1095,8 @@ class CyberSentinelApp(ctk.CTk):
                 target=self.screenshot_cap.capture_now,
                 daemon=True,
             ).start()
-            # Refresh gallery after a short delay
             self.after(1500, self._refresh_screenshot_gallery)
 
-    # ══════════════════════════════════════════
-    #  DATA REFRESH HELPERS
-    # ══════════════════════════════════════════
 
     def _refresh_encryption_status(self):
         if not self.encryption:
@@ -1245,7 +1117,6 @@ class CyberSentinelApp(ctk.CTk):
             text=str(st.get("rotation_count", 0)))
 
     def _refresh_log_files(self):
-        """Refresh the log file list."""
         if not self.file_handler:
             return
 
@@ -1307,7 +1178,6 @@ class CyberSentinelApp(ctk.CTk):
                  f"📂 {stats['log_directory']}")
 
     def _export_logs(self, fmt: str):
-        """Export logs in the given format."""
         if not self.file_handler:
             return
         try:
@@ -1317,7 +1187,6 @@ class CyberSentinelApp(ctk.CTk):
             self._show_toast(f"❌ Export failed: {e}")
 
     def _refresh_screenshot_gallery(self):
-        """Rebuild the screenshot thumbnail gallery."""
         if not self.screenshot_cap:
             return
 
@@ -1334,7 +1203,6 @@ class CyberSentinelApp(ctk.CTk):
                          text_color=TEXT_DIM).pack(pady=40)
             return
 
-        # Grid layout
         grid_frame = ctk.CTkFrame(container, fg_color="transparent")
         grid_frame.pack(fill="both", expand=True, padx=8, pady=8)
 
@@ -1350,7 +1218,6 @@ class CyberSentinelApp(ctk.CTk):
             inner = ctk.CTkFrame(card, fg_color="transparent")
             inner.pack(fill="both", expand=True, padx=8, pady=8)
 
-            # Try to load thumbnail
             filepath = SCREENSHOT_DIR / cap["filename"]
             if PIL_AVAILABLE and filepath.exists():
                 try:
@@ -1381,12 +1248,10 @@ class CyberSentinelApp(ctk.CTk):
             text=f"Total: {self.screenshot_cap.total_captures}")
 
     def _refresh_sysinfo(self):
-        """Build / rebuild the system info page content."""
         container = self._w["sysinfo_container"]
 
-        # Clear existing info cards (keep the title)
         children = container.winfo_children()
-        for child in children[1:]:   # skip the title frame
+        for child in children[1:]:
             child.destroy()
 
         if not self.sys_profiler:
@@ -1401,7 +1266,6 @@ class CyberSentinelApp(ctk.CTk):
         user = profile.get("user_info", {})
         procs = profile.get("processes", [])
 
-        # ── OS Card ──
         self._sysinfo_card(container, "🏗️ Operating System", [
             ("System", f"{os_info.get('system', '?')} "
                        f"{os_info.get('release', '')}"),
@@ -1411,7 +1275,6 @@ class CyberSentinelApp(ctk.CTk):
             ("Python", os_info.get("python_version", "?")),
         ])
 
-        # ── Hardware Card ──
         self._sysinfo_card(container, "🧠 Hardware", [
             ("CPU Cores",
              f"{hw.get('cpu_count_physical', '?')} physical / "
@@ -1424,7 +1287,6 @@ class CyberSentinelApp(ctk.CTk):
              f"({hw.get('disk_usage_percent', '?')}% used)"),
         ])
 
-        # ── Network Card ──
         self._sysinfo_card(container, "🌐 Network", [
             ("Hostname", net.get("hostname", "?")),
             ("Local IP", net.get("local_ip", "?")),
@@ -1432,20 +1294,17 @@ class CyberSentinelApp(ctk.CTk):
             ("Net Recv", f"{net.get('bytes_recv_mb', '?')} MB"),
         ])
 
-        # ── User Card ──
         self._sysinfo_card(container, "👤 User", [
             ("Username", user.get("username", "?")),
             ("Home", user.get("home_directory", "?")),
         ])
 
-        # ── Top Processes ──
         if procs and not (len(procs) == 1 and "error" in procs[0]):
             ctk.CTkLabel(container, text="📊  Top Processes (by Memory)",
                          font=ctk.CTkFont(size=14, weight="bold"),
                          text_color=ACCENT).pack(
                 anchor="w", padx=30, pady=(14, 6))
 
-            # Header
             phdr = ctk.CTkFrame(container, fg_color=BG_CARD,
                                 corner_radius=8, height=30)
             phdr.pack(fill="x", padx=24, pady=(0, 2))
@@ -1499,7 +1358,6 @@ class CyberSentinelApp(ctk.CTk):
                                  text_color=TEXT_PRIMARY).grid(
                         row=0, column=vi, sticky="w", padx=4)
 
-        # Refresh button
         ctk.CTkButton(
             container, text="🔄 Refresh System Info",
             width=200, height=36,
@@ -1512,7 +1370,6 @@ class CyberSentinelApp(ctk.CTk):
 
     def _sysinfo_card(self, parent, title: str,
                       rows: list):
-        """Helper to create a system info card."""
         card = ctk.CTkFrame(parent, fg_color=BG_CARD, corner_radius=12,
                             border_width=1, border_color=BORDER)
         card.pack(fill="x", padx=24, pady=5)
@@ -1534,12 +1391,8 @@ class CyberSentinelApp(ctk.CTk):
                          font=ctk.CTkFont(size=12, weight="bold"),
                          text_color=TEXT_PRIMARY).pack(side="right")
 
-    # ══════════════════════════════════════════
-    #  TOAST NOTIFICATION
-    # ══════════════════════════════════════════
 
     def _show_toast(self, message: str, duration_ms: int = 3000):
-        """Show a temporary toast notification at the bottom."""
         toast = ctk.CTkFrame(self, fg_color=BG_CARD, corner_radius=10,
                              border_width=1, border_color=ACCENT)
         toast.place(relx=0.5, rely=0.95, anchor="center")
@@ -1552,11 +1405,7 @@ class CyberSentinelApp(ctk.CTk):
 
         self.after(duration_ms, toast.destroy)
 
-    # ══════════════════════════════════════════
-    #  CLEANUP
-    # ══════════════════════════════════════════
 
     def _on_closing(self):
-        """Graceful shutdown on window close."""
         self._stop_all()
         self.destroy()

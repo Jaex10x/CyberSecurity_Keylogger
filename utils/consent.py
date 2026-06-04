@@ -1,16 +1,3 @@
-"""
-CyberSentinel - Ethical Consent Manager
-=========================================
-Ensures proper authorization and consent before
-any monitoring activity begins.
-
-Features:
-    - Interactive consent prompt with terms display
-    - Consent record logging with timestamps
-    - Verification of prior consent
-    - Consent revocation support
-"""
-
 import json
 import hashlib
 from datetime import datetime
@@ -69,10 +56,6 @@ CONSENT_TERMS = """
 
 
 class ConsentManager:
-    """
-    Manages ethical consent verification for monitoring sessions.
-    Records all consent decisions for audit trail purposes.
-    """
 
     def __init__(self):
         self.consent_file = CONSENT_LOG_FILE
@@ -80,12 +63,6 @@ class ConsentManager:
         self._consent_granted = False
 
     def request_consent(self) -> bool:
-        """
-        Display consent terms and request user acknowledgment.
-
-        Returns:
-            True if consent is granted, False otherwise.
-        """
         if not self.required:
             self._consent_granted = True
             return True
@@ -101,7 +78,6 @@ class ConsentManager:
         )
         console.print()
 
-        # Prompt for consent
         try:
             consent = Confirm.ask(
                 f"[bold {THEME_WARNING}]🔐 Do you accept these terms and confirm you have authorization?[/]",
@@ -126,11 +102,9 @@ class ConsentManager:
         return self._consent_granted
 
     def verify_consent(self) -> bool:
-        """Check if consent has been granted for the current session."""
         return self._consent_granted
 
     def revoke_consent(self):
-        """Revoke previously granted consent."""
         self._consent_granted = False
         self._record_consent(granted=False, action="REVOKED")
         console.print(
@@ -138,20 +112,12 @@ class ConsentManager:
         )
 
     def _record_consent(self, granted: bool, action: str = None):
-        """
-        Record consent decision to audit log.
-
-        Args:
-            granted: Whether consent was granted.
-            action: Optional action label (e.g., 'REVOKED').
-        """
         record = {
             "timestamp": datetime.now().isoformat(),
             "action": action or ("GRANTED" if granted else "DENIED"),
             "machine_id": self._get_machine_hash(),
         }
 
-        # Load existing records
         records = []
         if self.consent_file.exists():
             try:
@@ -162,21 +128,18 @@ class ConsentManager:
 
         records.append(record)
 
-        # Save updated records
         self.consent_file.parent.mkdir(parents=True, exist_ok=True)
         with open(self.consent_file, "w", encoding="utf-8") as f:
             json.dump(records, f, indent=2)
 
     @staticmethod
     def _get_machine_hash() -> str:
-        """Generate a non-identifying hash of the machine for audit purposes."""
         import platform
         import socket
         raw = f"{platform.node()}-{socket.gethostname()}-{platform.machine()}"
         return hashlib.sha256(raw.encode()).hexdigest()[:16]
 
     def get_consent_history(self) -> list:
-        """Retrieve the consent audit trail."""
         if not self.consent_file.exists():
             return []
 

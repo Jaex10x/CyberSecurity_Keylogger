@@ -1,18 +1,6 @@
-"""
-CyberSentinel - Web Dashboard Server
-=======================================
-Browser-based monitoring dashboard powered by
-Flask + Socket.IO for real-time WebSocket feeds.
-
-Usage:
-    python web_app.py
-    Open http://127.0.0.1:5000 in your browser.
-"""
-
 import sys
 from pathlib import Path
 
-# Ensure project root is on sys.path
 PROJECT_ROOT = Path(__file__).resolve().parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -44,17 +32,11 @@ from storage.file_handler import FileHandler
 from utils.system_info import SystemProfiler
 from utils.consent import ConsentManager
 
-# ═════════════════════════════════════════════
-#  FLASK + SOCKETIO SETUP
-# ═════════════════════════════════════════════
 
 app = Flask(__name__, template_folder="templates")
 app.config["SECRET_KEY"] = "cybersentinel-web-key"
 socketio = SocketIO(app, async_mode="threading")
 
-# ═════════════════════════════════════════════
-#  MODULE INITIALIZATION
-# ═════════════════════════════════════════════
 
 crypto            = EncryptionManager()
 keylogger         = KeystrokeEngine(encryption_manager=crypto)
@@ -67,7 +49,6 @@ consent_mgr       = ConsentManager()
 
 _monitoring = False
 
-# ── Real-time callbacks → WebSocket ──
 
 def _on_key_event(record):
     socketio.emit("keystroke", record)
@@ -78,9 +59,6 @@ def _on_clip_event(entry):
 keylogger.set_key_callback(_on_key_event)
 clipboard_monitor.set_capture_callback(_on_clip_event)
 
-# ═════════════════════════════════════════════
-#  ROUTES
-# ═════════════════════════════════════════════
 
 @app.route("/")
 def index():
@@ -163,9 +141,6 @@ def api_capture_screenshot():
         return jsonify({"success": True, "path": str(path)})
     return jsonify({"error": "Capture failed"}), 500
 
-# ═════════════════════════════════════════════
-#  SOCKETIO EVENTS
-# ═════════════════════════════════════════════
 
 @socketio.on("start_monitoring")
 def handle_start():
@@ -193,12 +168,8 @@ def handle_stop():
 def handle_connect():
     emit("monitoring_status", {"active": _monitoring})
 
-# ═════════════════════════════════════════════
-#  BACKGROUND STATS BROADCAST
-# ═════════════════════════════════════════════
 
 def _broadcast_stats():
-    """Emit live stats every second."""
     while True:
         socketio.sleep(1)
         try:
@@ -218,9 +189,6 @@ def _broadcast_stats():
         }
         socketio.emit("stats_update", data)
 
-# ═════════════════════════════════════════════
-#  MAIN
-# ═════════════════════════════════════════════
 
 if __name__ == "__main__":
     socketio.start_background_task(_broadcast_stats)

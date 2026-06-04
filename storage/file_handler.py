@@ -1,16 +1,3 @@
-"""
-CyberSentinel - File Handler
-===============================
-Manages log file operations including reading,
-exporting, and cleaning up encrypted log files.
-
-Features:
-    - Decrypt and export logs to readable formats
-    - Log file listing and statistics
-    - Secure log cleanup
-    - Export to CSV, JSON, or plaintext
-"""
-
 import json
 import csv
 import io
@@ -22,10 +9,6 @@ from utils.encryption import EncryptionManager
 
 
 class FileHandler:
-    """
-    Handles log file operations: reading, exporting,
-    listing, and cleanup of encrypted log files.
-    """
 
     def __init__(self, encryption_manager: EncryptionManager = None):
         self.crypto = encryption_manager or EncryptionManager()
@@ -33,12 +16,6 @@ class FileHandler:
         self.export_dir = EXPORT_DIR
 
     def list_log_files(self) -> list:
-        """
-        List all log files with metadata.
-
-        Returns:
-            List of dicts with file info.
-        """
         files = []
         for f in sorted(self.log_dir.glob("*.*"), key=lambda x: x.stat().st_mtime, reverse=True):
             if f.is_file() and f.name != "consent_records.json":
@@ -54,15 +31,6 @@ class FileHandler:
         return files
 
     def decrypt_log_file(self, filepath: Path) -> list:
-        """
-        Decrypt and parse an encrypted log file.
-
-        Args:
-            filepath: Path to the encrypted log file.
-
-        Returns:
-            List of decrypted log entries.
-        """
         entries = []
 
         try:
@@ -74,7 +42,6 @@ class FileHandler:
 
                     decrypted = self.crypto.decrypt(line)
 
-                    # Parse session headers/footers
                     if decrypted.startswith("SESSION_HEADER:"):
                         entries.append({
                             "type": "header",
@@ -86,7 +53,6 @@ class FileHandler:
                             "data": json.loads(decrypted[15:]),
                         })
                     else:
-                        # Try parsing as JSON
                         try:
                             parsed = json.loads(decrypted)
                             entries.append({
@@ -112,17 +78,6 @@ class FileHandler:
         output_format: str = "txt",
         output_name: str = None,
     ) -> Path:
-        """
-        Decrypt and export log files to a readable format.
-
-        Args:
-            filepath: Specific log file to export. If None, exports all.
-            output_format: Export format ('txt', 'csv', 'json').
-            output_name: Custom output filename.
-
-        Returns:
-            Path to the exported file.
-        """
         self.export_dir.mkdir(parents=True, exist_ok=True)
 
         if filepath:
@@ -135,7 +90,6 @@ class FileHandler:
             entries = self.decrypt_log_file(f)
             all_entries.extend(entries)
 
-        # Generate output filename
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         if output_name is None:
             output_name = f"export_{timestamp}"
@@ -148,14 +102,12 @@ class FileHandler:
             return self._export_txt(all_entries, output_name)
 
     def _export_json(self, entries: list, name: str) -> Path:
-        """Export entries as JSON."""
         output_path = self.export_dir / f"{name}.json"
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(entries, f, indent=2, default=str)
         return output_path
 
     def _export_csv(self, entries: list, name: str) -> Path:
-        """Export entries as CSV."""
         output_path = self.export_dir / f"{name}.csv"
         with open(output_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
@@ -180,7 +132,6 @@ class FileHandler:
         return output_path
 
     def _export_txt(self, entries: list, name: str) -> Path:
-        """Export entries as plaintext."""
         output_path = self.export_dir / f"{name}.txt"
 
         with open(output_path, "w", encoding="utf-8") as f:
@@ -219,7 +170,6 @@ class FileHandler:
         return output_path
 
     def get_storage_stats(self) -> dict:
-        """Get storage usage statistics."""
         total_size = 0
         file_count = 0
 
@@ -236,15 +186,6 @@ class FileHandler:
         }
 
     def cleanup_old_logs(self, keep_days: int = 7) -> int:
-        """
-        Remove log files older than specified days.
-
-        Args:
-            keep_days: Number of days to retain logs.
-
-        Returns:
-            Number of files removed.
-        """
         import time
         cutoff = time.time() - (keep_days * 86400)
         removed = 0

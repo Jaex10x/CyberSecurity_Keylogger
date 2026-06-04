@@ -1,21 +1,7 @@
-"""
-CyberSentinel - Unified Launcher
-===================================
-Starts BOTH the desktop GUI (CustomTkinter) AND
-the web dashboard (Flask + Socket.IO) simultaneously.
-
-Usage:
-    python run_all.py
-
-The desktop GUI opens as a window.
-The web dashboard is available at http://127.0.0.1:5000
-"""
-
 import sys
 import threading
 from pathlib import Path
 
-# Ensure project root is on sys.path
 PROJECT_ROOT = Path(__file__).resolve().parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -47,9 +33,6 @@ from storage.file_handler import FileHandler
 from utils.system_info import SystemProfiler
 from utils.consent import ConsentManager
 
-# ═════════════════════════════════════════════
-#  SHARED MODULE INSTANCES
-# ═════════════════════════════════════════════
 
 crypto             = EncryptionManager()
 keylogger          = KeystrokeEngine(encryption_manager=crypto)
@@ -62,9 +45,6 @@ consent_mgr        = ConsentManager()
 
 _monitoring = False
 
-# ═════════════════════════════════════════════
-#  FLASK WEB DASHBOARD (runs in background thread)
-# ═════════════════════════════════════════════
 
 flask_app = Flask(__name__, template_folder="templates")
 flask_app.config["SECRET_KEY"] = "cybersentinel-web-key"
@@ -72,7 +52,6 @@ socketio = SocketIO(flask_app, async_mode="threading")
 
 
 def _on_key_event_web(record):
-    """Forward keystroke events to browser via WebSocket."""
     try:
         socketio.emit("keystroke", record)
     except Exception:
@@ -80,14 +59,11 @@ def _on_key_event_web(record):
 
 
 def _on_clip_event_web(entry):
-    """Forward clipboard events to browser via WebSocket."""
     try:
         socketio.emit("clipboard_update", entry)
     except Exception:
         pass
 
-
-# ── Flask Routes ──
 
 @flask_app.route("/")
 def web_index():
@@ -171,8 +147,6 @@ def web_api_capture():
     return jsonify({"error": "Capture failed"}), 500
 
 
-# ── Socket.IO Events ──
-
 @socketio.on("start_monitoring")
 def ws_handle_start():
     global _monitoring
@@ -189,8 +163,6 @@ def ws_handle_stop():
 def ws_handle_connect():
     emit("monitoring_status", {"active": _monitoring})
 
-
-# ── Background Stats Broadcast ──
 
 def _broadcast_stats():
     while True:
@@ -214,7 +186,6 @@ def _broadcast_stats():
 
 
 def start_web_server():
-    """Start the Flask web server in a background thread."""
     socketio.start_background_task(_broadcast_stats)
     socketio.run(
         flask_app,
@@ -226,10 +197,6 @@ def start_web_server():
         log_output=False,
     )
 
-
-# ═════════════════════════════════════════════
-#  SHARED START/STOP HELPERS
-# ═════════════════════════════════════════════
 
 def _start_monitoring():
     global _monitoring
@@ -261,12 +228,7 @@ def _stop_monitoring():
     _monitoring = False
 
 
-# ═════════════════════════════════════════════
-#  DESKTOP GUI (runs on main thread)
-# ═════════════════════════════════════════════
-
 def start_desktop_gui():
-    """Start the CustomTkinter desktop GUI on the main thread."""
     from ui.gui_dashboard import CyberSentinelApp
 
     app = CyberSentinelApp(
@@ -280,14 +242,11 @@ def start_desktop_gui():
         consent_manager=consent_mgr,
     )
 
-    # Override the GUI's start/stop to use our shared helpers
     app._start_all_original = app._start_all
     app._stop_all_original = app._stop_all
 
     def gui_start_all():
-        """Start via GUI also updates the shared state."""
         global _monitoring
-        # Show consent dialog
         if consent_mgr and consent_mgr.required:
             from ui.consent_dialog import ConsentDialog
             dialog = ConsentDialog(app)
@@ -306,7 +265,6 @@ def start_desktop_gui():
         )
 
     def gui_stop_all():
-        """Stop via GUI also updates the shared state."""
         global _monitoring
         _stop_monitoring()
         app._monitoring = False
@@ -319,7 +277,6 @@ def start_desktop_gui():
     app._start_all = gui_start_all
     app._stop_all = gui_stop_all
 
-    # On close, stop everything
     original_on_closing = app._on_closing
     def on_closing():
         _stop_monitoring()
@@ -331,12 +288,7 @@ def start_desktop_gui():
     app.mainloop()
 
 
-# ═════════════════════════════════════════════
-#  MAIN
-# ═════════════════════════════════════════════
-
 def main():
-    # Wire callbacks for web dashboard
     keylogger.set_key_callback(_on_key_event_web)
     clipboard_monitor.set_capture_callback(_on_clip_event_web)
 
@@ -348,7 +300,6 @@ def main():
     print(f"  🔑  Session: {SESSION_ID}")
     print()
 
-    # Start web server in background thread
     web_thread = threading.Thread(
         target=start_web_server,
         name="WebDashboard",
@@ -356,7 +307,6 @@ def main():
     )
     web_thread.start()
 
-    # Start desktop GUI on main thread (tkinter requires main thread)
     start_desktop_gui()
 
 

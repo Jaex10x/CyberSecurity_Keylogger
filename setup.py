@@ -1,8 +1,3 @@
-"""
-CyberSentinel - Ethical Keystroke Monitoring Suite
-Setup configuration for package installation.
-"""
-
 from setuptools import setup, find_packages
 
 setup(

