@@ -33,7 +33,6 @@ from storage.file_handler import FileHandler
 from utils.system_info import SystemProfiler
 from utils.consent import ConsentManager
 
-
 crypto             = EncryptionManager()
 keylogger          = KeystrokeEngine(encryption_manager=crypto)
 clipboard_monitor  = ClipboardMonitor(encryption_manager=crypto)
@@ -45,11 +44,9 @@ consent_mgr        = ConsentManager()
 
 _monitoring = False
 
-
 flask_app = Flask(__name__, template_folder="templates")
 flask_app.config["SECRET_KEY"] = "cybersentinel-web-key"
 socketio = SocketIO(flask_app, async_mode="threading")
-
 
 def _on_key_event_web(record):
     try:
@@ -57,13 +54,11 @@ def _on_key_event_web(record):
     except Exception:
         pass
 
-
 def _on_clip_event_web(entry):
     try:
         socketio.emit("clipboard_update", entry)
     except Exception:
         pass
-
 
 @flask_app.route("/")
 def web_index():
@@ -73,6 +68,7 @@ def web_index():
         app_version=APP_VERSION,
         app_tagline=APP_TAGLINE,
         session_id=SESSION_ID,
+        auto_stop_hours=AUTO_STOP_HOURS,
     )
 
 @flask_app.route("/api/stats")
@@ -146,7 +142,6 @@ def web_api_capture():
         return jsonify({"success": True, "path": str(path)})
     return jsonify({"error": "Capture failed"}), 500
 
-
 @socketio.on("start_monitoring")
 def ws_handle_start():
     global _monitoring
@@ -162,7 +157,6 @@ def ws_handle_stop():
 @socketio.on("connect")
 def ws_handle_connect():
     emit("monitoring_status", {"active": _monitoring})
-
 
 def _broadcast_stats():
     while True:
@@ -184,7 +178,6 @@ def _broadcast_stats():
         }
         socketio.emit("stats_update", data)
 
-
 def start_web_server():
     socketio.start_background_task(_broadcast_stats)
     socketio.run(
@@ -196,7 +189,6 @@ def start_web_server():
         allow_unsafe_werkzeug=True,
         log_output=False,
     )
-
 
 def _start_monitoring():
     global _monitoring
@@ -212,7 +204,6 @@ def _start_monitoring():
         window_tracker.start()
     _monitoring = True
 
-
 def _stop_monitoring():
     global _monitoring
     if not _monitoring:
@@ -226,7 +217,6 @@ def _stop_monitoring():
     if window_tracker.is_running:
         window_tracker.stop()
     _monitoring = False
-
 
 def start_desktop_gui():
     from ui.gui_dashboard import CyberSentinelApp
@@ -260,8 +250,8 @@ def start_desktop_gui():
         app._monitoring = True
         app._w["btn_toggle"].configure(
             text="■  STOP MONITORING",
-            fg_color="#ff1744", hover_color="#d50000",
-            text_color="#ffffff",
+            fg_color="
+            text_color="
         )
 
     def gui_stop_all():
@@ -270,8 +260,8 @@ def start_desktop_gui():
         app._monitoring = False
         app._w["btn_toggle"].configure(
             text="▶  START MONITORING",
-            fg_color="#00e676", hover_color="#00c864",
-            text_color="#0a0a1a",
+            fg_color="
+            text_color="
         )
 
     app._start_all = gui_start_all
@@ -286,7 +276,6 @@ def start_desktop_gui():
     app.protocol("WM_DELETE_WINDOW", on_closing)
 
     app.mainloop()
-
 
 def main():
     keylogger.set_key_callback(_on_key_event_web)
@@ -308,7 +297,6 @@ def main():
     web_thread.start()
 
     start_desktop_gui()
-
 
 if __name__ == "__main__":
     main()

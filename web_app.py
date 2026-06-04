@@ -32,11 +32,9 @@ from storage.file_handler import FileHandler
 from utils.system_info import SystemProfiler
 from utils.consent import ConsentManager
 
-
 app = Flask(__name__, template_folder="templates")
 app.config["SECRET_KEY"] = "cybersentinel-web-key"
 socketio = SocketIO(app, async_mode="threading")
-
 
 crypto            = EncryptionManager()
 keylogger         = KeystrokeEngine(encryption_manager=crypto)
@@ -49,7 +47,6 @@ consent_mgr       = ConsentManager()
 
 _monitoring = False
 
-
 def _on_key_event(record):
     socketio.emit("keystroke", record)
 
@@ -59,7 +56,6 @@ def _on_clip_event(entry):
 keylogger.set_key_callback(_on_key_event)
 clipboard_monitor.set_capture_callback(_on_clip_event)
 
-
 @app.route("/")
 def index():
     return render_template(
@@ -68,6 +64,7 @@ def index():
         app_version=APP_VERSION,
         app_tagline=APP_TAGLINE,
         session_id=SESSION_ID,
+        auto_stop_hours=AUTO_STOP_HOURS,
     )
 
 @app.route("/api/stats")
@@ -141,7 +138,6 @@ def api_capture_screenshot():
         return jsonify({"success": True, "path": str(path)})
     return jsonify({"error": "Capture failed"}), 500
 
-
 @socketio.on("start_monitoring")
 def handle_start():
     global _monitoring
@@ -168,7 +164,6 @@ def handle_stop():
 def handle_connect():
     emit("monitoring_status", {"active": _monitoring})
 
-
 def _broadcast_stats():
     while True:
         socketio.sleep(1)
@@ -189,15 +184,14 @@ def _broadcast_stats():
         }
         socketio.emit("stats_update", data)
 
-
 if __name__ == "__main__":
     socketio.start_background_task(_broadcast_stats)
     print()
-    print(f"  🛡️  {APP_NAME} — Web Dashboard")
-    print(f"  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-    print(f"  📡  http://127.0.0.1:5000")
-    print(f"  🔑  Session: {SESSION_ID}")
-    print(f"  ⏹   Press Ctrl+C to stop")
+    print(f"  [*] {APP_NAME} - Web Dashboard")
+    print(f"  ================================")
+    print(f"  [>] http://127.0.0.1:5000")
+    print(f"  [>] Session: {SESSION_ID}")
+    print(f"  [>] Press Ctrl+C to stop")
     print()
     socketio.run(
         app,

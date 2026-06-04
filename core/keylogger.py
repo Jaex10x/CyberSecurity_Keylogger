@@ -25,7 +25,6 @@ from config.settings import (
 )
 from utils.encryption import EncryptionManager
 
-
 SPECIAL_KEY_MAP = {
     keyboard.Key.space: " [SPACE] ",
     keyboard.Key.enter: " [ENTER]\n",
@@ -63,7 +62,6 @@ SPECIAL_KEY_MAP = {
     keyboard.Key.f11: " [F11] ",
     keyboard.Key.f12: " [F12] ",
 }
-
 
 class KeystrokeEngine:
 

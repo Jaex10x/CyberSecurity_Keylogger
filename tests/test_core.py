@@ -6,7 +6,6 @@ from unittest.mock import patch, MagicMock
 
 from utils.encryption import EncryptionManager
 
-
 class TestEncryptionManager(unittest.TestCase):
 
     def setUp(self):
@@ -59,7 +58,6 @@ class TestEncryptionManager(unittest.TestCase):
         key3, _ = EncryptionManager.derive_key_from_password("different", salt=salt1)
         self.assertNotEqual(key1, key3)
 
-
 class TestSystemProfiler(unittest.TestCase):
 
     def setUp(self):
@@ -88,7 +86,6 @@ class TestSystemProfiler(unittest.TestCase):
         self.assertIsInstance(summary, str)
         self.assertGreater(len(summary), 0)
 
-
 class TestConsentManager(unittest.TestCase):
 
     def setUp(self):
@@ -101,7 +98,6 @@ class TestConsentManager(unittest.TestCase):
     def test_consent_history_empty(self):
         history = self.consent.get_consent_history()
         self.assertIsInstance(history, list)
-
 
 class TestFileHandler(unittest.TestCase):
 
@@ -118,7 +114,6 @@ class TestFileHandler(unittest.TestCase):
         self.assertIsInstance(stats, dict)
         self.assertIn("total_files", stats)
         self.assertIn("total_size_mb", stats)
-
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

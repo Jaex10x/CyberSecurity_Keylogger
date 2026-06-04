@@ -11,7 +11,6 @@ try:
 except ImportError:
     CTYPES_AVAILABLE = False
 
-
 LOGIN_KEYWORDS = [
     "log in", "login", "sign in", "signin", "sign-in",
     "password", "passwd", "credentials", "authenticate",
@@ -26,7 +25,6 @@ LOGIN_KEYWORDS = [
     "ssh", "ftp", "vpn", "remote desktop",
     "wallet", "crypto",
 ]
-
 
 class WindowTracker:
 

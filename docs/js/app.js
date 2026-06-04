@@ -1,13 +1,6 @@
-/* ════════════════════════════════════════════════════
-   CyberSentinel — Interactive JavaScript
-   ════════════════════════════════════════════════════ */
 
-/* ═══════════════════════════════════════════════════
-   🔧 CONFIGURATION — Change your GitHub repo here!
-   ═══════════════════════════════════════════════════ */
+
 const GITHUB_REPO = 'yourusername/cybersentinel';
-// ↑ Change this to your actual GitHub username/repo
-//   e.g. 'Jaex10x/CyberSentinel'
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
@@ -19,23 +12,22 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
 });
 
-/* ─── Download Links ─── */
 function initDownloadLinks() {
-    const repoUrl = `https://github.com/${GITHUB_REPO}`;
+    const repoUrl = `https:
     const zipUrl = `${repoUrl}/archive/refs/heads/main.zip`;
-    const cloneUrl = `https://github.com/${GITHUB_REPO}.git`;
+    const cloneUrl = `https:
 
-    // Hero download button → direct ZIP download
+    
     const heroBtn = document.getElementById('heroDownloadBtn');
     if (heroBtn) {
         heroBtn.href = zipUrl;
         heroBtn.setAttribute('target', '_blank');
         heroBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Don't trigger smooth scroll
+            e.stopPropagation(); 
         });
     }
 
-    // Download section buttons
+    
     const zipBtn = document.getElementById('downloadZipBtn');
     if (zipBtn) {
         zipBtn.href = zipUrl;
@@ -48,13 +40,13 @@ function initDownloadLinks() {
         githubBtn.setAttribute('target', '_blank');
     }
 
-    // Clone command text
+    
     const cloneCmd = document.getElementById('cloneCmd');
     if (cloneCmd) {
         cloneCmd.textContent = `git clone ${cloneUrl}`;
     }
 
-    // Install section clone command
+    
     document.querySelectorAll('.install__code-block code').forEach(code => {
         if (code.textContent.includes('yourusername')) {
             code.textContent = `git clone ${cloneUrl}`;
@@ -62,24 +54,23 @@ function initDownloadLinks() {
     });
 }
 
-/* ─── Navigation ─── */
 function initNavigation() {
     const nav = document.getElementById('nav');
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
 
-    // Scroll detection for nav background
+    
     window.addEventListener('scroll', () => {
         nav.classList.toggle('scrolled', window.scrollY > 50);
     });
 
-    // Hamburger menu toggle
+    
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         mobileMenu.classList.toggle('open');
     });
 
-    // Close mobile menu on link click
+    
     mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             hamburger.classList.remove('active');
@@ -87,7 +78,7 @@ function initNavigation() {
         });
     });
 
-    // Smooth scroll for anchor links
+    
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', (e) => {
             e.preventDefault();
@@ -99,7 +90,6 @@ function initNavigation() {
     });
 }
 
-/* ─── Terminal Animation ─── */
 function initTerminalAnimation() {
     const terminalBody = document.getElementById('terminalBody');
     if (!terminalBody) return;
@@ -132,9 +122,9 @@ function initTerminalAnimation() {
 
     function addLine() {
         if (lineIndex >= lines.length) {
-            // Restart after a pause
+            
             setTimeout(() => {
-                // Keep only the first command line
+                
                 terminalBody.innerHTML = '<div class="terminal__line"><span class="terminal__prompt">$</span> python main.py --mode monitor</div>';
                 lineIndex = 0;
                 addLine();
@@ -147,7 +137,7 @@ function initTerminalAnimation() {
         div.className = `terminal__line ${lineData.class || ''}`;
         div.textContent = lineData.text;
 
-        // Typing effect for command lines
+        
         if (lineData.text.includes('$')) {
             div.innerHTML = `<span class="terminal__prompt">$</span> ${lineData.text.replace('$ ', '')}`;
         }
@@ -158,11 +148,10 @@ function initTerminalAnimation() {
         setTimeout(addLine, lineData.delay);
     }
 
-    // Start animation after a brief delay
+    
     setTimeout(addLine, 1500);
 }
 
-/* ─── Demo Keylogger ─── */
 function initDemoKeylogger() {
     const keystrokePanel = document.getElementById('keystrokePanel');
     const keyCountBadge = document.getElementById('keyCount');
@@ -175,7 +164,7 @@ function initDemoKeylogger() {
     let startTime = null;
     let placeholder = keystrokePanel.querySelector('.demo__placeholder');
 
-    // Special key mapping
+    
     const specialKeys = {
         ' ': { text: '·', class: 'key-space' },
         'Enter': { text: ' ↵\n', class: 'key-enter' },
@@ -195,7 +184,7 @@ function initDemoKeylogger() {
     };
 
     document.addEventListener('keydown', (e) => {
-        // Remove placeholder on first key
+        
         if (placeholder) {
             placeholder.remove();
             placeholder = null;
@@ -207,7 +196,7 @@ function initDemoKeylogger() {
         let span = document.createElement('span');
 
         if (special) {
-            if (!special.text) return; // Skip modifier-only keys
+            if (!special.text) return; 
             span.className = special.class;
             if (e.key === 'Enter') {
                 span.innerHTML = ' ↵<br>';
@@ -218,7 +207,7 @@ function initDemoKeylogger() {
             span.className = 'key-char';
             span.textContent = e.key;
         } else {
-            // Function keys, etc.
+            
             span.className = 'key-special';
             span.textContent = `[${e.key.toUpperCase()}]`;
         }
@@ -226,20 +215,20 @@ function initDemoKeylogger() {
         keystrokePanel.appendChild(span);
         totalKeys++;
 
-        // Update stats
+        
         keyCountBadge.textContent = `${totalKeys} keys`;
         statTotalKeys.textContent = totalKeys.toLocaleString();
 
-        // Calculate KPM
-        const elapsed = (Date.now() - startTime) / 60000; // minutes
+        
+        const elapsed = (Date.now() - startTime) / 60000; 
         if (elapsed > 0) {
             statKPM.textContent = (totalKeys / elapsed).toFixed(1);
         }
 
-        // Auto-scroll
+        
         keystrokePanel.scrollTop = keystrokePanel.scrollHeight;
 
-        // Flash effect on panel header
+        
         const header = keystrokePanel.closest('.demo__panel').querySelector('.demo__panel-header');
         header.style.background = 'rgba(0, 212, 255, 0.1)';
         setTimeout(() => {
@@ -248,7 +237,6 @@ function initDemoKeylogger() {
     });
 }
 
-/* ─── Demo Timer ─── */
 function initDemoTimer() {
     const timerEl = document.getElementById('demoTimer');
     const dateEl = document.getElementById('demoDate');
@@ -276,7 +264,6 @@ function initDemoTimer() {
     setInterval(updateDate, 1000);
 }
 
-/* ─── Demo Resource Bars ─── */
 function initDemoResources() {
     const cpuBar = document.getElementById('cpuBar');
     const cpuVal = document.getElementById('cpuVal');
@@ -286,12 +273,12 @@ function initDemoResources() {
     if (!cpuBar) return;
 
     function simulateResources() {
-        // Simulate fluctuating CPU
+        
         const cpu = Math.floor(15 + Math.random() * 30);
         cpuBar.style.width = `${cpu}%`;
         cpuVal.textContent = `${cpu}%`;
 
-        // Simulate slowly changing RAM
+        
         const ram = Math.floor(50 + Math.random() * 20);
         ramBar.style.width = `${ram}%`;
         ramVal.textContent = `${ram}%`;
@@ -300,7 +287,6 @@ function initDemoResources() {
     setInterval(simulateResources, 3000);
 }
 
-/* ─── Scroll Animations ─── */
 function initScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
@@ -311,13 +297,13 @@ function initScrollAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Optional: unobserve after animation
-                // observer.unobserve(entry.target);
+                
+                
             }
         });
     }, observerOptions);
 
-    // Observe elements with data-aos attribute
+    
     document.querySelectorAll('[data-aos]').forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
@@ -325,7 +311,7 @@ function initScrollAnimations() {
         observer.observe(el);
     });
 
-    // Also animate section headers
+    
     document.querySelectorAll('.section-header, .feature-card, .arch__card, .mode-card, .ethical__card, .install__step, .download__card').forEach(el => {
         if (!el.dataset.aos) {
             el.style.opacity = '0';
@@ -336,7 +322,6 @@ function initScrollAnimations() {
     });
 }
 
-// Visibility class for scroll animations
 document.head.insertAdjacentHTML('beforeend', `
     <style>
         .visible {
@@ -346,7 +331,6 @@ document.head.insertAdjacentHTML('beforeend', `
     </style>
 `);
 
-/* ─── Copy Code ─── */
 function copyCode(button) {
     const codeBlock = button.parentElement.querySelector('code');
     const text = codeBlock.textContent;
@@ -358,7 +342,7 @@ function copyCode(button) {
             button.textContent = original;
         }, 2000);
     }).catch(() => {
-        // Fallback for older browsers
+        
         const textarea = document.createElement('textarea');
         textarea.value = text;
         document.body.appendChild(textarea);

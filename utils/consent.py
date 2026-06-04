@@ -18,42 +18,7 @@ from config.settings import (
 
 console = Console()
 
-
-CONSENT_TERMS = """
-╔══════════════════════════════════════════════════════════════════╗
-║                    TERMS OF AUTHORIZED USE                      ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  By proceeding, you acknowledge and agree to the following:      ║
-║                                                                  ║
-║  1. AUTHORIZATION: You confirm that you have explicit written    ║
-║     authorization from the system owner to run this monitoring   ║
-║     software on this device.                                     ║
-║                                                                  ║
-║  2. LEGAL COMPLIANCE: You will use this tool in compliance       ║
-║     with all applicable local, state, national, and              ║
-║     international laws and regulations.                          ║
-║                                                                  ║
-║  3. EDUCATIONAL PURPOSE: This software is intended for           ║
-║     cybersecurity education, authorized penetration testing,     ║
-║     and security research only.                                  ║
-║                                                                  ║
-║  4. DATA RESPONSIBILITY: You accept full responsibility for      ║
-║     any data collected and will handle it in accordance with     ║
-║     data protection regulations (e.g., GDPR, CCPA).             ║
-║                                                                  ║
-║  5. NO MALICIOUS USE: You will NOT use this tool for             ║
-║     unauthorized surveillance, identity theft, corporate         ║
-║     espionage, or any other malicious purpose.                   ║
-║                                                                  ║
-║  6. ACCOUNTABILITY: You understand that all monitoring           ║
-║     sessions are logged and can be audited.                      ║
-║                                                                  ║
-║  VIOLATION OF THESE TERMS MAY RESULT IN CRIMINAL PROSECUTION.    ║
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
-"""
-
+CONSENT_TERMS = 
 
 class ConsentManager:
 

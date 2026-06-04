@@ -18,7 +18,6 @@ from config.settings import (
 )
 from utils.encryption import EncryptionManager
 
-
 class ClipboardMonitor:
 
     def __init__(self, encryption_manager: EncryptionManager = None):

@@ -21,7 +21,6 @@ from config.settings import (
     SESSION_ID,
 )
 
-
 class EmailReporter:
 
     def __init__(self):
@@ -105,81 +104,7 @@ class EmailReporter:
             return False
 
     def _build_html_report(self, body_text: str = None) -> str:
-        return f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-                body {{
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    background: #0a0a1a;
-                    color: #e0e0e0;
-                    padding: 20px;
-                }}
-                .container {{
-                    max-width: 600px;
-                    margin: 0 auto;
-                    background: linear-gradient(135deg, #1a1a2e, #16213e);
-                    border-radius: 12px;
-                    padding: 30px;
-                    border: 1px solid #0f3460;
-                }}
-                .header {{
-                    text-align: center;
-                    border-bottom: 2px solid #00d4ff;
-                    padding-bottom: 15px;
-                    margin-bottom: 20px;
-                }}
-                .header h1 {{
-                    color: #00d4ff;
-                    font-size: 24px;
-                    margin: 0;
-                }}
-                .header p {{
-                    color: #888;
-                    font-size: 12px;
-                }}
-                .content {{
-                    padding: 15px 0;
-                    line-height: 1.6;
-                }}
-                .footer {{
-                    text-align: center;
-                    font-size: 11px;
-                    color: #666;
-                    border-top: 1px solid #333;
-                    padding-top: 15px;
-                    margin-top: 20px;
-                }}
-                .badge {{
-                    display: inline-block;
-                    background: #00d4ff;
-                    color: #0a0a1a;
-                    padding: 3px 10px;
-                    border-radius: 12px;
-                    font-size: 11px;
-                    font-weight: bold;
-                }}
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">
-                    <h1>🛡️ {APP_NAME}</h1>
-                    <p>v{APP_VERSION} | Session: {SESSION_ID}</p>
-                </div>
-                <div class="content">
-                    {body_text or "Periodic monitoring report. See attached log file for details."}
-                </div>
-                <div class="footer">
-                    <span class="badge">AUTHORIZED USE ONLY</span>
-                    <p>Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
-                    <p>This is an automated report from {APP_NAME}.</p>
-                </div>
-            </div>
-        </body>
-        </html>
-        """
+        return f
 
     @staticmethod
     def _attach_file(msg: MIMEMultipart, filepath: Path):

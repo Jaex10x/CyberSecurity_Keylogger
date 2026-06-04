@@ -43,7 +43,6 @@ from config.settings import (
 
 console = Console()
 
-
 class Dashboard:
 
     def __init__(self, keylogger=None, clipboard=None, screenshot=None, encryption=None):
@@ -118,7 +117,7 @@ class Dashboard:
             show_header=True,
             header_style=f"bold {THEME_SECONDARY}",
         )
-        table.add_column("#", style="dim", width=4)
+        table.add_column("
         table.add_column("Filename", style=f"bold {THEME_ACCENT}", min_width=30)
         table.add_column("Size", style="white", width=12, justify="right")
         table.add_column("Modified", style="white", width=20)

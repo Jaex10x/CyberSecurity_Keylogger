@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ app_name }} — Web Dashboard</title>
     <meta name="description" content="{{ app_tagline }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+    <link rel="preconnect" href="https:
+    <link
+        href="https:
+        rel="stylesheet">
+    <script src="https:
     <style>
-        /* ═══════════════════════════════════════════
-           ROOT & VARIABLES
-           ═══════════════════════════════════════════ */
         :root {
             --bg-darkest: #050510;
             --bg-dark: #0a0a1a;
@@ -21,10 +21,10 @@
             --bg-sidebar: #0c0c20;
             --bg-input: #0e0e24;
             --accent: #00d4ff;
-            --accent-glow: rgba(0,212,255,.15);
+            --accent-glow: rgba(0, 212, 255, .15);
             --accent2: #e040fb;
             --green: #00e676;
-            --green-glow: rgba(0,230,118,.12);
+            --green-glow: rgba(0, 230, 118, .12);
             --orange: #ff9100;
             --red: #ff1744;
             --yellow: #ffd600;
@@ -32,7 +32,7 @@
             --text2: #9e9e9e;
             --text-dim: #5a5a7a;
             --border: #1a1a4a;
-            --border-glow: rgba(0,212,255,.25);
+            --border-glow: rgba(0, 212, 255, .25);
             --sidebar-w: 240px;
             --radius: 14px;
             --radius-sm: 10px;
@@ -40,9 +40,14 @@
             --mono: 'JetBrains Mono', 'Consolas', monospace;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        html, body {
+        html,
+        body {
             height: 100%;
             font-family: var(--font);
             background: var(--bg-darkest);
@@ -50,21 +55,32 @@
             overflow: hidden;
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+        
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
 
-        /* ═══════════════════════════════════════════
-           LAYOUT
-           ═══════════════════════════════════════════ */
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        
         .app {
             display: flex;
             height: 100vh;
         }
 
-        /* ── SIDEBAR ── */
+        
         .sidebar {
             width: var(--sidebar-w);
             min-width: var(--sidebar-w);
@@ -75,10 +91,15 @@
             padding: 0;
             z-index: 10;
         }
+
         .sidebar-logo {
             padding: 26px 22px 8px;
         }
-        .sidebar-logo .shield { font-size: 28px; }
+
+        .sidebar-logo .shield {
+            font-size: 28px;
+        }
+
         .sidebar-logo h2 {
             font-size: 18px;
             font-weight: 700;
@@ -86,16 +107,19 @@
             margin-top: 4px;
             letter-spacing: -.3px;
         }
+
         .sidebar-logo p {
             font-size: 10px;
             color: var(--text-dim);
             margin-top: 2px;
         }
+
         .sidebar-sep {
             height: 1px;
             background: var(--border);
             margin: 12px 18px;
         }
+
         .sidebar-nav {
             flex: 1;
             display: flex;
@@ -103,6 +127,7 @@
             gap: 2px;
             padding: 0 10px;
         }
+
         .nav-btn {
             display: flex;
             align-items: center;
@@ -121,33 +146,45 @@
             position: relative;
             font-family: var(--font);
         }
+
         .nav-btn:hover {
-            background: rgba(0,212,255,.06);
+            background: rgba(0, 212, 255, .06);
             color: var(--text);
         }
+
         .nav-btn.active {
-            background: rgba(0,212,255,.1);
+            background: rgba(0, 212, 255, .1);
             color: var(--accent);
             font-weight: 600;
         }
+
         .nav-btn.active::before {
             content: '';
             position: absolute;
-            left: 0; top: 8px; bottom: 8px;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
             width: 3px;
             border-radius: 0 3px 3px 0;
             background: var(--accent);
         }
-        .nav-btn .icon { font-size: 18px; width: 24px; text-align: center; }
+
+        .nav-btn .icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
 
         .sidebar-footer {
             padding: 14px 22px;
             border-top: 1px solid var(--border);
         }
+
         .sidebar-footer .status {
             font-size: 12px;
             font-weight: 600;
         }
+
         .sidebar-footer .session {
             font-size: 9px;
             color: var(--text-dim);
@@ -155,48 +192,62 @@
             word-break: break-all;
         }
 
-        /* ── MAIN CONTENT ── */
+        
         .content {
             flex: 1;
             overflow-y: auto;
             padding: 0;
             background: var(--bg-dark);
         }
+
         .page {
             display: none;
             padding: 28px 32px;
             animation: fadeIn .25s ease;
         }
-        .page.active { display: block; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
+        .page.active {
+            display: block;
         }
 
-        .page-header { margin-bottom: 22px; }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-header {
+            margin-bottom: 22px;
+        }
+
         .page-header h1 {
             font-size: 24px;
             font-weight: 700;
             letter-spacing: -.5px;
         }
+
         .page-header p {
             font-size: 13px;
             color: var(--text-dim);
             margin-top: 4px;
         }
 
-        /* ═══════════════════════════════════════════
-           COMPONENTS
-           ═══════════════════════════════════════════ */
+        
 
-        /* ── Stat Cards ── */
+        
         .cards-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 14px;
             margin-bottom: 18px;
         }
+
         .stat-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -206,105 +257,165 @@
             overflow: hidden;
             transition: border-color .3s, transform .2s;
         }
+
         .stat-card:hover {
             border-color: var(--accent);
             transform: translateY(-2px);
         }
+
         .stat-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             height: 3px;
             border-radius: var(--radius) var(--radius) 0 0;
         }
-        .stat-card.c-cyan::before   { background: var(--accent); }
-        .stat-card.c-purple::before { background: var(--accent2); }
-        .stat-card.c-green::before  { background: var(--green); }
-        .stat-card.c-orange::before { background: var(--orange); }
 
-        .stat-card .card-icon { font-size: 24px; margin-bottom: 8px; }
+        .stat-card.c-cyan::before {
+            background: var(--accent);
+        }
+
+        .stat-card.c-purple::before {
+            background: var(--accent2);
+        }
+
+        .stat-card.c-green::before {
+            background: var(--green);
+        }
+
+        .stat-card.c-orange::before {
+            background: var(--orange);
+        }
+
+        .stat-card .card-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
         .stat-card .card-value {
             font-size: 30px;
             font-weight: 800;
             letter-spacing: -.5px;
             line-height: 1.1;
         }
+
         .stat-card .card-label {
             font-size: 12px;
             color: var(--text2);
             margin-top: 4px;
         }
 
-        /* ── Panels ── */
+        
         .panels-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 14px;
             margin-bottom: 18px;
         }
+
         .panel {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 20px;
         }
+
         .panel-title {
             font-size: 14px;
             font-weight: 700;
             color: var(--accent);
             margin-bottom: 14px;
         }
+
         .panel-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 6px 0;
         }
-        .panel-row .label { font-size: 13px; color: var(--text2); }
-        .panel-row .value { font-size: 13px; font-weight: 600; }
 
-        /* Status dots */
+        .panel-row .label {
+            font-size: 13px;
+            color: var(--text2);
+        }
+
+        .panel-row .value {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        
         .dot {
             display: inline-block;
-            width: 8px; height: 8px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             margin-right: 6px;
         }
-        .dot.on  { background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
-        .dot.off { background: var(--red); }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
+        .dot.on {
+            background: var(--green);
+            box-shadow: 0 0 8px var(--green);
+            animation: pulse 2s infinite;
         }
 
-        /* ── Gauge Bars ── */
+        .dot.off {
+            background: var(--red);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .5;
+            }
+        }
+
+        
         .gauges-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 14px;
             margin-bottom: 22px;
         }
+
         .gauge {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 16px 20px;
         }
+
         .gauge-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
-        .gauge-header .label { font-size: 13px; font-weight: 600; }
-        .gauge-header .pct   { font-size: 13px; font-weight: 700; }
+
+        .gauge-header .label {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .gauge-header .pct {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
         .gauge-track {
             height: 8px;
             background: var(--bg-darkest);
             border-radius: 4px;
             overflow: hidden;
         }
+
         .gauge-fill {
             height: 100%;
             border-radius: 4px;
@@ -313,7 +424,7 @@
             background: var(--green);
         }
 
-        /* ── Big Button ── */
+        
         .btn-primary {
             display: block;
             width: 100%;
@@ -327,18 +438,29 @@
             transition: all .25s ease;
             letter-spacing: .3px;
         }
+
         .btn-start {
             background: var(--green);
             color: #0a0a1a;
         }
-        .btn-start:hover { background: #00c864; transform: translateY(-1px); box-shadow: 0 6px 24px var(--green-glow); }
+
+        .btn-start:hover {
+            background: #00c864;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px var(--green-glow);
+        }
+
         .btn-stop {
             background: var(--red);
             color: #fff;
         }
-        .btn-stop:hover { background: #d50000; transform: translateY(-1px); }
 
-        /* ── Small Buttons ── */
+        .btn-stop:hover {
+            background: #d50000;
+            transform: translateY(-1px);
+        }
+
+        
         .btn {
             padding: 9px 18px;
             border: 1px solid var(--border);
@@ -351,13 +473,34 @@
             cursor: pointer;
             transition: all .2s;
         }
-        .btn:hover { border-color: var(--accent); color: var(--accent); background: var(--bg-card-hover); }
-        .btn-accent { border-color: var(--accent); color: var(--accent); }
-        .btn-green  { border-color: var(--green); color: var(--green); }
-        .btn-red    { border-color: var(--red); color: var(--red); }
-        .btn-purple { border-color: var(--accent2); color: var(--accent2); }
 
-        /* ── Stats Bar ── */
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--bg-card-hover);
+        }
+
+        .btn-accent {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-green {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .btn-red {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .btn-purple {
+            border-color: var(--accent2);
+            color: var(--accent2);
+        }
+
+        
         .stats-bar {
             display: flex;
             align-items: center;
@@ -370,13 +513,29 @@
             font-size: 13px;
             font-weight: 600;
         }
-        .stats-bar .stat-item.cyan   { color: var(--accent); }
-        .stats-bar .stat-item.green  { color: var(--green); }
-        .stats-bar .stat-item.orange { color: var(--orange); }
-        .stats-bar .spacer { flex: 1; }
-        .stats-bar .status-badge { font-size: 12px; font-weight: 700; }
 
-        /* ── Feed / Textbox ── */
+        .stats-bar .stat-item.cyan {
+            color: var(--accent);
+        }
+
+        .stats-bar .stat-item.green {
+            color: var(--green);
+        }
+
+        .stats-bar .stat-item.orange {
+            color: var(--orange);
+        }
+
+        .stats-bar .spacer {
+            flex: 1;
+        }
+
+        .stats-bar .status-badge {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        
         .feed-box {
             background: var(--bg-panel);
             border: 1px solid var(--border);
@@ -392,6 +551,7 @@
             white-space: pre-wrap;
             word-break: break-all;
         }
+
         .feed-box.empty {
             display: flex;
             align-items: center;
@@ -408,7 +568,7 @@
             margin-top: 14px;
         }
 
-        /* ── Clipboard Entry ── */
+        
         .clip-entry {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -417,14 +577,28 @@
             margin-bottom: 8px;
             transition: border-color .2s;
         }
-        .clip-entry:hover { border-color: var(--accent2); }
+
+        .clip-entry:hover {
+            border-color: var(--accent2);
+        }
+
         .clip-entry .clip-header {
             display: flex;
             justify-content: space-between;
             margin-bottom: 6px;
         }
-        .clip-entry .clip-time { font-size: 11px; font-weight: 600; color: var(--accent2); }
-        .clip-entry .clip-len  { font-size: 10px; color: var(--text-dim); }
+
+        .clip-entry .clip-time {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent2);
+        }
+
+        .clip-entry .clip-len {
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+
         .clip-entry .clip-text {
             font-family: var(--mono);
             font-size: 12px;
@@ -433,12 +607,13 @@
             word-break: break-all;
         }
 
-        /* ── Screenshot Gallery ── */
+        
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 14px;
         }
+
         .gallery-item {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -446,7 +621,12 @@
             overflow: hidden;
             transition: border-color .2s, transform .2s;
         }
-        .gallery-item:hover { border-color: var(--green); transform: translateY(-2px); }
+
+        .gallery-item:hover {
+            border-color: var(--green);
+            transform: translateY(-2px);
+        }
+
         .gallery-item img {
             width: 100%;
             height: 160px;
@@ -454,23 +634,26 @@
             display: block;
             background: var(--bg-darkest);
         }
+
         .gallery-item .meta {
             padding: 10px 14px;
             font-size: 11px;
             color: var(--text2);
         }
+
         .gallery-item .meta .name {
             font-family: var(--mono);
             font-size: 10px;
             color: var(--text-dim);
         }
 
-        /* ── Log File Table ── */
+        
         .log-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
         }
+
         .log-table th {
             text-align: left;
             padding: 10px 14px;
@@ -479,20 +662,31 @@
             background: var(--bg-card);
             border-bottom: 1px solid var(--border);
         }
+
         .log-table td {
             padding: 9px 14px;
-            border-bottom: 1px solid rgba(255,255,255,.03);
+            border-bottom: 1px solid rgba(255, 255, 255, .03);
             color: var(--text);
         }
-        .log-table tr:hover td { background: rgba(0,212,255,.03); }
+
+        .log-table tr:hover td {
+            background: rgba(0, 212, 255, .03);
+        }
+
         .log-table .badge {
             font-weight: 700;
             font-size: 11px;
         }
-        .badge-yes { color: var(--green); }
-        .badge-no  { color: var(--orange); }
 
-        /* ── Info Cards ── */
+        .badge-yes {
+            color: var(--green);
+        }
+
+        .badge-no {
+            color: var(--orange);
+        }
+
+        
         .info-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -500,6 +694,7 @@
             padding: 20px;
             margin-bottom: 14px;
         }
+
         .info-card .info-title {
             font-size: 15px;
             font-weight: 700;
@@ -507,47 +702,64 @@
             margin-bottom: 12px;
         }
 
-        /* ── Settings Grid ── */
+        
         .settings-section {
             margin-bottom: 24px;
         }
+
         .settings-section h3 {
             font-size: 15px;
             font-weight: 700;
             color: var(--accent);
             margin-bottom: 8px;
         }
+
         .settings-section .sep {
             height: 1px;
             background: var(--border);
             margin-bottom: 14px;
         }
+
         .settings-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
+
         .setting-item {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
             padding: 12px 16px;
         }
-        .setting-item .s-label { font-size: 11px; color: var(--text2); }
-        .setting-item .s-value { font-size: 15px; font-weight: 700; margin-top: 3px; }
 
-        /* ── Consent Modal ── */
+        .setting-item .s-label {
+            font-size: 11px;
+            color: var(--text2);
+        }
+
+        .setting-item .s-value {
+            font-size: 15px;
+            font-weight: 700;
+            margin-top: 3px;
+        }
+
+        
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,.7);
+            background: rgba(0, 0, 0, .7);
             backdrop-filter: blur(6px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
         }
-        .modal-overlay.show { display: flex; }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
         .modal {
             background: var(--bg-panel);
             border: 1px solid var(--border);
@@ -558,8 +770,19 @@
             padding: 30px;
             animation: fadeIn .3s ease;
         }
-        .modal h2 { font-size: 20px; color: var(--accent); margin-bottom: 6px; }
-        .modal .subtitle { font-size: 12px; color: var(--text-dim); margin-bottom: 16px; }
+
+        .modal h2 {
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .modal .subtitle {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-bottom: 16px;
+        }
+
         .modal .terms {
             background: var(--bg-darkest);
             border: 1px solid var(--border);
@@ -572,29 +795,55 @@
             overflow-y: auto;
             margin-bottom: 18px;
         }
+
         .modal .warning {
             font-size: 11px;
             font-weight: 700;
             color: var(--orange);
             margin-bottom: 18px;
         }
-        .modal .btn-row { display: flex; gap: 12px; justify-content: flex-end; }
-        .modal .btn-accept {
-            padding: 11px 28px; border: none; border-radius: var(--radius-sm);
-            background: var(--green); color: #0a0a1a;
-            font-family: var(--font); font-size: 14px; font-weight: 700;
-            cursor: pointer; transition: all .2s;
-        }
-        .modal .btn-accept:hover { background: #00c864; }
-        .modal .btn-decline {
-            padding: 11px 28px; border: 1px solid var(--red); border-radius: var(--radius-sm);
-            background: transparent; color: var(--red);
-            font-family: var(--font); font-size: 14px; font-weight: 700;
-            cursor: pointer; transition: all .2s;
-        }
-        .modal .btn-decline:hover { background: rgba(255,23,68,.1); }
 
-        /* ── Toast ── */
+        .modal .btn-row {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal .btn-accept {
+            padding: 11px 28px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: var(--green);
+            color: #0a0a1a;
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .modal .btn-accept:hover {
+            background: #00c864;
+        }
+
+        .modal .btn-decline {
+            padding: 11px 28px;
+            border: 1px solid var(--red);
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--red);
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .modal .btn-decline:hover {
+            background: rgba(255, 23, 68, .1);
+        }
+
+        
         .toast {
             position: fixed;
             bottom: 30px;
@@ -608,19 +857,22 @@
             font-weight: 600;
             color: var(--accent);
             z-index: 2000;
-            transition: transform .4s cubic-bezier(.4,0,.2,1);
+            transition: transform .4s cubic-bezier(.4, 0, .2, 1);
             pointer-events: none;
         }
-        .toast.show { transform: translateX(-50%) translateY(0); }
 
-        /* ── Storage Stats ── */
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        
         .storage-stats {
             font-size: 11px;
             color: var(--text-dim);
             margin-top: 10px;
         }
 
-        /* Export row */
+        
         .export-row {
             display: flex;
             align-items: center;
@@ -628,466 +880,530 @@
             margin-top: 14px;
             flex-wrap: wrap;
         }
+
         .export-row span {
             font-size: 13px;
             color: var(--text2);
         }
     </style>
 </head>
+
 <body>
-<div class="app">
-    <!-- ═══════════ SIDEBAR ═══════════ -->
-    <aside class="sidebar">
-        <div class="sidebar-logo">
-            <div class="shield">🛡️</div>
-            <h2>{{ app_name }}</h2>
-            <p>{{ app_tagline }}</p>
-        </div>
-        <div class="sidebar-sep"></div>
-        <nav class="sidebar-nav">
-            <button class="nav-btn active" data-page="dashboard"><span class="icon">🏠</span> Dashboard</button>
-            <button class="nav-btn" data-page="keylogger"><span class="icon">⌨️</span> Keylogger</button>
-            <button class="nav-btn" data-page="clipboard"><span class="icon">📋</span> Clipboard</button>
-            <button class="nav-btn" data-page="screenshots"><span class="icon">📸</span> Screenshots</button>
-            <button class="nav-btn" data-page="encryption"><span class="icon">🔐</span> Logs & Crypto</button>
-            <button class="nav-btn" data-page="sysinfo"><span class="icon">🖥️</span> System Info</button>
-            <button class="nav-btn" data-page="settings"><span class="icon">⚙️</span> Settings</button>
-        </nav>
-        <div class="sidebar-footer">
-            <div class="status" id="sidebar-status"><span class="dot off"></span> Idle</div>
-            <div class="session">Session {{ session_id }}</div>
-        </div>
-    </aside>
+    <div class="app">
+        
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="shield">🛡️</div>
+                <h2>{{ app_name }}</h2>
+                <p>{{ app_tagline }}</p>
+            </div>
+            <div class="sidebar-sep"></div>
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-page="dashboard"><span class="icon">🏠</span> Dashboard</button>
+                <button class="nav-btn" data-page="keylogger"><span class="icon">⌨️</span> Keylogger</button>
+                <button class="nav-btn" data-page="clipboard"><span class="icon">📋</span> Clipboard</button>
+                <button class="nav-btn" data-page="screenshots"><span class="icon">📸</span> Screenshots</button>
+                <button class="nav-btn" data-page="encryption"><span class="icon">🔐</span> Logs & Crypto</button>
+                <button class="nav-btn" data-page="sysinfo"><span class="icon">🖥️</span> System Info</button>
+                <button class="nav-btn" data-page="settings"><span class="icon">⚙️</span> Settings</button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="status" id="sidebar-status"><span class="dot off"></span> Idle</div>
+                <div class="session">Session {{ session_id }}</div>
+            </div>
+        </aside>
 
-    <!-- ═══════════ CONTENT ═══════════ -->
-    <main class="content">
+        
+        <main class="content">
 
-        <!-- ────── PAGE 1: DASHBOARD ────── -->
-        <section class="page active" id="page-dashboard">
-            <div class="page-header"><h1>🏠 Dashboard</h1><p>Real-time monitoring overview</p></div>
-
-            <div class="cards-row">
-                <div class="stat-card c-cyan">
-                    <div class="card-icon">⌨️</div>
-                    <div class="card-value" id="v-keys">0</div>
-                    <div class="card-label">Total Keystrokes</div>
+            
+            <section class="page active" id="page-dashboard">
+                <div class="page-header">
+                    <h1>🏠 Dashboard</h1>
+                    <p>Real-time monitoring overview</p>
                 </div>
-                <div class="stat-card c-purple">
-                    <div class="card-icon">📋</div>
-                    <div class="card-value" id="v-clips">0</div>
-                    <div class="card-label">Clipboard Captures</div>
+
+                <div class="cards-row">
+                    <div class="stat-card c-cyan">
+                        <div class="card-icon">⌨️</div>
+                        <div class="card-value" id="v-keys">0</div>
+                        <div class="card-label">Total Keystrokes</div>
+                    </div>
+                    <div class="stat-card c-purple">
+                        <div class="card-icon">📋</div>
+                        <div class="card-value" id="v-clips">0</div>
+                        <div class="card-label">Clipboard Captures</div>
+                    </div>
+                    <div class="stat-card c-green">
+                        <div class="card-icon">📸</div>
+                        <div class="card-value" id="v-shots">0</div>
+                        <div class="card-label">Screenshots</div>
+                    </div>
+                    <div class="stat-card c-orange">
+                        <div class="card-icon">🪟</div>
+                        <div class="card-value" id="v-window">—</div>
+                        <div class="card-label">Active Window</div>
+                    </div>
                 </div>
-                <div class="stat-card c-green">
-                    <div class="card-icon">📸</div>
-                    <div class="card-value" id="v-shots">0</div>
-                    <div class="card-label">Screenshots</div>
+
+                <div class="panels-row">
+                    <div class="panel">
+                        <div class="panel-title">🔌 Module Status</div>
+                        <div class="panel-row"><span class="label">⌨️ Keystroke Engine</span><span class="value"
+                                id="mod-keylogger"><span class="dot off"></span>OFF</span></div>
+                        <div class="panel-row"><span class="label">📋 Clipboard Monitor</span><span class="value"
+                                id="mod-clipboard"><span class="dot off"></span>OFF</span></div>
+                        <div class="panel-row"><span class="label">📸 Screenshot Capture</span><span class="value"
+                                id="mod-screenshot"><span class="dot off"></span>OFF</span></div>
+                        <div class="panel-row"><span class="label">🪟 Window Tracker</span><span class="value"
+                                id="mod-window"><span class="dot off"></span>OFF</span></div>
+                        <div class="panel-row"><span class="label">🔐 Encryption</span><span class="value"
+                                id="mod-encryption"><span class="dot off"></span>OFF</span></div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-title">📊 Session Info</div>
+                        <div class="panel-row"><span class="label">Session ID</span><span class="value" id="ses-id">{{
+                                session_id }}</span></div>
+                        <div class="panel-row"><span class="label">Started</span><span class="value"
+                                id="ses-started">—</span></div>
+                        <div class="panel-row"><span class="label">Elapsed</span><span class="value"
+                                id="ses-elapsed">00:00:00</span></div>
+                        <div class="panel-row"><span class="label">Keys / min</span><span class="value"
+                                id="ses-kpm">0</span></div>
+                        <div class="panel-row"><span class="label">Auto-stop</span><span class="value">{{
+                                auto_stop_hours }}h</span></div>
+                    </div>
                 </div>
-                <div class="stat-card c-orange">
-                    <div class="card-icon">🪟</div>
-                    <div class="card-value" id="v-window">—</div>
-                    <div class="card-label">Active Window</div>
+
+                <div class="gauges-row">
+                    <div class="gauge">
+                        <div class="gauge-header"><span class="label">🧠 CPU Usage</span><span class="pct"
+                                id="cpu-pct">0%</span></div>
+                        <div class="gauge-track">
+                            <div class="gauge-fill" id="cpu-fill"></div>
+                        </div>
+                    </div>
+                    <div class="gauge">
+                        <div class="gauge-header"><span class="label">💾 Memory Usage</span><span class="pct"
+                                id="ram-pct">0%</span></div>
+                        <div class="gauge-track">
+                            <div class="gauge-fill" id="ram-fill"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="panels-row">
-                <div class="panel">
-                    <div class="panel-title">🔌 Module Status</div>
-                    <div class="panel-row"><span class="label">⌨️ Keystroke Engine</span><span class="value" id="mod-keylogger"><span class="dot off"></span>OFF</span></div>
-                    <div class="panel-row"><span class="label">📋 Clipboard Monitor</span><span class="value" id="mod-clipboard"><span class="dot off"></span>OFF</span></div>
-                    <div class="panel-row"><span class="label">📸 Screenshot Capture</span><span class="value" id="mod-screenshot"><span class="dot off"></span>OFF</span></div>
-                    <div class="panel-row"><span class="label">🪟 Window Tracker</span><span class="value" id="mod-window"><span class="dot off"></span>OFF</span></div>
-                    <div class="panel-row"><span class="label">🔐 Encryption</span><span class="value" id="mod-encryption"><span class="dot off"></span>OFF</span></div>
+                <button class="btn-primary btn-start" id="btn-toggle" onclick="toggleMonitoring()">▶ START
+                    MONITORING</button>
+            </section>
+
+            
+            <section class="page" id="page-keylogger">
+                <div class="page-header">
+                    <h1>My Own Keylogger</h1>
+                    <p>Press Keys</p>
                 </div>
-                <div class="panel">
-                    <div class="panel-title">📊 Session Info</div>
-                    <div class="panel-row"><span class="label">Session ID</span><span class="value" id="ses-id">{{ session_id }}</span></div>
-                    <div class="panel-row"><span class="label">Started</span><span class="value" id="ses-started">—</span></div>
-                    <div class="panel-row"><span class="label">Elapsed</span><span class="value" id="ses-elapsed">00:00:00</span></div>
-                    <div class="panel-row"><span class="label">Keys / min</span><span class="value" id="ses-kpm">0</span></div>
-                    <div class="panel-row"><span class="label">Auto-stop</span><span class="value">{{ app_name|default('8') }}h</span></div>
+                <div class="stats-bar">
+                    <span class="stat-item cyan" id="kl-total">Keys: 0</span>
+                    <span class="stat-item green" id="kl-kpm">KPM: 0</span>
+                    <span class="stat-item orange" id="kl-buffer">Buffer: 0</span>
+                    <span class="spacer"></span>
+                    <span class="status-badge" id="kl-status" style="color:var(--red)">● Stopped</span>
                 </div>
-            </div>
-
-            <div class="gauges-row">
-                <div class="gauge">
-                    <div class="gauge-header"><span class="label">🧠 CPU Usage</span><span class="pct" id="cpu-pct">0%</span></div>
-                    <div class="gauge-track"><div class="gauge-fill" id="cpu-fill"></div></div>
+                <div class="feed-box empty" id="kl-feed">Waiting for keystrokes…<br>Start monitoring to see live
+                    capture.</div>
+                <div class="controls-bar">
+                    <button class="btn btn-green" onclick="socket.emit('start_monitoring')">▶ Start</button>
+                    <button class="btn btn-red" onclick="socket.emit('stop_monitoring')">■ Stop</button>
+                    <button class="btn" onclick="clearFeed()">🗑 Clear</button>
                 </div>
-                <div class="gauge">
-                    <div class="gauge-header"><span class="label">💾 Memory Usage</span><span class="pct" id="ram-pct">0%</span></div>
-                    <div class="gauge-track"><div class="gauge-fill" id="ram-fill"></div></div>
+            </section>
+
+            
+            <section class="page" id="page-clipboard">
+                <div class="page-header">
+                    <h1>📋 Clipboard Monitor</h1>
+                    <p>Captured clipboard changes in real-time</p>
                 </div>
+                <div class="stats-bar">
+                    <span class="stat-item purple" id="cb-total" style="color:var(--accent2)">Captures: 0</span>
+                    <span class="stat-item" style="color:var(--text2)" id="cb-poll">Poll: —s</span>
+                    <span class="spacer"></span>
+                    <span class="status-badge" id="cb-status" style="color:var(--red)">● Stopped</span>
+                </div>
+                <div id="cb-feed" style="min-height:300px;max-height:60vh;overflow-y:auto">
+                    <div class="feed-box empty" id="cb-placeholder">No clipboard changes captured yet…<br>Start
+                        monitoring to begin.</div>
+                </div>
+            </section>
+
+            
+            <section class="page" id="page-screenshots">
+                <div class="page-header">
+                    <h1>📸 Screenshots</h1>
+                    <p>Captured screen images</p>
+                </div>
+                <div class="stats-bar">
+                    <span class="stat-item green" id="ss-total">Total: 0</span>
+                    <span class="stat-item" style="color:var(--text2)" id="ss-interval">Interval: —s</span>
+                    <span class="stat-item" style="color:var(--text2)" id="ss-fmt">Format: —</span>
+                    <span class="spacer"></span>
+                    <button class="btn btn-green" onclick="captureScreenshot()">📷 Capture Now</button>
+                </div>
+                <div class="gallery-grid" id="ss-gallery">
+                    <div class="feed-box empty" style="grid-column:1/-1">No screenshots yet.<br>Start monitoring or
+                        click 'Capture Now'.</div>
+                </div>
+            </section>
+
+            
+            <section class="page" id="page-encryption">
+                <div class="page-header">
+                    <h1>🔐 Logs & Encryption</h1>
+                    <p>Manage log files and encryption keys</p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-title">🔑 Encryption Status</div>
+                    <div class="panel-row"><span class="label">Encryption</span><span class="value"
+                            id="enc-enabled">—</span></div>
+                    <div class="panel-row"><span class="label">Key Loaded</span><span class="value"
+                            id="enc-key">—</span></div>
+                    <div class="panel-row"><span class="label">Key Created</span><span class="value"
+                            id="enc-created">—</span></div>
+                    <div class="panel-row"><span class="label">Last Rotated</span><span class="value"
+                            id="enc-rotated">—</span></div>
+                    <div class="panel-row"><span class="label">Rotation Count</span><span class="value"
+                            id="enc-rotations">—</span></div>
+                </div>
+
+                <h3 style="font-size:15px;font-weight:700;color:var(--accent);margin:18px 0 10px">📂 Log Files</h3>
+                <div style="overflow-x:auto">
+                    <table class="log-table" id="log-table">
+                        <thead>
+                            <tr>
+                                <th>Filename</th>
+                                <th>Size</th>
+                                <th>Modified</th>
+                                <th>Encrypted</th>
+                            </tr>
+                        </thead>
+                        <tbody id="log-tbody">
+                            <tr>
+                                <td colspan="4" style="color:var(--text-dim);text-align:center;padding:30px">Loading…
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="export-row">
+                    <span>Export logs as:</span>
+                    <button class="btn btn-accent" onclick="exportLogs('txt')">📥 TXT</button>
+                    <button class="btn btn-purple" onclick="exportLogs('csv')">📥 CSV</button>
+                    <button class="btn btn-green" onclick="exportLogs('json')">📥 JSON</button>
+                    <span style="flex:1"></span>
+                    <button class="btn" onclick="loadLogs()">🔄 Refresh</button>
+                </div>
+                <div class="storage-stats" id="storage-stats"></div>
+            </section>
+
+            
+            <section class="page" id="page-sysinfo">
+                <div class="page-header">
+                    <h1>🖥️ System Information</h1>
+                    <p>Hardware and software profile</p>
+                </div>
+                <div id="sysinfo-content">
+                    <div class="feed-box empty">Loading system information…</div>
+                </div>
+                <div style="margin-top:16px"><button class="btn btn-accent" onclick="loadSysinfo()">🔄 Refresh System
+                        Info</button></div>
+            </section>
+
+            
+            <section class="page" id="page-settings">
+                <div class="page-header">
+                    <h1>⚙️ Settings</h1>
+                    <p>Current monitoring configuration</p>
+                </div>
+                <div id="settings-content">
+                    <div class="feed-box empty">Loading settings…</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    
+    <div class="modal-overlay" id="consent-modal">
+        <div class="modal">
+            <h2>⚖️ Ethical Use Agreement</h2>
+            <p class="subtitle">You must accept the terms below before monitoring can begin.</p>
+            <div class="terms">
+                <strong>TERMS OF AUTHORIZED USE</strong>
+
+                1. <strong>AUTHORIZATION</strong> — You confirm that you have explicit written authorization from the
+                system owner to run this monitoring software on this device.
+
+                2. <strong>LEGAL COMPLIANCE</strong> — You will use this tool in compliance with all applicable local,
+                state, national, and international laws and regulations.
+
+                3. <strong>EDUCATIONAL PURPOSE</strong> — This software is intended for cybersecurity education,
+                authorized penetration testing, and security research only.
+
+                4. <strong>DATA RESPONSIBILITY</strong> — You accept full responsibility for any data collected and will
+                handle it in accordance with data protection regulations (e.g., GDPR, CCPA).
+
+                5. <strong>NO MALICIOUS USE</strong> — You will NOT use this tool for unauthorized surveillance,
+                identity theft, corporate espionage, or any other malicious purpose.
+
+                6. <strong>ACCOUNTABILITY</strong> — You understand that all monitoring sessions are logged and can be
+                audited.
             </div>
-
-            <button class="btn-primary btn-start" id="btn-toggle" onclick="toggleMonitoring()">▶  START MONITORING</button>
-        </section>
-
-        <!-- ────── PAGE 2: KEYLOGGER ────── -->
-        <section class="page" id="page-keylogger">
-            <div class="page-header"><h1>⌨️ Keylogger</h1><p>Live keystroke capture feed</p></div>
-            <div class="stats-bar">
-                <span class="stat-item cyan" id="kl-total">Keys: 0</span>
-                <span class="stat-item green" id="kl-kpm">KPM: 0</span>
-                <span class="stat-item orange" id="kl-buffer">Buffer: 0</span>
-                <span class="spacer"></span>
-                <span class="status-badge" id="kl-status" style="color:var(--red)">● Stopped</span>
+            <div class="warning">⚠️ Unauthorized use of monitoring tools is illegal and unethical. Violation may result
+                in criminal prosecution.</div>
+            <div class="btn-row">
+                <button class="btn-decline" onclick="declineConsent()">❌ Decline</button>
+                <button class="btn-accept" onclick="acceptConsent()">✅ Accept & Continue</button>
             </div>
-            <div class="feed-box empty" id="kl-feed">Waiting for keystrokes…<br>Start monitoring to see live capture.</div>
-            <div class="controls-bar">
-                <button class="btn btn-green" onclick="socket.emit('start_monitoring')">▶ Start</button>
-                <button class="btn btn-red" onclick="socket.emit('stop_monitoring')">■ Stop</button>
-                <button class="btn" onclick="clearFeed()">🗑 Clear</button>
-            </div>
-        </section>
-
-        <!-- ────── PAGE 3: CLIPBOARD ────── -->
-        <section class="page" id="page-clipboard">
-            <div class="page-header"><h1>📋 Clipboard Monitor</h1><p>Captured clipboard changes in real-time</p></div>
-            <div class="stats-bar">
-                <span class="stat-item purple" id="cb-total" style="color:var(--accent2)">Captures: 0</span>
-                <span class="stat-item" style="color:var(--text2)" id="cb-poll">Poll: —s</span>
-                <span class="spacer"></span>
-                <span class="status-badge" id="cb-status" style="color:var(--red)">● Stopped</span>
-            </div>
-            <div id="cb-feed" style="min-height:300px;max-height:60vh;overflow-y:auto">
-                <div class="feed-box empty" id="cb-placeholder">No clipboard changes captured yet…<br>Start monitoring to begin.</div>
-            </div>
-        </section>
-
-        <!-- ────── PAGE 4: SCREENSHOTS ────── -->
-        <section class="page" id="page-screenshots">
-            <div class="page-header"><h1>📸 Screenshots</h1><p>Captured screen images</p></div>
-            <div class="stats-bar">
-                <span class="stat-item green" id="ss-total">Total: 0</span>
-                <span class="stat-item" style="color:var(--text2)" id="ss-interval">Interval: —s</span>
-                <span class="stat-item" style="color:var(--text2)" id="ss-fmt">Format: —</span>
-                <span class="spacer"></span>
-                <button class="btn btn-green" onclick="captureScreenshot()">📷 Capture Now</button>
-            </div>
-            <div class="gallery-grid" id="ss-gallery">
-                <div class="feed-box empty" style="grid-column:1/-1">No screenshots yet.<br>Start monitoring or click 'Capture Now'.</div>
-            </div>
-        </section>
-
-        <!-- ────── PAGE 5: ENCRYPTION & LOGS ────── -->
-        <section class="page" id="page-encryption">
-            <div class="page-header"><h1>🔐 Logs & Encryption</h1><p>Manage log files and encryption keys</p></div>
-
-            <div class="info-card">
-                <div class="info-title">🔑 Encryption Status</div>
-                <div class="panel-row"><span class="label">Encryption</span><span class="value" id="enc-enabled">—</span></div>
-                <div class="panel-row"><span class="label">Key Loaded</span><span class="value" id="enc-key">—</span></div>
-                <div class="panel-row"><span class="label">Key Created</span><span class="value" id="enc-created">—</span></div>
-                <div class="panel-row"><span class="label">Last Rotated</span><span class="value" id="enc-rotated">—</span></div>
-                <div class="panel-row"><span class="label">Rotation Count</span><span class="value" id="enc-rotations">—</span></div>
-            </div>
-
-            <h3 style="font-size:15px;font-weight:700;color:var(--accent);margin:18px 0 10px">📂 Log Files</h3>
-            <div style="overflow-x:auto">
-                <table class="log-table" id="log-table">
-                    <thead><tr><th>Filename</th><th>Size</th><th>Modified</th><th>Encrypted</th></tr></thead>
-                    <tbody id="log-tbody"><tr><td colspan="4" style="color:var(--text-dim);text-align:center;padding:30px">Loading…</td></tr></tbody>
-                </table>
-            </div>
-
-            <div class="export-row">
-                <span>Export logs as:</span>
-                <button class="btn btn-accent" onclick="exportLogs('txt')">📥 TXT</button>
-                <button class="btn btn-purple" onclick="exportLogs('csv')">📥 CSV</button>
-                <button class="btn btn-green" onclick="exportLogs('json')">📥 JSON</button>
-                <span style="flex:1"></span>
-                <button class="btn" onclick="loadLogs()">🔄 Refresh</button>
-            </div>
-            <div class="storage-stats" id="storage-stats"></div>
-        </section>
-
-        <!-- ────── PAGE 6: SYSTEM INFO ────── -->
-        <section class="page" id="page-sysinfo">
-            <div class="page-header"><h1>🖥️ System Information</h1><p>Hardware and software profile</p></div>
-            <div id="sysinfo-content"><div class="feed-box empty">Loading system information…</div></div>
-            <div style="margin-top:16px"><button class="btn btn-accent" onclick="loadSysinfo()">🔄 Refresh System Info</button></div>
-        </section>
-
-        <!-- ────── PAGE 7: SETTINGS ────── -->
-        <section class="page" id="page-settings">
-            <div class="page-header"><h1>⚙️ Settings</h1><p>Current monitoring configuration</p></div>
-            <div id="settings-content"><div class="feed-box empty">Loading settings…</div></div>
-        </section>
-    </main>
-</div>
-
-<!-- ═══════════ CONSENT MODAL ═══════════ -->
-<div class="modal-overlay" id="consent-modal">
-    <div class="modal">
-        <h2>⚖️ Ethical Use Agreement</h2>
-        <p class="subtitle">You must accept the terms below before monitoring can begin.</p>
-        <div class="terms">
-<strong>TERMS OF AUTHORIZED USE</strong>
-
-1. <strong>AUTHORIZATION</strong> — You confirm that you have explicit written authorization from the system owner to run this monitoring software on this device.
-
-2. <strong>LEGAL COMPLIANCE</strong> — You will use this tool in compliance with all applicable local, state, national, and international laws and regulations.
-
-3. <strong>EDUCATIONAL PURPOSE</strong> — This software is intended for cybersecurity education, authorized penetration testing, and security research only.
-
-4. <strong>DATA RESPONSIBILITY</strong> — You accept full responsibility for any data collected and will handle it in accordance with data protection regulations (e.g., GDPR, CCPA).
-
-5. <strong>NO MALICIOUS USE</strong> — You will NOT use this tool for unauthorized surveillance, identity theft, corporate espionage, or any other malicious purpose.
-
-6. <strong>ACCOUNTABILITY</strong> — You understand that all monitoring sessions are logged and can be audited.
-        </div>
-        <div class="warning">⚠️ Unauthorized use of monitoring tools is illegal and unethical. Violation may result in criminal prosecution.</div>
-        <div class="btn-row">
-            <button class="btn-decline" onclick="declineConsent()">❌ Decline</button>
-            <button class="btn-accept" onclick="acceptConsent()">✅ Accept & Continue</button>
         </div>
     </div>
-</div>
 
-<!-- ═══════════ TOAST ═══════════ -->
-<div class="toast" id="toast"></div>
+    
+    <div class="toast" id="toast"></div>
 
-<script>
-/* ═══════════════════════════════════════════
-   STATE & SOCKET
-   ═══════════════════════════════════════════ */
-const socket = io();
-let monitoring = false;
-let consentGiven = false;
-let klFeedStarted = false;
+    <script>
+        
+        const socket = io();
+        let monitoring = false;
+        let consentGiven = false;
+        let klFeedStarted = false;
 
-/* ── Tab Navigation ── */
-document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
-        const page = document.getElementById('page-' + btn.dataset.page);
-        if (page) page.classList.add('active');
+        
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                const page = document.getElementById('page-' + btn.dataset.page);
+                if (page) page.classList.add('active');
 
-        /* Lazy-load data for certain pages */
-        const pg = btn.dataset.page;
-        if (pg === 'encryption') { loadLogs(); loadEncryption(); }
-        if (pg === 'sysinfo')    loadSysinfo();
-        if (pg === 'settings')   loadSettings();
-        if (pg === 'screenshots') loadScreenshots();
-    });
-});
+                
+                const pg = btn.dataset.page;
+                if (pg === 'encryption') { loadLogs(); loadEncryption(); }
+                if (pg === 'sysinfo') loadSysinfo();
+                if (pg === 'settings') loadSettings();
+                if (pg === 'screenshots') loadScreenshots();
+            });
+        });
 
-/* ═══════════════════════════════════════════
-   SOCKET.IO HANDLERS
-   ═══════════════════════════════════════════ */
+        
 
-socket.on('monitoring_status', data => {
-    monitoring = data.active;
-    updateToggleButton();
-});
+        socket.on('monitoring_status', data => {
+            monitoring = data.active;
+            updateToggleButton();
+        });
 
-socket.on('stats_update', data => {
-    /* Dashboard cards */
-    setText('v-keys',  (data.keylogger?.total_keystrokes ?? 0).toLocaleString());
-    setText('v-clips', data.clipboard?.total_captures ?? 0);
-    setText('v-shots', data.screenshot?.total_captures ?? 0);
+        socket.on('stats_update', data => {
+            
+            setText('v-keys', (data.keylogger?.total_keystrokes ?? 0).toLocaleString());
+            setText('v-clips', data.clipboard?.total_captures ?? 0);
+            setText('v-shots', data.screenshot?.total_captures ?? 0);
 
-    const win = data.window_tracker?.current_window || '—';
-    setText('v-window', win.length > 28 ? win.slice(0,28) + '…' : win);
+            const win = data.window_tracker?.current_window || '—';
+            setText('v-window', win.length > 28 ? win.slice(0, 28) + '…' : win);
 
-    /* Session info */
-    const el = data.keylogger?.elapsed_seconds || 0;
-    const h = Math.floor(el/3600), m = Math.floor((el%3600)/60), s = Math.floor(el%60);
-    setText('ses-elapsed', `${p(h)}:${p(m)}:${p(s)}`);
-    setText('ses-kpm', data.keylogger?.keys_per_minute ?? 0);
+            
+            const el = data.keylogger?.elapsed_seconds || 0;
+            const h = Math.floor(el / 3600), m = Math.floor((el % 3600) / 60), s = Math.floor(el % 60);
+            setText('ses-elapsed', `${p(h)}:${p(m)}:${p(s)}`);
+            setText('ses-kpm', data.keylogger?.keys_per_minute ?? 0);
 
-    /* Module dots */
-    setModDot('mod-keylogger',  data.keylogger?.running);
-    setModDot('mod-clipboard',  data.clipboard?.running);
-    setModDot('mod-screenshot', data.screenshot?.running);
-    setModDot('mod-window',     data.window_tracker?.running);
+            
+            setModDot('mod-keylogger', data.keylogger?.running);
+            setModDot('mod-clipboard', data.clipboard?.running);
+            setModDot('mod-screenshot', data.screenshot?.running);
+            setModDot('mod-window', data.window_tracker?.running);
 
-    /* Gauges */
-    setGauge('cpu', data.cpu || 0);
-    setGauge('ram', data.ram || 0);
+            
+            setGauge('cpu', data.cpu || 0);
+            setGauge('ram', data.ram || 0);
 
-    /* Sidebar status */
-    const sb = document.getElementById('sidebar-status');
-    if (data.monitoring) {
-        sb.innerHTML = '<span class="dot on"></span> Monitoring';
-        sb.style.color = 'var(--green)';
-    } else {
-        sb.innerHTML = '<span class="dot off"></span> Idle';
-        sb.style.color = 'var(--text-dim)';
-    }
+            
+            const sb = document.getElementById('sidebar-status');
+            if (data.monitoring) {
+                sb.innerHTML = '<span class="dot on"></span> Monitoring';
+                sb.style.color = 'var(--green)';
+            } else {
+                sb.innerHTML = '<span class="dot off"></span> Idle';
+                sb.style.color = 'var(--text-dim)';
+            }
 
-    /* Keylogger page stats */
-    setText('kl-total',  'Keys: ' + (data.keylogger?.total_keystrokes ?? 0).toLocaleString());
-    setText('kl-kpm',    'KPM: '  + (data.keylogger?.keys_per_minute ?? 0));
-    setText('kl-buffer', 'Buffer: ' + (data.keylogger?.buffer_size ?? 0));
-    const klSt = document.getElementById('kl-status');
-    if (data.keylogger?.running) {
-        klSt.innerHTML = '● Running'; klSt.style.color = 'var(--green)';
-    } else {
-        klSt.innerHTML = '● Stopped'; klSt.style.color = 'var(--red)';
-    }
+            
+            setText('kl-total', 'Keys: ' + (data.keylogger?.total_keystrokes ?? 0).toLocaleString());
+            setText('kl-kpm', 'KPM: ' + (data.keylogger?.keys_per_minute ?? 0));
+            setText('kl-buffer', 'Buffer: ' + (data.keylogger?.buffer_size ?? 0));
+            const klSt = document.getElementById('kl-status');
+            if (data.keylogger?.running) {
+                klSt.innerHTML = '● Running'; klSt.style.color = 'var(--green)';
+            } else {
+                klSt.innerHTML = '● Stopped'; klSt.style.color = 'var(--red)';
+            }
 
-    /* Clipboard page stats */
-    setText('cb-total', 'Captures: ' + (data.clipboard?.total_captures ?? 0));
-    const cbSt = document.getElementById('cb-status');
-    if (data.clipboard?.running) {
-        cbSt.innerHTML = '● Running'; cbSt.style.color = 'var(--green)';
-    } else {
-        cbSt.innerHTML = '● Stopped'; cbSt.style.color = 'var(--red)';
-    }
+            
+            setText('cb-total', 'Captures: ' + (data.clipboard?.total_captures ?? 0));
+            const cbSt = document.getElementById('cb-status');
+            if (data.clipboard?.running) {
+                cbSt.innerHTML = '● Running'; cbSt.style.color = 'var(--green)';
+            } else {
+                cbSt.innerHTML = '● Stopped'; cbSt.style.color = 'var(--red)';
+            }
 
-    /* Screenshot stats */
-    setText('ss-total', 'Total: ' + (data.screenshot?.total_captures ?? 0));
-});
+            
+            setText('ss-total', 'Total: ' + (data.screenshot?.total_captures ?? 0));
+        });
 
-/* ── Real-time keystroke feed ── */
-socket.on('keystroke', data => {
-    const feed = document.getElementById('kl-feed');
-    if (!klFeedStarted) {
-        feed.textContent = '';
-        feed.classList.remove('empty');
-        klFeedStarted = true;
-    }
-    feed.textContent += data.key || '';
-    feed.scrollTop = feed.scrollHeight;
-});
+        
+        socket.on('keystroke', data => {
+            const feed = document.getElementById('kl-feed');
+            if (!klFeedStarted) {
+                feed.textContent = '';
+                feed.classList.remove('empty');
+                klFeedStarted = true;
+            }
+            feed.textContent += data.key || '';
+            feed.scrollTop = feed.scrollHeight;
+        });
 
-/* ── Real-time clipboard feed ── */
-socket.on('clipboard_update', data => {
-    const ph = document.getElementById('cb-placeholder');
-    if (ph) ph.remove();
+        
+        socket.on('clipboard_update', data => {
+            const ph = document.getElementById('cb-placeholder');
+            if (ph) ph.remove();
 
-    const feed = document.getElementById('cb-feed');
-    const entry = document.createElement('div');
-    entry.className = 'clip-entry';
+            const feed = document.getElementById('cb-feed');
+            const entry = document.createElement('div');
+            entry.className = 'clip-entry';
 
-    const ts = data.timestamp || '';
-    const time = ts.includes('T') ? ts.split('T')[1].slice(0,8) : ts;
-    const content = (data.content || '').slice(0, 200);
-    const len = data.length || 0;
+            const ts = data.timestamp || '';
+            const time = ts.includes('T') ? ts.split('T')[1].slice(0, 8) : ts;
+            const content = (data.content || '').slice(0, 200);
+            const len = data.length || 0;
 
-    entry.innerHTML = `
+            entry.innerHTML = `
         <div class="clip-header">
             <span class="clip-time">🕐 ${time}</span>
             <span class="clip-len">${len} chars</span>
         </div>
         <div class="clip-text">${escapeHtml(content)}</div>
     `;
-    feed.prepend(entry);
-});
+            feed.prepend(entry);
+        });
 
-/* ═══════════════════════════════════════════
-   CONTROLS
-   ═══════════════════════════════════════════ */
+        
 
-function toggleMonitoring() {
-    if (monitoring) {
-        socket.emit('stop_monitoring');
-    } else {
-        if (!consentGiven) {
-            document.getElementById('consent-modal').classList.add('show');
-            return;
+        function toggleMonitoring() {
+            if (monitoring) {
+                socket.emit('stop_monitoring');
+            } else {
+                if (!consentGiven) {
+                    document.getElementById('consent-modal').classList.add('show');
+                    return;
+                }
+                socket.emit('start_monitoring');
+            }
         }
-        socket.emit('start_monitoring');
-    }
-}
 
-function acceptConsent() {
-    consentGiven = true;
-    document.getElementById('consent-modal').classList.remove('show');
-    socket.emit('start_monitoring');
-}
-
-function declineConsent() {
-    document.getElementById('consent-modal').classList.remove('show');
-    showToast('❌ Consent declined. Monitoring will not start.');
-}
-
-function updateToggleButton() {
-    const btn = document.getElementById('btn-toggle');
-    if (monitoring) {
-        btn.textContent = '■  STOP MONITORING';
-        btn.className = 'btn-primary btn-stop';
-    } else {
-        btn.textContent = '▶  START MONITORING';
-        btn.className = 'btn-primary btn-start';
-    }
-}
-
-function clearFeed() {
-    const feed = document.getElementById('kl-feed');
-    feed.textContent = 'Waiting for keystrokes…\nStart monitoring to see live capture.';
-    feed.classList.add('empty');
-    klFeedStarted = false;
-}
-
-function captureScreenshot() {
-    fetch('/api/screenshot/capture', { method: 'POST' })
-        .then(r => r.json())
-        .then(d => {
-            if (d.success) { showToast('📸 Screenshot captured!'); setTimeout(loadScreenshots, 1000); }
-            else showToast('❌ ' + (d.error || 'Capture failed'));
-        }).catch(() => showToast('❌ Capture request failed'));
-}
-
-function exportLogs(fmt) {
-    fetch('/api/export/' + fmt, { method: 'POST' })
-        .then(r => r.json())
-        .then(d => {
-            if (d.success) showToast('✅ Exported to ' + d.path);
-            else showToast('❌ ' + (d.error || 'Export failed'));
-        }).catch(() => showToast('❌ Export request failed'));
-}
-
-/* ═══════════════════════════════════════════
-   DATA LOADERS
-   ═══════════════════════════════════════════ */
-
-function loadEncryption() {
-    fetch('/api/stats').then(r => r.json()).then(d => {
-        const e = d.encryption || {};
-        setText('enc-enabled',   e.enabled ? '🔒 Active' : '🔓 Disabled');
-        document.getElementById('enc-enabled').style.color = e.enabled ? 'var(--green)' : 'var(--red)';
-        setText('enc-key',       e.key_loaded ? '✅ Yes' : '❌ No');
-        setText('enc-created',   (e.created_at || '—').slice(0,19));
-        setText('enc-rotated',   (e.rotated_at || '—').slice(0,19));
-        setText('enc-rotations', e.rotation_count ?? '—');
-
-        setModDot('mod-encryption', e.enabled);
-    });
-}
-
-function loadLogs() {
-    fetch('/api/logs').then(r => r.json()).then(files => {
-        const tbody = document.getElementById('log-tbody');
-        if (!files.length) {
-            tbody.innerHTML = '<tr><td colspan="4" style="color:var(--text-dim);text-align:center;padding:20px">No log files found.</td></tr>';
-            return;
+        function acceptConsent() {
+            consentGiven = true;
+            document.getElementById('consent-modal').classList.remove('show');
+            socket.emit('start_monitoring');
         }
-        tbody.innerHTML = files.map(f => `
+
+        function declineConsent() {
+            document.getElementById('consent-modal').classList.remove('show');
+            showToast('❌ Consent declined. Monitoring will not start.');
+        }
+
+        function updateToggleButton() {
+            const btn = document.getElementById('btn-toggle');
+            if (monitoring) {
+                btn.textContent = '■  STOP MONITORING';
+                btn.className = 'btn-primary btn-stop';
+            } else {
+                btn.textContent = '▶  START MONITORING';
+                btn.className = 'btn-primary btn-start';
+            }
+        }
+
+        function clearFeed() {
+            const feed = document.getElementById('kl-feed');
+            feed.textContent = 'Waiting for keystrokes…\nStart monitoring to see live capture.';
+            feed.classList.add('empty');
+            klFeedStarted = false;
+        }
+
+        function captureScreenshot() {
+            fetch('/api/screenshot/capture', { method: 'POST' })
+                .then(r => r.json())
+                .then(d => {
+                    if (d.success) { showToast('📸 Screenshot captured!'); setTimeout(loadScreenshots, 1000); }
+                    else showToast('❌ ' + (d.error || 'Capture failed'));
+                }).catch(() => showToast('❌ Capture request failed'));
+        }
+
+        function exportLogs(fmt) {
+            fetch('/api/export/' + fmt, { method: 'POST' })
+                .then(r => r.json())
+                .then(d => {
+                    if (d.success) showToast('✅ Exported to ' + d.path);
+                    else showToast('❌ ' + (d.error || 'Export failed'));
+                }).catch(() => showToast('❌ Export request failed'));
+        }
+
+        
+
+        function loadEncryption() {
+            fetch('/api/stats').then(r => r.json()).then(d => {
+                const e = d.encryption || {};
+                setText('enc-enabled', e.enabled ? '🔒 Active' : '🔓 Disabled');
+                document.getElementById('enc-enabled').style.color = e.enabled ? 'var(--green)' : 'var(--red)';
+                setText('enc-key', e.key_loaded ? '✅ Yes' : '❌ No');
+                setText('enc-created', (e.created_at || '—').slice(0, 19));
+                setText('enc-rotated', (e.rotated_at || '—').slice(0, 19));
+                setText('enc-rotations', e.rotation_count ?? '—');
+
+                setModDot('mod-encryption', e.enabled);
+            });
+        }
+
+        function loadLogs() {
+            fetch('/api/logs').then(r => r.json()).then(files => {
+                const tbody = document.getElementById('log-tbody');
+                if (!files.length) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="color:var(--text-dim);text-align:center;padding:20px">No log files found.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = files.map(f => `
             <tr>
                 <td style="font-family:var(--mono);font-size:11px">${escapeHtml(f.filename)}</td>
                 <td>${f.size_kb} KB</td>
                 <td>${f.modified}</td>
-                <td><span class="badge ${f.encrypted?'badge-yes':'badge-no'}">${f.encrypted?'✅ Yes':'❌ No'}</span></td>
+                <td><span class="badge ${f.encrypted ? 'badge-yes' : 'badge-no'}">${f.encrypted ? '✅ Yes' : '❌ No'}</span></td>
             </tr>
         `).join('');
-    });
-    fetch('/api/storage').then(r => r.json()).then(s => {
-        setText('storage-stats', `📁 ${s.total_files} files  ·  💾 ${s.total_size_mb} MB  ·  📂 ${s.log_directory}`);
-    });
-}
-
-function loadScreenshots() {
-    fetch('/api/screenshots/list').then(r => r.json()).then(caps => {
-        const gallery = document.getElementById('ss-gallery');
-        if (!caps.length) {
-            gallery.innerHTML = '<div class="feed-box empty" style="grid-column:1/-1">No screenshots yet.</div>';
-            return;
+            });
+            fetch('/api/storage').then(r => r.json()).then(s => {
+                setText('storage-stats', `📁 ${s.total_files} files  ·  💾 ${s.total_size_mb} MB  ·  📂 ${s.log_directory}`);
+            });
         }
-        gallery.innerHTML = caps.map(c => `
+
+        function loadScreenshots() {
+            fetch('/api/screenshots/list').then(r => r.json()).then(caps => {
+                const gallery = document.getElementById('ss-gallery');
+                if (!caps.length) {
+                    gallery.innerHTML = '<div class="feed-box empty" style="grid-column:1/-1">No screenshots yet.</div>';
+                    return;
+                }
+                gallery.innerHTML = caps.map(c => `
             <div class="gallery-item">
                 <img src="/screenshots/${encodeURIComponent(c.filename)}" alt="Screenshot" loading="lazy"
                      onerror="this.style.display='none'">
@@ -1097,156 +1413,155 @@ function loadScreenshots() {
                 </div>
             </div>
         `).join('');
-    });
-    fetch('/api/stats').then(r => r.json()).then(d => {
-        const ss = d.screenshot || {};
-        setText('ss-interval', 'Interval: ' + (ss.interval_seconds ?? '—') + 's');
-        setText('ss-fmt', 'Format: ' + (ss.format || '—').toUpperCase() + '  Q:' + (ss.quality ?? '—'));
-    });
-}
-
-function loadSysinfo() {
-    const c = document.getElementById('sysinfo-content');
-    c.innerHTML = '<div class="feed-box empty">Loading…</div>';
-    fetch('/api/sysinfo').then(r => r.json()).then(d => {
-        let html = '';
-        /* OS */
-        const os = d.os_info || {};
-        html += infoCard('🏗️ Operating System', [
-            ['System', `${os.system||'?'} ${os.release||''}`],
-            ['Architecture', `${os.architecture||'?'} (${os.machine||''})`],
-            ['Processor', (os.processor||'?').slice(0,60)],
-            ['Python', os.python_version||'?'],
-        ]);
-        /* Hardware */
-        const hw = d.hardware || {};
-        html += infoCard('🧠 Hardware', [
-            ['CPU Cores', `${hw.cpu_count_physical??'?'} phys / ${hw.cpu_count_logical??'?'} logical`],
-            ['RAM', `${hw.ram_total_gb??'?'} GB (${hw.ram_usage_percent??'?'}% used)`],
-            ['Disk', `${hw.disk_total_gb??'?'} GB (${hw.disk_usage_percent??'?'}% used)`],
-        ]);
-        /* Network */
-        const net = d.network || {};
-        html += infoCard('🌐 Network', [
-            ['Hostname', net.hostname||'?'],
-            ['Local IP', net.local_ip||'?'],
-            ['Net Sent', (net.bytes_sent_mb??'?')+' MB'],
-            ['Net Recv', (net.bytes_recv_mb??'?')+' MB'],
-        ]);
-        /* User */
-        const usr = d.user_info || {};
-        html += infoCard('👤 User', [
-            ['Username', usr.username||'?'],
-            ['Home', usr.home_directory||'?'],
-        ]);
-        /* Processes */
-        const procs = d.processes || [];
-        if (procs.length && !procs[0]?.error) {
-            html += '<h3 style="font-size:15px;font-weight:700;color:var(--accent);margin:18px 0 10px">📊 Top Processes</h3>';
-            html += '<table class="log-table"><thead><tr><th>PID</th><th>Name</th><th>CPU%</th><th>Mem%</th><th>Status</th></tr></thead><tbody>';
-            procs.slice(0,15).forEach(p => {
-                html += `<tr><td>${p.pid}</td><td>${escapeHtml(p.name||'')}</td><td>${p.cpu_percent}</td><td>${p.memory_percent}</td><td>${p.status}</td></tr>`;
             });
-            html += '</tbody></table>';
+            fetch('/api/stats').then(r => r.json()).then(d => {
+                const ss = d.screenshot || {};
+                setText('ss-interval', 'Interval: ' + (ss.interval_seconds ?? '—') + 's');
+                setText('ss-fmt', 'Format: ' + (ss.format || '—').toUpperCase() + '  Q:' + (ss.quality ?? '—'));
+            });
         }
-        c.innerHTML = html;
-    }).catch(() => { c.innerHTML = '<div class="feed-box empty">Failed to load system info.</div>'; });
-}
 
-function loadSettings() {
-    fetch('/api/settings').then(r => r.json()).then(s => {
-        const c = document.getElementById('settings-content');
-        c.innerHTML = `
+        function loadSysinfo() {
+            const c = document.getElementById('sysinfo-content');
+            c.innerHTML = '<div class="feed-box empty">Loading…</div>';
+            fetch('/api/sysinfo').then(r => r.json()).then(d => {
+                let html = '';
+                
+                const os = d.os_info || {};
+                html += infoCard('🏗️ Operating System', [
+                    ['System', `${os.system || '?'} ${os.release || ''}`],
+                    ['Architecture', `${os.architecture || '?'} (${os.machine || ''})`],
+                    ['Processor', (os.processor || '?').slice(0, 60)],
+                    ['Python', os.python_version || '?'],
+                ]);
+                
+                const hw = d.hardware || {};
+                html += infoCard('🧠 Hardware', [
+                    ['CPU Cores', `${hw.cpu_count_physical ?? '?'} phys / ${hw.cpu_count_logical ?? '?'} logical`],
+                    ['RAM', `${hw.ram_total_gb ?? '?'} GB (${hw.ram_usage_percent ?? '?'}% used)`],
+                    ['Disk', `${hw.disk_total_gb ?? '?'} GB (${hw.disk_usage_percent ?? '?'}% used)`],
+                ]);
+                
+                const net = d.network || {};
+                html += infoCard('🌐 Network', [
+                    ['Hostname', net.hostname || '?'],
+                    ['Local IP', net.local_ip || '?'],
+                    ['Net Sent', (net.bytes_sent_mb ?? '?') + ' MB'],
+                    ['Net Recv', (net.bytes_recv_mb ?? '?') + ' MB'],
+                ]);
+                
+                const usr = d.user_info || {};
+                html += infoCard('👤 User', [
+                    ['Username', usr.username || '?'],
+                    ['Home', usr.home_directory || '?'],
+                ]);
+                
+                const procs = d.processes || [];
+                if (procs.length && !procs[0]?.error) {
+                    html += '<h3 style="font-size:15px;font-weight:700;color:var(--accent);margin:18px 0 10px">📊 Top Processes</h3>';
+                    html += '<table class="log-table"><thead><tr><th>PID</th><th>Name</th><th>CPU%</th><th>Mem%</th><th>Status</th></tr></thead><tbody>';
+                    procs.slice(0, 15).forEach(p => {
+                        html += `<tr><td>${p.pid}</td><td>${escapeHtml(p.name || '')}</td><td>${p.cpu_percent}</td><td>${p.memory_percent}</td><td>${p.status}</td></tr>`;
+                    });
+                    html += '</tbody></table>';
+                }
+                c.innerHTML = html;
+            }).catch(() => { c.innerHTML = '<div class="feed-box empty">Failed to load system info.</div>'; });
+        }
+
+        function loadSettings() {
+            fetch('/api/settings').then(r => r.json()).then(s => {
+                const c = document.getElementById('settings-content');
+                c.innerHTML = `
             ${settingsSection('⌨️ Keylogger', [
-                ['Buffer Size', s.buffer_size],
-                ['Flush Interval', s.flush_interval + 's'],
-                ['Special Keys', s.capture_special_keys ? '✅ On' : '❌ Off'],
-                ['Timestamps', s.capture_timestamps ? '✅ On' : '❌ Off'],
-            ])}
+                    ['Buffer Size', s.buffer_size],
+                    ['Flush Interval', s.flush_interval + 's'],
+                    ['Special Keys', s.capture_special_keys ? '✅ On' : '❌ Off'],
+                    ['Timestamps', s.capture_timestamps ? '✅ On' : '❌ Off'],
+                ])}
             ${settingsSection('📋 Clipboard', [
-                ['Enabled', s.clipboard_enabled ? '✅ On' : '❌ Off'],
-                ['Poll Interval', s.clipboard_poll_interval + 's'],
-            ])}
+                    ['Enabled', s.clipboard_enabled ? '✅ On' : '❌ Off'],
+                    ['Poll Interval', s.clipboard_poll_interval + 's'],
+                ])}
             ${settingsSection('📸 Screenshots', [
-                ['Enabled', s.screenshot_enabled ? '✅ On' : '❌ Off'],
-                ['Interval', s.screenshot_interval + 's'],
-                ['Format', (s.screenshot_format||'').toUpperCase()],
-                ['Quality', s.screenshot_quality],
-            ])}
+                    ['Enabled', s.screenshot_enabled ? '✅ On' : '❌ Off'],
+                    ['Interval', s.screenshot_interval + 's'],
+                    ['Format', (s.screenshot_format || '').toUpperCase()],
+                    ['Quality', s.screenshot_quality],
+                ])}
             ${settingsSection('📧 Email', [['Enabled', s.email_enabled ? '✅ On' : '❌ Off']])}
             ${settingsSection('⚖️ Safeguards', [['Auto-Stop', s.auto_stop_hours + ' hours']])}
             ${settingsSection('📁 Directories', [
-                ['Logs', s.log_dir],
-                ['Screenshots', s.screenshot_dir],
-                ['Exports', s.export_dir],
-            ])}
+                    ['Logs', s.log_dir],
+                    ['Screenshots', s.screenshot_dir],
+                    ['Exports', s.export_dir],
+                ])}
         `;
-    });
-}
+            });
+        }
 
-/* ═══════════════════════════════════════════
-   HELPERS
-   ═══════════════════════════════════════════ */
+        
 
-function setText(id, txt) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = txt;
-}
-function p(n) { return String(n).padStart(2, '0'); }
+        function setText(id, txt) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = txt;
+        }
+        function p(n) { return String(n).padStart(2, '0'); }
 
-function setModDot(id, on) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.innerHTML = on
-        ? '<span class="dot on"></span>ON'
-        : '<span class="dot off"></span>OFF';
-    el.style.color = on ? 'var(--green)' : 'var(--red)';
-}
+        function setModDot(id, on) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.innerHTML = on
+                ? '<span class="dot on"></span>ON'
+                : '<span class="dot off"></span>OFF';
+            el.style.color = on ? 'var(--green)' : 'var(--red)';
+        }
 
-function setGauge(type, pct) {
-    const fill = document.getElementById(type + '-fill');
-    const label = document.getElementById(type + '-pct');
-    if (fill) {
-        fill.style.width = pct + '%';
-        fill.style.background = pct > 85 ? 'var(--red)' : pct > 65 ? 'var(--orange)' : 'var(--green)';
-    }
-    if (label) {
-        label.textContent = pct.toFixed(0) + '%';
-        label.style.color = pct > 85 ? 'var(--red)' : pct > 65 ? 'var(--orange)' : 'var(--green)';
-    }
-}
+        function setGauge(type, pct) {
+            const fill = document.getElementById(type + '-fill');
+            const label = document.getElementById(type + '-pct');
+            if (fill) {
+                fill.style.width = pct + '%';
+                fill.style.background = pct > 85 ? 'var(--red)' : pct > 65 ? 'var(--orange)' : 'var(--green)';
+            }
+            if (label) {
+                label.textContent = pct.toFixed(0) + '%';
+                label.style.color = pct > 85 ? 'var(--red)' : pct > 65 ? 'var(--orange)' : 'var(--green)';
+            }
+        }
 
-function escapeHtml(s) {
-    const d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
-}
+        function escapeHtml(s) {
+            const d = document.createElement('div');
+            d.textContent = s;
+            return d.innerHTML;
+        }
 
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-}
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
 
-function infoCard(title, rows) {
-    let html = `<div class="info-card"><div class="info-title">${title}</div>`;
-    rows.forEach(([l,v]) => {
-        html += `<div class="panel-row"><span class="label">${l}</span><span class="value">${escapeHtml(String(v))}</span></div>`;
-    });
-    return html + '</div>';
-}
+        function infoCard(title, rows) {
+            let html = `<div class="info-card"><div class="info-title">${title}</div>`;
+            rows.forEach(([l, v]) => {
+                html += `<div class="panel-row"><span class="label">${l}</span><span class="value">${escapeHtml(String(v))}</span></div>`;
+            });
+            return html + '</div>';
+        }
 
-function settingsSection(title, items) {
-    let html = `<div class="settings-section"><h3>${title}</h3><div class="sep"></div><div class="settings-grid">`;
-    items.forEach(([l,v]) => {
-        html += `<div class="setting-item"><div class="s-label">${l}</div><div class="s-value">${escapeHtml(String(v))}</div></div>`;
-    });
-    return html + '</div></div>';
-}
+        function settingsSection(title, items) {
+            let html = `<div class="settings-section"><h3>${title}</h3><div class="sep"></div><div class="settings-grid">`;
+            items.forEach(([l, v]) => {
+                html += `<div class="setting-item"><div class="s-label">${l}</div><div class="s-value">${escapeHtml(String(v))}</div></div>`;
+            });
+            return html + '</div></div>';
+        }
 
-/* ── Initial load ── */
-loadEncryption();
-</script>
+        
+        loadEncryption();
+    </script>
 </body>
+
 </html>

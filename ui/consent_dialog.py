@@ -1,55 +1,15 @@
 import customtkinter as ctk
 
+CONSENT_TERMS = 
 
-CONSENT_TERMS = """
-TERMS OF AUTHORIZED USE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-By proceeding, you acknowledge and agree to the following:
-
-1. AUTHORIZATION
-   You confirm that you have explicit written authorization
-   from the system owner to run this monitoring software
-   on this device.
-
-2. LEGAL COMPLIANCE
-   You will use this tool in compliance with all applicable
-   local, state, national, and international laws and
-   regulations.
-
-3. EDUCATIONAL PURPOSE
-   This software is intended for cybersecurity education,
-   authorized penetration testing, and security research only.
-
-4. DATA RESPONSIBILITY
-   You accept full responsibility for any data collected and
-   will handle it in accordance with data protection
-   regulations (e.g., GDPR, CCPA).
-
-5. NO MALICIOUS USE
-   You will NOT use this tool for unauthorized surveillance,
-   identity theft, corporate espionage, or any other
-   malicious purpose.
-
-6. ACCOUNTABILITY
-   You understand that all monitoring sessions are logged
-   and can be audited.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-⚠️  VIOLATION OF THESE TERMS MAY RESULT IN
-    CRIMINAL PROSECUTION.
-"""
-
-_BG_DARK = "#0a0a1a"
-_BG_PANEL = "#1a1a2e"
-_ACCENT = "#00d4ff"
-_RED = "#ff1744"
-_GREEN = "#00e676"
-_TEXT_PRIMARY = "#e0e0e0"
-_TEXT_DIM = "#616161"
-_BORDER = "#0f3460"
-
+_BG_DARK = "
+_BG_PANEL = "
+_ACCENT = "
+_RED = "
+_GREEN = "
+_TEXT_PRIMARY = "
+_TEXT_DIM = "
+_BORDER = "
 
 class ConsentDialog(ctk.CTkToplevel):
 
@@ -117,7 +77,7 @@ class ConsentDialog(ctk.CTkToplevel):
             self,
             text="⚠️  Unauthorized use of monitoring tools is illegal and unethical.",
             font=ctk.CTkFont(family="Segoe UI", size=11, weight="bold"),
-            text_color="#ff9100",
+            text_color="
         ).pack(pady=(8, 5))
 
         btn_frame = ctk.CTkFrame(self, fg_color="transparent", height=50)
@@ -128,7 +88,7 @@ class ConsentDialog(ctk.CTkToplevel):
             text="❌  Decline",
             font=ctk.CTkFont(family="Segoe UI", size=14, weight="bold"),
             fg_color=_BG_PANEL,
-            hover_color="#2a1525",
+            hover_color="
             text_color=_RED,
             border_color=_RED,
             border_width=1,
@@ -143,8 +103,8 @@ class ConsentDialog(ctk.CTkToplevel):
             text="✅  Accept & Continue",
             font=ctk.CTkFont(family="Segoe UI", size=14, weight="bold"),
             fg_color=_GREEN,
-            hover_color="#00c864",
-            text_color="#0a0a1a",
+            hover_color="
+            text_color="
             width=220,
             height=42,
             corner_radius=10,

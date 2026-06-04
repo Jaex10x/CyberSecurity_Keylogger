@@ -1,10 +1,7 @@
-/* ════════════════════════════════════════════════════
-   CyberSentinel — Design System & Styles
-   ════════════════════════════════════════════════════ */
 
-/* ─── CSS Variables / Tokens ─── */
+
 :root {
-    /* Colors */
+    
     --bg-primary: #06060e;
     --bg-secondary: #0c0c1d;
     --bg-card: #0f0f23;
@@ -27,11 +24,11 @@
     --border: rgba(255, 255, 255, 0.06);
     --border-accent: rgba(0, 212, 255, 0.2);
 
-    /* Typography */
+    
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-    /* Spacing */
+    
     --space-xs: 0.25rem;
     --space-sm: 0.5rem;
     --space-md: 1rem;
@@ -41,26 +38,25 @@
     --space-3xl: 4rem;
     --space-4xl: 6rem;
 
-    /* Radius */
+    
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 16px;
     --radius-xl: 24px;
     --radius-full: 999px;
 
-    /* Transitions */
+    
     --transition-fast: 0.15s ease;
     --transition-normal: 0.3s ease;
     --transition-slow: 0.5s ease;
 
-    /* Z-index */
+    
     --z-bg: -1;
     --z-base: 1;
     --z-nav: 100;
     --z-overlay: 200;
 }
 
-/* ─── Reset & Base ─── */
 *,
 *::before,
 *::after {
@@ -122,7 +118,6 @@ code {
     background-clip: text;
 }
 
-/* ─── Animated Background ─── */
 .bg-grid {
     position: fixed;
     inset: 0;
@@ -177,7 +172,6 @@ code {
     66% { transform: translate(-20px, 15px) scale(0.95); }
 }
 
-/* ─── Navigation ─── */
 .nav {
     position: fixed;
     top: 0;
@@ -298,7 +292,6 @@ code {
 .nav__hamburger.active span:nth-child(2) { opacity: 0; }
 .nav__hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-/* Mobile Menu */
 .mobile-menu {
     display: none;
     position: fixed;
@@ -335,7 +328,6 @@ code {
     border-bottom: 1px solid var(--border);
 }
 
-/* ─── Hero Section ─── */
 .hero {
     min-height: 100vh;
     display: flex;
@@ -445,7 +437,6 @@ code {
     background: var(--border);
 }
 
-/* Terminal in Hero */
 .hero__terminal {
     position: absolute;
     right: 0;
@@ -522,7 +513,6 @@ code {
 .terminal__line--warning { color: var(--warning); }
 .terminal__line--dim { color: var(--text-dim); }
 
-/* ─── Buttons ─── */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -566,7 +556,6 @@ code {
     font-size: 1rem;
 }
 
-/* ─── Section Shared ─── */
 section {
     padding: var(--space-4xl) 0;
 }
@@ -604,7 +593,6 @@ section {
     line-height: 1.7;
 }
 
-/* ─── Features Grid ─── */
 .features {
     background: var(--bg-secondary);
     position: relative;
@@ -698,7 +686,6 @@ section {
     border: 1px solid rgba(0, 212, 255, 0.12);
 }
 
-/* ─── Demo Dashboard ─── */
 .demo {
     background: var(--bg-primary);
 }
@@ -829,7 +816,6 @@ section {
     font-style: italic;
 }
 
-/* Keystroke styling in demo */
 .key-char {
     color: var(--tertiary);
     font-weight: 500;
@@ -854,7 +840,6 @@ section {
     color: var(--error);
 }
 
-/* Clipboard entries */
 .demo__clip-entry {
     display: flex;
     gap: var(--space-md);
@@ -875,7 +860,6 @@ section {
     color: var(--text-secondary);
 }
 
-/* Stats */
 .demo__stat-row {
     display: flex;
     justify-content: space-between;
@@ -893,7 +877,6 @@ section {
     color: var(--tertiary);
 }
 
-/* Module status */
 .demo__module-row {
     display: flex;
     justify-content: space-between;
@@ -914,7 +897,6 @@ section {
     color: var(--error);
 }
 
-/* Resource bars */
 .demo__resource-row {
     display: flex;
     align-items: center;
@@ -960,7 +942,6 @@ section {
     color: var(--text-dim);
 }
 
-/* ─── Architecture ─── */
 .architecture {
     background: var(--bg-secondary);
     position: relative;
@@ -1022,7 +1003,6 @@ section {
     padding: 0.3rem 0.6rem;
 }
 
-/* ─── Download Section ─── */
 .download {
     background: var(--bg-primary);
     position: relative;
@@ -1157,7 +1137,6 @@ section {
     font-size: 0.8rem;
 }
 
-/* ─── Modes ─── */
 .modes {
     background: var(--bg-primary);
 }
@@ -1216,7 +1195,6 @@ section {
     border-radius: var(--radius-sm);
 }
 
-/* ─── Install ─── */
 .install {
     background: var(--bg-secondary);
     position: relative;
@@ -1334,7 +1312,6 @@ section {
     font-size: 1.5rem;
 }
 
-/* ─── Ethical Section ─── */
 .ethical {
     background: var(--bg-primary);
 }
@@ -1403,7 +1380,6 @@ section {
     line-height: 1.6;
 }
 
-/* ─── Footer ─── */
 .footer {
     padding: var(--space-3xl) 0;
     border-top: 1px solid var(--border);
@@ -1453,7 +1429,6 @@ section {
     color: var(--accent);
 }
 
-/* ─── Animations ─── */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -1464,7 +1439,6 @@ section {
     to { opacity: 1; transform: translate(0, -50%); }
 }
 
-/* ─── Responsive ─── */
 @media (max-width: 1024px) {
     .hero {
         flex-direction: column;
@@ -1555,7 +1529,6 @@ section {
     }
 }
 
-/* ─── Scrollbar ─── */
 ::-webkit-scrollbar {
     width: 6px;
 }

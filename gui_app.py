@@ -16,7 +16,6 @@ from utils.consent import ConsentManager
 
 from ui.gui_dashboard import CyberSentinelApp
 
-
 def main():
 
     crypto          = EncryptionManager()
@@ -41,7 +40,6 @@ def main():
     )
 
     app.mainloop()
-
 
 if __name__ == "__main__":
     main()

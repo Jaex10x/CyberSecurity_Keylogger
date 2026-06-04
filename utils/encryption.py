@@ -9,7 +9,6 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 from config.settings import KEY_FILE, KEY_ROTATION_HOURS, ENCRYPTION_ENABLED
 
-
 class EncryptionManager:
 
     def __init__(self):

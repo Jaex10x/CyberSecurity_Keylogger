@@ -7,7 +7,6 @@ from pathlib import Path
 from config.settings import LOG_DIR, EXPORT_DIR, SESSION_ID
 from utils.encryption import EncryptionManager
 
-
 class FileHandler:
 
     def __init__(self, encryption_manager: EncryptionManager = None):

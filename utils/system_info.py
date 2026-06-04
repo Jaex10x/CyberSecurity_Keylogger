@@ -9,7 +9,6 @@ try:
 except ImportError:
     PSUTIL_AVAILABLE = False
 
-
 class SystemProfiler:
 
     def __init__(self):

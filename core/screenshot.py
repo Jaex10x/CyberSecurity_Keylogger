@@ -18,7 +18,6 @@ from config.settings import (
     SESSION_ID,
 )
 
-
 class ScreenshotCapture:
 
     def __init__(self):
