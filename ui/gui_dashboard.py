@@ -464,8 +464,7 @@ class CyberSentinelApp(ctk.CTk):
         ctk.CTkButton(
             ctrl, text="■ Stop", width=110, height=38,
             fg_color=RED, hover_color="
-            text_color="
-            font=ctk.CTkFont(size=13, weight="bold"),
+            text_color="font=ctk.CTkFont(size=13, weight="bold"),
             command=self._stop_keylogger,
         ).pack(side="left", padx=(0, 8))
 

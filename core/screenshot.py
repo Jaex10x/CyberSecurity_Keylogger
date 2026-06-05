@@ -1,9 +1,12 @@
+
+
 import threading
 import time
 from datetime import datetime
 from pathlib import Path
 
 try:
+    # pyrefly: ignore [missing-import]
     from PIL import ImageGrab
     PIL_AVAILABLE = True
 except ImportError:
@@ -18,7 +21,12 @@ from config.settings import (
     SESSION_ID,
 )
 
+
 class ScreenshotCapture:
+    """
+    Captures periodic screenshots of the desktop
+    for security audit documentation.
+    """
 
     def __init__(self):
         self.enabled = SCREENSHOT_ENABLED and PIL_AVAILABLE
@@ -27,20 +35,25 @@ class ScreenshotCapture:
         self.format = SCREENSHOT_FORMAT
         self.output_dir = SCREENSHOT_DIR
 
+        # State
         self._running = False
         self._thread = None
         self.total_captures = 0
         self._last_capture_path = None
         self._last_capture_time = None
 
+        # Callback
         self._on_capture_callback = None
 
+        # Ensure output directory exists
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def set_capture_callback(self, callback):
+        """Set callback for capture notifications."""
         self._on_capture_callback = callback
 
     def start(self):
+        """Start periodic screenshot capture."""
         if not self.enabled:
             return
 
@@ -56,11 +69,18 @@ class ScreenshotCapture:
         self._thread.start()
 
     def stop(self):
+        """Stop screenshot capture."""
         self._running = False
         if self._thread and self._thread.is_alive():
             self._thread.join(timeout=5)
 
     def capture_now(self) -> Path:
+        """
+        Take an immediate screenshot.
+
+        Returns:
+            Path to the saved screenshot file.
+        """
         if not PIL_AVAILABLE:
             return None
 
@@ -69,8 +89,10 @@ class ScreenshotCapture:
             filename = f"screenshot_{SESSION_ID}_{timestamp}.{self.format}"
             filepath = self.output_dir / filename
 
+            # Capture screen
             screenshot = ImageGrab.grab()
 
+            # Save with configured quality
             if self.format.lower() in ("jpg", "jpeg"):
                 screenshot.save(filepath, "JPEG", quality=self.quality)
             else:
@@ -80,6 +102,7 @@ class ScreenshotCapture:
             self._last_capture_path = filepath
             self._last_capture_time = datetime.now()
 
+            # Trigger callback
             if self._on_capture_callback:
                 try:
                     self._on_capture_callback({
@@ -96,11 +119,13 @@ class ScreenshotCapture:
             return None
 
     def _capture_loop(self):
+        """Main capture loop running at configured intervals."""
         while self._running:
             self.capture_now()
             time.sleep(self.interval)
 
     def get_stats(self) -> dict:
+        """Get screenshot capture statistics."""
         return {
             "enabled": self.enabled,
             "running": self._running,
@@ -117,6 +142,7 @@ class ScreenshotCapture:
         }
 
     def get_recent_captures(self) -> list:
+        """List recent screenshot files."""
         try:
             files = sorted(
                 self.output_dir.glob(f"screenshot_{SESSION_ID}_*"),

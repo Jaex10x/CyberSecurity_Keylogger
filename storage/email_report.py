@@ -104,7 +104,22 @@ class EmailReporter:
             return False
 
     def _build_html_report(self, body_text: str = None) -> str:
-        return f
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        content = body_text or "Periodic monitoring report — no additional details provided."
+        return f"""
+        <html>
+        <body style="font-family:Arial,sans-serif;background:#0a0a1a;color:#e0e0e0;padding:20px;">
+            <div style="max-width:600px;margin:auto;background:#12122a;border:1px solid #1a1a4a;border-radius:12px;padding:30px;">
+                <h1 style="color:#00d4ff;font-size:22px;margin:0 0 6px;">🛡️ {APP_NAME}</h1>
+                <p style="color:#5a5a7a;font-size:12px;margin:0 0 20px;">v{APP_VERSION} · Session {SESSION_ID}</p>
+                <hr style="border:none;border-top:1px solid #1a1a4a;margin:16px 0;">
+                <p style="font-size:14px;line-height:1.6;color:#e0e0e0;">{content}</p>
+                <hr style="border:none;border-top:1px solid #1a1a4a;margin:16px 0;">
+                <p style="font-size:11px;color:#5a5a7a;">Report generated at {timestamp}</p>
+            </div>
+        </body>
+        </html>
+        """
 
     @staticmethod
     def _attach_file(msg: MIMEMultipart, filepath: Path):

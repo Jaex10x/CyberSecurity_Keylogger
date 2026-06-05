@@ -18,7 +18,22 @@ from config.settings import (
 
 console = Console()
 
-CONSENT_TERMS = 
+CONSENT_TERMS = (
+    "TERMS OF AUTHORIZED USE\n\n"
+    "1. AUTHORIZATION — You confirm that you have explicit written authorization\n"
+    "   from the system owner to run this monitoring software on this device.\n\n"
+    "2. LEGAL COMPLIANCE — You will use this tool in compliance with all\n"
+    "   applicable local, state, national, and international laws.\n\n"
+    "3. EDUCATIONAL PURPOSE — This software is intended for cybersecurity\n"
+    "   education, authorized penetration testing, and security research only.\n\n"
+    "4. DATA RESPONSIBILITY — You accept full responsibility for any data\n"
+    "   collected and will handle it per data protection regulations.\n\n"
+    "5. NO MALICIOUS USE — You will NOT use this tool for unauthorized\n"
+    "   surveillance, identity theft, corporate espionage, or any malicious purpose.\n\n"
+    "6. ACCOUNTABILITY — You understand that all monitoring sessions are\n"
+    "   logged and can be audited."
+)
+
 
 class ConsentManager:
 

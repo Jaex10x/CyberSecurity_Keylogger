@@ -95,7 +95,7 @@ class SystemProfiler:
 
     def _get_user_info(self) -> dict:
         info = {
-            "username": os.getlogin() if hasattr(os, "login") else os.environ.get("USERNAME", os.environ.get("USER", "Unknown")),
+            "username": os.getlogin() if hasattr(os, "getlogin") else os.environ.get("USERNAME", os.environ.get("USER", "Unknown")),
             "home_directory": str(os.path.expanduser("~")),
         }
 

